@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.1/ckeditor5.css">
+    <link rel="stylesheet" href="../css/ckeditor.css">
+    <link href="../css/admin.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="logout">
+            <a href="#" class="text-white btn btn-danger" id="logout">Déconnexion</a>
+        </div>
+        <h1 class="text-center">Page d'Administration</h1>
+        
+        <!-- Boutons de gestion -->
+        <div class="d-flex justify-content-center my-4">
+            <button class="btn btn-primary mx-2" id="toggleMission">Gestion Mission</button>
+            <button class="btn btn-primary mx-2" id="toggleNews">News</button>
+            <button class="btn btn-primary mx-2" id="toggleLore">Lore</button>
+            <button class="btn btn-primary mx-2" id="toggleTarget">Target</button>
+            <button class="btn btn-primary mx-2" id="toggleSupplyAds">Supply Ads</button>
+        </div>
+        
+        <div class="d-none" id="mission-admin">
+        <!-- Formulaire de téléchargement JSON -->
+        <div class="form-container">
+            <div class="form-card col-12">
+                <h3>Télécharger un fichier JSON</h3>
+                <form id="jsonForm">
+                    <div class="mb-3">
+                        <label for="jsonFile" class="form-label">Fichier JSON:</label>
+                        <input type="file" class="form-control" id="jsonFile" accept=".json">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Charger les données</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="form-container mt-5">
+            <div class="form-card col-12 col-md-6">
+                <h3>Attack</h3>
+                <form id="attackForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="attackTitleSite" class="form-label">Titre Site:</label>
+                        <input type="text" class="form-control" id="attackTitleSite" name="attackTitleSite">
+                    </div>
+                    <div class="mb-3">
+                        <label for="attackTitleOnchain" class="form-label">Titre Onchain:</label>
+                        <input type="text" class="form-control" id="attackTitleOnchain" name="attackTitleOnchain">
+                    </div>
+                    <div class="mb-3">
+                        <label for="attackText" class="form-label">Texte:</label>
+                        <textarea class="form-control" id="attackText" name="attackText" rows="4"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="attackTarget" class="form-label">Target:</label>
+                        <input type="number" class="form-control" id="attackTarget" name="attackTarget">
+                    </div>
+                    <div class="mb-3">
+                        <label for="attackRewards" class="form-label">Rewards TLM:</label>
+                        <input type="text" class="form-control" id="attackRewards" name="attackRewards" pattern="^\d{1,11}\.\d{4} TLM$">
+                    </div>
+                    <div class="mb-3">
+                        <label for="attackShards" class="form-label">Rewards Shards:</label>
+                        <input type="text" class="form-control" id="attackShards" name="attackShards" pattern="^\d{1,11}\.\d{4} Shards$">
+                    </div>
+                    <div class="mb-3">
+                        <label for="attackDifficulty" class="form-label">Difficulté:</label>
+                        <input type="text" class="form-control" id="attackDifficulty" name="attackDifficulty">
+                    </div>
+                    <div class="mb-3">
+                        <label for="attackStartDate" class="form-label">Date de Début:</label>
+                        <input type="datetime-local" class="form-control" id="attackStartDate" name="attackStartDate" step="1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="attackEndDate" class="form-label">Date de Fin:</label>
+                        <input type="datetime-local" class="form-control" id="attackEndDate" name="attackEndDate" step="1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="Planet" class="form-label">Planète:</label>
+                        <select class="form-control" id="Planet" name="Planet">
+                            <option value="Magor">Magor</option>
+                            <option value="Kavian">Kavian</option>
+                            <option value="Neri">Neri</option>
+                            <option value="Naron">Naron</option>
+                            <option value="Eyeke">Eyeke</option>
+                            <option value="Veles">Veles</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="attackImage" class="form-label">Image:</label>
+                        <input type="file" class="form-control" id="attackImage" name="attackImage" accept="image/png, image/jpeg">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                </form>
+
+                <!-- Tableau des données d'attaque -->
+                <div class="table-container">
+                    <h3 class="text-center">Données d'Attaque</h3>
+                    <table class="table table-dark table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attack-table-body">
+                            <!-- Les données seront insérées ici -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-card col-12 col-md-6">
+                <h3>Defense</h3>
+                <form id="defenseForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="defenseTitleSite" class="form-label">Titre Site:</label>
+                        <input type="text" class="form-control" id="defenseTitleSite" name="defenseTitleSite">
+                    </div>
+                    <div class="mb-3">
+                        <label for="defenseTitleOnchain" class="form-label">Titre Onchain:</label>
+                        <input type="text" class="form-control" id="defenseTitleOnchain" name="defenseTitleOnchain">
+                    </div>
+                    <div class="mb-3">
+                        <label for="defenseText" class="form-label">Texte:</label>
+                        <textarea class="form-control" id="defenseText" name="defenseText" rows="4"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="defenseTarget" class="form-label">Target:</label>
+                        <input type="number" class="form-control" id="defenseTarget" name="defenseTarget">
+                    </div>
+                    <div class="mb-3">
+                        <label for="defenseRewards" class="form-label">Rewards TLM:</label>
+                        <input type="text" class="form-control" id="defenseRewards" name="defenseRewards" pattern="^\d{1,11}\.\d{4} TLM$">
+                    </div>
+                    <div class="mb-3">
+                        <label for="defenseShards" class="form-label">Rewards Shards:</label>
+                        <input type="text" class="form-control" id="defenseShards" name="defenseShards" pattern="^\d{1,11}\.\d{4} Shards$">
+                    </div>
+                    <div class="mb-3">
+                        <label for="defenseStartDate" class="form-label">Date de Début:</label>
+                        <input type="datetime-local" class="form-control" id="defenseStartDate" name="defenseStartDate" step="1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="defenseEndDate" class="form-label">Date de Fin:</label>
+                        <input type="datetime-local" class="form-control" id="defenseEndDate" name="defenseEndDate" step="1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="Planet" class="form-label">Planète:</label>
+                        <select class="form-control" id="Planet" name="Planet">
+                            <option value="Magor">Magor</option>
+                            <option value="Kavian">Kavian</option>
+                            <option value="Neri">Neri</option>
+                            <option value="Naron">Naron</option>
+                            <option value="Eyeke">Eyeke</option>
+                            <option value="Veles">Veles</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="defenseImage" class="form-label">Image:</label>
+                        <input type="file" class="form-control" id="defenseImage" name="defenseImage" accept="image/png, image/jpeg">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                </form>
+
+                <!-- Tableau des données de défense -->
+                <div class="table-container">
+                    <h3 class="text-center">Données de Défense</h3>
+                    <table class="table table-dark table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="defense-table-body">
+                            <!-- Les données seront insérées ici -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    <div class="form-container d-none" id="news-admin">
+        <div id="form-cardadmin" class="form-card col-12 mx-auto">
+            <h3>Ajouter des News</h3>
+            <form id="newsForm">
+                <div class="mb-3">
+                    <label for="newsContent" class="form-label">Votre News:</label>
+                    <textarea class="form-control" id="newsContent" name="newsContent" rows="10"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Soumettre</button>
+            </form>
+        </div>
+
+    <!-- Tableau des données de news -->
+    <div class="table-container mt-4 col-12 col-md-6 col-lg-6 mx-auto mb-5">
+        <h3 class="text-center">Données des News</h3>
+        <p id="no-news-message" class="text-center">Aucune news disponible.</p>
+        <table class="table table-dark table-striped d-none" id="news-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Contenu</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="news-table-body">
+                <!-- Les données seront insérées ici -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="form-container d-none" id="lore-admin">
+    <div id="form-loreadmin" class="form-card col-12">
+        <h3>Gestion des Lores</h3>
+        <form id="loreForm">
+            <div class="mb-3">
+                <label for="loreTitle" class="form-label">Titre:</label>
+                <input type="text" class="form-control" id="loreTitle" name="loreTitle" required>
+            </div>
+            <div class="mb-3">
+                <label for="lorePage" class="form-label">Page:</label>
+                <input type="number" class="form-control" id="lorePage" name="lorePage" required>
+            </div>
+            <div class="mb-3">
+                <label for="loreSection" class="form-label">Section:</label>
+                <select class="form-control" id="loreSection" name="loreSection" required>
+                    <option value="Index">Index</option>
+                    <option value="Lore">Lore</option>
+                    <option value="Monstre">Monstre</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="loreHtml" class="form-label">Lore HTML:</label>
+                <textarea class="form-control" id="loreHtml" name="loreHtml" rows="10"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submitButton">Soumettre</button>
+            <button type="button" class="btn btn-primary d-none" id="validateModification">Valider la modification</button>
+        </form>
+            <h3 class="mt-5">Liste des Lores</h3>
+            
+            <!-- Tableau pour la section Lore -->
+            <h4 class="mt-3">Section Lore</h4>
+            <table class="table table-dark table-striped" id="lore-table">
+                <thead>
+                    <tr>
+                        <th>Page</th>
+                        <th>Titre</th>
+                        <th>Section</th>
+                        <th>Valide</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="lore-table-body">
+                    <!-- Les données seront insérées ici -->
+                </tbody>
+            </table>
+            
+            <!-- Tableau pour la section Monstre -->
+            <h4 class="mt-3">Section Monstre</h4>
+            <table class="table table-dark table-striped" id="monstre-table">
+                <thead>
+                    <tr>
+                        <th>Page</th>
+                        <th>Titre</th>
+                        <th>Section</th>
+                        <th>Valide</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="monstre-table-body">
+                    <!-- Les données seront insérées ici -->
+                </tbody>
+            </table>
+    </div>
+</div>
+  
+<div class="form-container d-none" id="target-admin">
+    <div id="form-targetadmin" class="form-card col-12">
+        <h3 class="text-center mb-4">Calcul des Attaques par jours</h3>
+        <div class="form-container">
+            <button class="btn btn-primary" id="fetchTotalAttack">Récupérer le total d'attaques</button>
+            <div id="attackResults" class="mt-4">
+                <p>Total d'attaque possible sur 24h: <span id="totalAttacks">0</span></p>
+                <p>Nombre total de owners et players réunis: <span id="totalParticipants">0</span></p>
+            </div>
+        </div>
+    </div>
+</div>  
+  
+    <!-- Spinner de chargement -->
+    <div class="spinner-container" id="spinnerContainer">
+        <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Chargement...</span>
+        </div>
+    </div>
+    <!-- Toast de confirmation de suppression -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="deleteSuccessToast" class="toast toast-custom" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header toast-custom">
+                <strong class="me-auto">Succès</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Les données ont été supprimées avec succès.
+            </div>
+        </div>
+    </div>
+    <!-- Toast de succès -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="successToast" class="toast toast-custom" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header toast-custom">
+                <strong class="me-auto">Succès</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Les données ont été mises à jour avec succès.
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast d'erreur -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="errorToast" class="toast toast-error" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header toast-error">
+                <strong class="me-auto">Erreur</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Tous les champs doivent être remplis correctement.
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast d'erreur pour le téléchargement d'image -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="imageErrorToast" class="toast toast-error" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header toast-error">
+                <strong class="me-auto">Erreur</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Erreur lors du téléchargement de l'image.
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour afficher les détails -->
+    <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailsModalLabel">Détails de la Mission</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="detailsModalBody">
+                    <!-- Les détails seront insérés ici -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Section Supply Ads -->
+    <div class="d-none" id="supply-ads-admin">
+        <div class="form-container">
+            <div class="form-card col-12 col-md-6">
+                <h3>Gestion des Produits</h3>
+                <form id="productForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Titre:</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description:</label>
+                        <textarea class="form-control" id="description" name="description" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Prix:</label>
+                        <input type="text" class="form-control" id="price" name="price" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="section" class="form-label">Section:</label>
+                        <select class="form-control" id="section" name="section" required>
+                            <option value="merch-today">Merch Today</option>
+                            <option value="conneries">Des conneries</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Image:</label>
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ajouter le produit</button>
+                </form>
+            </div>
+
+            <div class="form-card col-12 col-md-6">
+                <h3>Gestion des Dev Logs</h3>
+                <form id="devLogForm">
+                    <div class="mb-3">
+                        <label for="devLogTitle" class="form-label">Titre:</label>
+                        <input type="text" class="form-control" id="devLogTitle" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="devLogContent" class="form-label">Contenu:</label>
+                        <textarea class="form-control" id="devLogContent" name="content" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="devLogTags" class="form-label">Tags (séparés par des virgules):</label>
+                        <input type="text" class="form-control" id="devLogTags" name="tags" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ajouter le dev log</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tableaux des données -->
+        <div class="form-container mt-4">
+            <div class="form-card col-12">
+                <h3>Liste des Produits</h3>
+                <div class="table-container">
+                    <table class="table table-dark table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Titre</th>
+                                <th>Section</th>
+                                <th>Prix</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-table-body">
+                            <!-- Les données seront insérées ici -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-card col-12 mt-4">
+                <h3>Liste des Dev Logs</h3>
+                <div class="table-container">
+                    <table class="table table-dark table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Titre</th>
+                                <th>Tags</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dev-logs-table-body">
+                            <!-- Les données seront insérées ici -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/42.0.1/ckeditor5.js",
+            "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/42.0.1/"
+        }
+    }
+    </script>
+    <script type="module" src="../js/ckeditor5.js?v=3.0"></script>
+    <script src="../js/admin.js?v=3.5"></script>
+</body>
+</html>

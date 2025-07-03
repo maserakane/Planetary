@@ -1,0 +1,31 @@
+<div id="loading-overlay">
+    <div class="spinner-border text-primary" role="status"></div>
+    <span class="visually-hidden">Loading...</span>
+</div>
+<div id="mission-main" class="d-flex flex-column flex-lg-row align-items-normal justify-content-around text-center">
+    <div class="col-12 col-lg-12 d-flex flex-column mb-3 mb-lg-0" id="battlehistory-center">
+        <h2 id="h2-history" class="ethno">PvP History</h2>
+        <div id="error-message" class="alert alert-danger" role="alert" style="display: none;"></div>
+        <div class="table-wrapper">
+            <table id="battle-table" class="table table-responsive no-footer">
+                <thead id="table-mission-history" class="table-dark">
+                    <tr>
+                        <th>Avatar</th>
+                        <th>Selected Player</th>
+                        <th>Land ID</th>
+                        <th>Defense Score</th>
+                        <th>Attack Score</th>
+                        <th>Winner</th>
+                        <th>Rewards Total</th>
+                        <th title="UTC">Defense End Time</th>
+                        <th title="UTC">Attack End Time</th>
+                    </tr>
+                </thead>
+                <tbody id="battle-tbody">
+                    <!-- Les lignes PvP seront chargées ici -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

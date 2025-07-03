@@ -1,0 +1,125 @@
+@font-face {
+  font-family: "ethnocentricregular";
+  src: url("../font/ethnocentric_rg-webfont.woff2") format("woff2"), url("../font/ethnocentric_rg-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "latoregular";
+  src: url("../font/lato-regular-webfont.woff2") format("woff2"), url("../font/lato-regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  
+}
+
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  color: white;
+  background-color: rgb(12, 16, 36);
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0;
+  font-family: 'latoregular';
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 150px 40px 150px;
+  border-radius: 10px;
+  flex-direction: row-reverse;
+  background-color: #394461;
+  padding: 20px;
+  width: 80%;
+}
+
+.filter {
+  height: 30px;
+  border-radius: 10px;
+}
+.btn-head {
+  margin-left: 20px;
+  color: #ff9c00;
+  background-color: #333;
+  box-shadow: 3px 3px 1px;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 20px;
+  font-family: "ethnocentricregular";
+}
+.btn-head:hover {
+  color: #ff9c00;
+  background-color: #300101;
+  box-shadow: 3px 3px 1px;
+}
+
+.btn-head:active {
+  box-shadow: 0 0 0 #ff9c00;
+}
+
+.back-button {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+.return-btn:hover {
+  width: 160px;
+}
+
+.return-btn:active {
+  width: 150px;
+}
+.return-btn {
+  width: 150px;
+}
+
+.menu {
+  display: flex;
+  justify-content: center;
+}
+
+.menu1 {
+  color: #ff9c00;
+  background-color: #333;
+  box-shadow: 3px 3px 1px;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 20px;
+  margin-bottom: 40px;
+  margin-left: 150px;
+}
+
+@media screen and (max-width: 500px) {
+  .head {
+    justify-content: center;
+    margin: 20px 20px 20px -22px;
+    width: 100%;
+  }
+  .btn-head {
+    margin-top: 20px;
+  }
+
+  .back-button {
+    margin-top: -2px;
+  }
+
+  .return {
+    margin-right: 50px;
+  }
+
+  .menu {
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+  }
+
+  .reserch {
+    display: flex;
+    flex-direction: column;
+  }
+}

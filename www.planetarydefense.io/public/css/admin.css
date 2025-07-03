@@ -1,0 +1,76 @@
+body {
+    background-color: black;
+    color: white;
+}
+.form-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+.form-card {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+}
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+.logout {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.toast-custom {
+    background-color: #28a745;
+    color: white;
+}
+.toast-error {
+    background-color: #dc3545;
+    color: white;
+}
+.spinner-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+}
+.modal-content {
+    background-color: black;
+    color: white;
+}
+/* ckeditor */
+.ck-editor__editable {
+    color: black; /* Change la couleur du texte */
+    min-height: 400px; /* Hauteur minimum de la zone de texte */
+}
+
+.ck-editor {
+    max-width: 100%; /* Largeur maximale de la zone de texte */
+    width: 100%; /* S'assure que l'éditeur occupe toute la largeur disponible */
+}
+
+.ck.ck-editor__main > .ck-editor__editable {
+    height: 400px; /* Hauteur de la zone éditable */
+}
+#form-cardadmin.form-card, #form-loreadmin.form-card {
+    max-width: 1000px;
+    margin: auto; /* Centre la carte */
+}
+/* Table styles */
+.table-container {
+    text-align: center;
+}
+
+.table-container table {
+    margin: auto; /* Centre le tableau */
+}
