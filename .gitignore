@@ -1,0 +1,113 @@
+# Dépendances Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environnements
+.env
+.env.* 
+*.env
+
+# Logs
+logs/
+*.log
+log/
+*.log.*
+*.log
+
+# Bases de données locales
+*.sqlite
+*.db
+*.db*
+*.sql
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# Dossiers temporaires
+tmp/
+temp/
+.cache/
+dist/
+build/
+out/
+
+# Fichiers de sauvegarde d'éditeurs
+*.swp
+*.swo
+*.bak
+*.tmp
+*~
+
+# Fichiers de test ou de debug
+coverage/
+.nyc_output/
+.vscode/
+.idea/
+*.code-workspace
+
+# Fichiers de configuration personnels
+*.local
+*.secret
+*.pem
+*.crt
+*.key
+
+# Dossiers de production web (si générés automatiquement)
+public/
+www/
+htdocs/
+
+# Fichiers de sous-modules git (si tu n'en veux plus)
+.gitmodules
+
+# Fichiers d'upload temporaires
+uploads/
+*.part
+
+# Fichiers de build front-end
+.sass-cache/
+.cache/
+.next/
+.nuxt/
+out/
+build/
+dist/
+
+# Fichiers de lock
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Fichiers de configuration Mac
+.AppleDouble
+.LSOverride
+
+# Fichiers de configuration Windows
+$RECYCLE.BIN/
+
+# Fichiers de configuration Linux
+*~
+
+# Fichiers de backup
+*.bak
+*.old
+*.orig
+*.save
+
+# Fichiers générés par des outils
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Fichiers de test
+test/
+tests/
+__tests__/ 
