@@ -236,21 +236,26 @@ function loadContent(page, scripts, backgroundImage, color1, color2, planet) {
     if (planet) {
         localStorage.setItem('userPlanet', planet);
         document.documentElement.setAttribute('data-planet', planet);
-      initializePlanetData();
+        initializePlanetData();
     }
 
-    // --- Correction : S'assurer que main.js est toujours chargé en premier ---
-    if (!scripts.includes('js/main.js')) {
-        scripts = ['js/main.js', ...scripts];
-    } else {
-        // Si main.js n'est pas déjà en premier, le mettre en premier
-        const idx = scripts.indexOf('js/main.js');
-        if (idx > 0) {
-            scripts.splice(idx, 1);
-            scripts.unshift('js/main.js');
+    // --- Correction : Charger main.js uniquement s'il n'est pas déjà présent dans la page ---
+    const mainScriptAlreadyLoaded = Array.from(document.scripts).some(s => s.src && s.src.includes('js/main.js'));
+    if (!mainScriptAlreadyLoaded) {
+        if (!scripts.includes('js/main.js')) {
+            scripts = ['js/main.js', ...scripts];
+        } else {
+            const idx = scripts.indexOf('js/main.js');
+            if (idx > 0) {
+                scripts.splice(idx, 1);
+                scripts.unshift('js/main.js');
+            }
         }
+    } else {
+        // Si main.js est déjà chargé, on l'enlève de la liste pour éviter de le recharger
+        scripts = scripts.filter(s => s !== 'js/main.js');
     }
-    // ---------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     $('#center-bloc').load(page, async function(response, status, xhr) {
         if (window.cleanupMissionLive) {
