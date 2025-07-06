@@ -239,6 +239,19 @@ function loadContent(page, scripts, backgroundImage, color1, color2, planet) {
       initializePlanetData();
     }
 
+    // --- Correction : S'assurer que main.js est toujours chargé en premier ---
+    if (!scripts.includes('js/main.js')) {
+        scripts = ['js/main.js', ...scripts];
+    } else {
+        // Si main.js n'est pas déjà en premier, le mettre en premier
+        const idx = scripts.indexOf('js/main.js');
+        if (idx > 0) {
+            scripts.splice(idx, 1);
+            scripts.unshift('js/main.js');
+        }
+    }
+    // ---------------------------------------------------------------
+
     $('#center-bloc').load(page, async function(response, status, xhr) {
         if (window.cleanupMissionLive) {
             window.cleanupMissionLive();
