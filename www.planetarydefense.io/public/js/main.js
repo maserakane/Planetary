@@ -387,6 +387,7 @@ async function fetchPlayerInfo() {
                 }
 
                 window.playersData = playersData; // Mettre à jour la variable globale avec les nouvelles données
+                document.dispatchEvent(new Event('playersDataReady'));
                 break; // Sortir de la boucle si la requête réussit
             } catch (error) {
                 console.error(`Failed to fetch player info from endpoint ${endpoint}. Trying next...`, error);
