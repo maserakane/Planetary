@@ -618,7 +618,12 @@ async function fetchDefenseProgress() {
             await waitForPlayersData(); // Attendre l'initialisation de window.playersData
             updateCooldownOnTabFocus(); // Appeler la fonction pour afficher le cooldown lors du chargement de la page
         } catch (error) {
-            console.error(error);
+            console.error("Erreur lors de l'attente de playersData :", error);
+            // Optionnel : afficher un message utilisateur
+            const nextAttackElement = document.getElementById('nextattack');
+            if (nextAttackElement) {
+                nextAttackElement.innerText = 'Erreur de chargement des données joueurs';
+            }
         }
     });
 
@@ -640,4 +645,18 @@ async function fetchDefenseProgress() {
             interval = null;
         }
     };
+
+    // Ajoute ou remplace la fonction d'attente robuste
+    async function waitForPlayersData() {
+        let tries = 0;
+        while ((!window.playersData || window.playersData.length === 0) && tries < 40) {
+            console.log("[waitForPlayersData] Attente, tentative:", tries, "window.playersData:", window.playersData);
+            await new Promise(resolve => setTimeout(resolve, 500));
+            tries++;
+        }
+        if (!window.playersData || window.playersData.length === 0) {
+            console.error("[waitForPlayersData] window.playersData au final:", window.playersData);
+            throw new Error("window.playersData is not defined or empty after waiting");
+        }
+    }
 })();
