@@ -959,7 +959,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Récupérer l'avatar
         try {
             const assetResponse = await $.ajax({
-                url: `https://wax.api.atomicassets.io/atomicassets/v1/assets/${playerAvatar}`,
+                url: `https://wax.blokcrafters.io/atomicassets/v1/assets/${playerAvatar}`,
                 type: 'GET',
                 contentType: 'application/json',
             });
