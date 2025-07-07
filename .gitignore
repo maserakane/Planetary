@@ -59,10 +59,6 @@ coverage/
 *.crt
 *.key
 
-# Dossiers de production web (si générés automatiquement)
-public/
-www/
-htdocs/
 
 # Fichiers de sous-modules git (si tu n'en veux plus)
 .gitmodules

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    const avatarInfoUrl = 'https://wax.api.atomicassets.io/atomicassets/v1/assets';
+    const avatarInfoUrl = 'https://wax.blokcrafters.io/atomicassets/v1/assets';
     let pvpCache = [];
     const playerDetailsCache = {};
     const avatarImagesCache = {};

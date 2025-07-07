@@ -236,12 +236,17 @@ async function calculateScore(results, ownersLandData = null) {
                 totalSlots = await calculateSlots(facesWorlds, landWorlds);
             }
             // Calcul de la réduction du coût de mouvement basée sur les shine des faces
+            let shineCount = {};
             for (const face of facesWorlds) {
                 const shine = face.details.attributes.shine || "Stone";
                 const assets = parseInt(face.assets) || 0;
                 const shineBonusValue = faceShineBonus.find(([rarity]) => rarity === face.details.attributes.rarity)?.[1]?.find(bonus => bonus[shine])?.[shine] || 0;
                 movecostreduce += shineBonusValue * assets;
+                if (!shineCount[shine]) shineCount[shine] = 0;
+                shineCount[shine] += assets;
             }
+            // Afficher le log pour tous les owners, même si aucun shine
+            console.log(`[MoveCostReduce] Owner: ${owner} | Faces par shine: ${JSON.stringify(shineCount)} | movecostreduce appliqué: ${movecostreduce}`);
             let defenseScores = {
                 totalDefense: 0,
                 totalAttack: 0,
@@ -304,7 +309,7 @@ async function calculateScore(results, ownersLandData = null) {
             defenseScores.totalAttackArm += extraAttack;
             defenseScores.totalDefenseArm += extraDefense;
             if (result.extraMercenaries && result.extraMercenaries.length > 0) {
-                console.log(`[Mercenaires] ${owner} : ${result.extraMercenaries.length} mercenaires ajoutés. Total attack: ${extraAttack}, defense: ${extraDefense}, movecost: ${extraMoveCost}`);
+                // console.log(`[Mercenaires] ${owner} : ${result.extraMercenaries.length} mercenaires ajoutés. Total attack: ${extraAttack}, defense: ${extraDefense}, movecost: ${extraMoveCost}`);
             }
             // Construction du résultat final pour ce owner
             totalScores.push({
@@ -323,7 +328,7 @@ async function calculateScore(results, ownersLandData = null) {
                 extraMercenaries: result.extraMercenaries || []
             });
         }
-        console.log(totalScores);
+        // console.log(totalScores);
         return totalScores;
     } catch (error) {
         console.error('[calculateScore] Erreur lors du calcul des scores :', error);

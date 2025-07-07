@@ -22,7 +22,6 @@ async function fetchPricesForTemplates(templateIds) {
     const url = `https://wax.api.atomicassets.io/atomicmarket/v1/sales/templates?state=1&symbol=WAX&template_id=${templateIds.join(',')}`;
     const response = await fetch(url);
     if (!response.ok) {
-        console.error(`[fetchPricesForTemplates] Erreur lors de la requête API: ${response.statusText}`);
         throw new Error(`[fetchPricesForTemplates] Erreur lors de la requête API: ${response.statusText}`);
     }
     const result = await response.json();
@@ -34,7 +33,6 @@ async function fetchPricesForTemplates(templateIds) {
 
 // ==================== Fonction principale ====================
 async function getAndAssociatePrices() {
-    console.log('[getAndAssociatePrices] Début du processus pour récupérer et associer les prix...');
     // Charger les données JSON
     const data = JSON.parse(fs.readFileSync('Details.json', 'utf-8'));
     // Extraire les template_id
@@ -62,7 +60,6 @@ async function getAndAssociatePrices() {
     // Sauvegarde des résultats dans un fichier JSON
     const outputFilePath = 'enriched_assets.json';
     fs.writeFileSync(outputFilePath, JSON.stringify(enrichedData, null, 2), 'utf-8');
-    console.log(`[getAndAssociatePrices] Sauvegarde terminée avec succès dans "${outputFilePath}".`);
 }
 
 module.exports = { getAndAssociatePrices };

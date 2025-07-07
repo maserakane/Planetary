@@ -37,6 +37,8 @@ async function Playerscore() {
 async function Ownerscore() {
     try {
         const pairs = await fetchOwnersForIDs(landIDs);
+        console.log(pairs);
+        console.log("Nombre de paires :", pairs.length);
         const ownersLandData = await processLands(pairs);
         const results = await fetchAndProcessOwnersData(pairs);
         const scoresWithLandCount = await calculateScore(results, ownersLandData);
@@ -50,94 +52,70 @@ async function Ownerscore() {
 async function mainFunction() {
     let db;
     const startTime = Date.now();
-    console.log('--- Démarrage du pipeline principal ---');
     try {
         // 1. Nettoyage de la base
-        console.log('[1] Nettoyage de la base de données...');
-        await compareData();
-        console.log('   -> Suppression effectuée avec succès.');
+        //await compareData();
 
         // 2. Calcul des scores joueurs
-        console.log('[2] Calcul des scores joueurs...');
-        await Playerscore();
-        console.log('   -> Playerscore terminé.');
+        //await Playerscore();
 
         // 3. Calcul des scores propriétaires
-        console.log('[3] Calcul des scores propriétaires...');
         await Ownerscore();
-        console.log('   -> Ownerscore terminé.');
 
         // 4. Enrichissement des assets avec les prix
-        console.log('[4] Enrichissement des assets avec les prix...');
         await getAndAssociatePrices();
-        console.log('   -> Prix associés.');
 
-        // 5. Lecture des résultats JSON
-        const playerData = JSON.parse(await fs.readFile('./allResults.json', 'utf8'));
-        const ownerData = JSON.parse(await fs.readFile('./ownerscore.json', 'utf8'));
+        // // 5. Lecture des résultats JSON
+        // const playerData = JSON.parse(await fs.readFile('./allResults.json', 'utf8'));
+        // const ownerData = JSON.parse(await fs.readFile('./ownerscore.json', 'utf8'));
 
-        // 6. Connexion à la base SQLite
-        console.log('[5] Connexion à la base de données...');
-        db = new sqlite3.Database(dbPath, (err) => {
-            if (err) {
-                console.error('Erreur de connexion à la base :', err);
-                return;
-            }
-            console.log('   -> Connecté à la base de données.');
-        });
+        // // 6. Connexion à la base SQLite
+        // db = new sqlite3.Database(dbPath, (err) => {
+        //     if (err) {
+        //         console.error('Erreur de connexion à la base :', err);
+        //         return;
+        //     }
+        // });
 
-        // 7. Insertion des détails de templates
-        await insertTemplateDetailsIntoDatabase(db);
-        console.log('   -> Détails de templates insérés.');
+        // // 7. Insertion des détails de templates
+        // await insertTemplateDetailsIntoDatabase(db);
 
-        // 8. Insertion des propriétaires
-        await insertLandowners(db, ownerData);
-        console.log('   -> Propriétaires insérés.');
+        // // 8. Insertion des propriétaires
+        // await insertLandowners(db, ownerData);
 
-        // 9. Insertion des joueurs
-        await insertPlayers(db, playerData);
-        console.log('   -> Joueurs insérés.');
+        // // 9. Insertion des joueurs
+        // await insertPlayers(db, playerData);
 
-        // 10. Insertion des templates (fusion joueurs/propriétaires)
-        await insertTemplates(db, ownerData, playerData);
-        console.log('   -> Templates insérés.');
+        // // 10. Insertion des templates (fusion joueurs/propriétaires)
+        // await insertTemplates(db, ownerData, playerData);
 
-        // 11. Envoi des scores sur la blockchain
-        console.log('[6] Envoi des scores sur la blockchain...');
-        await sendOwnersInBatches(ownerData);
-        console.log('   -> Scores propriétaires envoyés sur la blockchain.');
-        await sendPlayersInBatches(playerData);
-        console.log('   -> Scores joueurs envoyés sur la blockchain.');
+        // // 11. Envoi des scores sur la blockchain
+        // await sendOwnersInBatches(ownerData);
+        // await sendPlayersInBatches(playerData);
 
-        // 12. Vérification des membres/propriétaires sur la blockchain
-        console.log('[7] Vérification membres/propriétaires blockchain...');
-        await ismemberandowner();
+        // // 12. Vérification des membres/propriétaires sur la blockchain
+        // await ismemberandowner();
 
-        // 13. Synchronisation des propriétaires de lands
-        console.log('[8] Synchronisation des propriétaires de lands...');
-        await processLandData();
+        // // 13. Synchronisation des propriétaires de lands
+        // await processLandData();
 
-        // 14. Mise à jour du timestamp de dernière exécution
-        const updatetime = Date.now();
-        const lastUpdate = (updatetime / 1000).toFixed(0);
-        await db.run(`UPDATE config SET last_update = ?`, [lastUpdate]);
-        console.log('   -> Timestamp de dernière exécution mis à jour.');
+        // // 14. Mise à jour du timestamp de dernière exécution
+        // const updatetime = Date.now();
+        // const lastUpdate = (updatetime / 1000).toFixed(0);
+        // await db.run(`UPDATE config SET last_update = ?`, [lastUpdate]);
 
     } catch (error) {
         console.error('[mainFunction] Erreur globale :', error);
     } finally {
         if (db) {
             try {
-                console.log('Fermeture de la connexion à la base...');
                 await closeDatabase(db);
-                console.log('   -> Connexion fermée.');
             } catch (err) {
                 console.error('Erreur lors de la fermeture de la base :', err);
             }
         }
         const endTime = Date.now();
         const executionTime = (endTime - startTime) / 1000;
-        console.log(`--- Pipeline terminé en ${executionTime} secondes ---`);
     }
 }
 

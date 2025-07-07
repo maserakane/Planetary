@@ -84,7 +84,6 @@ async function fetchAndProcessOwnersData(pairs) {
                 // ================= Récupération des mercenaires planetdefnft =================
                 let extraMercenaries = [];
                 const endpoints = [
-                    "https://wax.api.atomicassets.io",
                     "https://atomic-wax.tacocrypto.io",
                     "https://wax.blokcrafters.io",
                     "https://api.atomicassets.io"
@@ -93,7 +92,7 @@ async function fetchAndProcessOwnersData(pairs) {
                 for (const endpoint of endpoints) {
                     const url = `${endpoint}/atomicassets/v1/assets?owner=${owner}&collection_name=planetdefnft&schema_name=mercenary&limit=100`;
                     try {
-                        console.log(`[fetchAndProcessOwnersData] Requête API pour mercenaires planetdefnft de ${owner} : ${url}`);
+                        //console.log(`[fetchAndProcessOwnersData] Requête API pour mercenaires planetdefnft de ${owner} : ${url}`);
                         const response = await axios.get(url);
                         if (response.data && response.data.data) {
                             extraMercenaries = response.data.data.map(asset => ({
@@ -103,12 +102,12 @@ async function fetchAndProcessOwnersData(pairs) {
                                 movecost: asset.data.movecost || 0
                             }));
                             if (extraMercenaries.length > 0) {
-                                console.log(`[fetchAndProcessOwnersData] ${owner} possède ${extraMercenaries.length} mercenaires planetdefnft :`);
+                                //console.log(`[fetchAndProcessOwnersData] ${owner} possède ${extraMercenaries.length} mercenaires planetdefnft :`);
                                 extraMercenaries.forEach(m => {
-                                    console.log(`  - asset_id: ${m.asset_id}, attack: ${m.attack}, defense: ${m.defense}, movecost: ${m.movecost}`);
+                                    //console.log(`  - asset_id: ${m.asset_id}, attack: ${m.attack}, defense: ${m.defense}, movecost: ${m.movecost}`);
                                 });
                             } else {
-                                console.log(`[fetchAndProcessOwnersData] ${owner} ne possède aucun mercenaire planetdefnft.`);
+                                //console.log(`[fetchAndProcessOwnersData] ${owner} ne possède aucun mercenaire planetdefnft.`);
                             }
                             found = true;
                             break;
@@ -181,7 +180,6 @@ async function fetchAndProcessPlayerData(address) {
             // ================= Récupération des mercenaires planetdefnft pour le joueur =================
             let extraMercenaries = [];
             const endpoints = [
-                "https://wax.api.atomicassets.io",
                 "https://atomic-wax.tacocrypto.io",
                 "https://wax.blokcrafters.io",
                 "https://api.atomicassets.io"
@@ -190,7 +188,7 @@ async function fetchAndProcessPlayerData(address) {
             for (const endpoint of endpoints) {
                 const url = `${endpoint}/atomicassets/v1/assets?owner=${address}&collection_name=planetdefnft&schema_name=mercenary&limit=100`;
                 try {
-                    console.log(`[fetchAndProcessPlayerData] Requête API pour mercenaires planetdefnft du joueur ${address} : ${url}`);
+                    //console.log(`[fetchAndProcessPlayerData] Requête API pour mercenaires planetdefnft du joueur ${address} : ${url}`);
                     const response = await axios.get(url);
                     if (response.data && response.data.data) {
                         extraMercenaries = response.data.data.map(asset => ({
@@ -200,12 +198,12 @@ async function fetchAndProcessPlayerData(address) {
                             movecost: asset.data.movecost || 0
                         }));
                         if (extraMercenaries.length > 0) {
-                            console.log(`[fetchAndProcessPlayerData] ${address} possède ${extraMercenaries.length} mercenaires planetdefnft :`);
+                            //console.log(`[fetchAndProcessPlayerData] ${address} possède ${extraMercenaries.length} mercenaires planetdefnft :`);
                             extraMercenaries.forEach(m => {
-                                console.log(`  - asset_id: ${m.asset_id}, attack: ${m.attack}, defense: ${m.defense}, movecost: ${m.movecost}`);
+                                //console.log(`  - asset_id: ${m.asset_id}, attack: ${m.attack}, defense: ${m.defense}, movecost: ${m.movecost}`);
                             });
                         } else {
-                            console.log(`[fetchAndProcessPlayerData] ${address} ne possède aucun mercenaire planetdefnft.`);
+                            //console.log(`[fetchAndProcessPlayerData] ${address} ne possède aucun mercenaire planetdefnft.`);
                         }
                         found = true;
                         break;

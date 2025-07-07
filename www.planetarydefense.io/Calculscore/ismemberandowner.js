@@ -33,7 +33,6 @@ const session = new Session({
 async function ismemberandowner() {
     try {
         // Récupérer les données de la table "owners"
-        console.log('Fetching owners data from blockchain...');
         const ownersResponse = await fetch('https://wax.cryptolions.io/v1/chain/get_table_rows', {
             method: 'POST',
             headers: {
@@ -58,7 +57,6 @@ async function ismemberandowner() {
         const owners = ownersData.rows.map(row => row.owner_address);  // Extraire les adresses des propriétaires
 
         // Récupérer les données de la table "members"
-        console.log('Fetching members data from blockchain...');
         const membersResponse = await fetch('https://wax.cryptolions.io/v1/chain/get_table_rows', {
             method: 'POST',
             headers: {
@@ -89,8 +87,6 @@ async function ismemberandowner() {
         const duplicateAddresses = allAddresses.filter((address, index, array) => array.indexOf(address) !== index);
 
         if (duplicateAddresses.length > 0) {
-            console.log('Duplicate addresses found:', duplicateAddresses);
-            
             // Boucle sur les adresses dupliquées et envoie une transaction pour les supprimer
             for (const playerToRemove of duplicateAddresses) {
                 try {
@@ -112,7 +108,7 @@ async function ismemberandowner() {
                     });
 
                     if (result && result.transaction_id) {
-                        console.log(`Transaction successful! Transaction ID: ${result.transaction_id}`);
+                        //console.log(`Transaction successful! Transaction ID: ${result.transaction_id}`);
                     } else {
                         //console.log('Transaction might have succeeded but did not return a transaction_id', result);
                     }
@@ -120,8 +116,6 @@ async function ismemberandowner() {
                     console.error(`Error occurred during removemem action for ${playerToRemove}: ${error.message}`);
                 }
             }
-        } else {
-            console.log('No duplicate addresses found.');
         }
     } catch (error) {
         console.error('Error fetching data from blockchain:', error);
