@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    const avatarInfoUrl = 'https://atomic.3dkrender.com//atomicassets/v1/assets';
+    const avatarInfoUrl = 'https://atomic.3dkrender.com/atomicassets/v1/assets';
     let pvpCache = [];
     const playerDetailsCache = {};
     const avatarImagesCache = {};
