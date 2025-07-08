@@ -12,8 +12,8 @@ const axios = require('axios');
 async function fetchDataForBatchIDs(batchIds) {
     // Liste élargie d'endpoints à essayer
     const endpoints = [
-        "https://wax.api.atomicassets.io",
-        "https://wax.blokcrafters.io",
+        "https://atomic.3dkrender.com",
+        "https://aa.wax.blacklusion.io",
         "https://api.atomicassets.io",
         "https://atomic-wax.tacocrypto.io",
         "https://wax-aa.eu.eosamsterdam.net",

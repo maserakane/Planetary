@@ -54,10 +54,10 @@ async function mainFunction() {
     const startTime = Date.now();
     try {
         // 1. Nettoyage de la base
-        //await compareData();
+        await compareData();
 
         // 2. Calcul des scores joueurs
-        //await Playerscore();
+        await Playerscore();
 
         // 3. Calcul des scores propriétaires
         await Ownerscore();
@@ -66,43 +66,43 @@ async function mainFunction() {
         await getAndAssociatePrices();
 
         // // 5. Lecture des résultats JSON
-        // const playerData = JSON.parse(await fs.readFile('./allResults.json', 'utf8'));
-        // const ownerData = JSON.parse(await fs.readFile('./ownerscore.json', 'utf8'));
+        const playerData = JSON.parse(await fs.readFile('./allResults.json', 'utf8'));
+        const ownerData = JSON.parse(await fs.readFile('./ownerscore.json', 'utf8'));
 
-        // // 6. Connexion à la base SQLite
-        // db = new sqlite3.Database(dbPath, (err) => {
-        //     if (err) {
-        //         console.error('Erreur de connexion à la base :', err);
-        //         return;
-        //     }
-        // });
+        // 6. Connexion à la base SQLite
+        db = new sqlite3.Database(dbPath, (err) => {
+             if (err) {
+                console.error('Erreur de connexion à la base :', err);
+                return;
+            }
+        });
 
-        // // 7. Insertion des détails de templates
-        // await insertTemplateDetailsIntoDatabase(db);
+        // 7. Insertion des détails de templates
+        await insertTemplateDetailsIntoDatabase(db);
 
-        // // 8. Insertion des propriétaires
-        // await insertLandowners(db, ownerData);
+        // 8. Insertion des propriétaires
+        await insertLandowners(db, ownerData);
 
-        // // 9. Insertion des joueurs
-        // await insertPlayers(db, playerData);
+        // 9. Insertion des joueurs
+        await insertPlayers(db, playerData);
 
-        // // 10. Insertion des templates (fusion joueurs/propriétaires)
-        // await insertTemplates(db, ownerData, playerData);
+        // 10. Insertion des templates (fusion joueurs/propriétaires)
+        await insertTemplates(db, ownerData, playerData);
 
-        // // 11. Envoi des scores sur la blockchain
-        // await sendOwnersInBatches(ownerData);
-        // await sendPlayersInBatches(playerData);
+        // 11. Envoi des scores sur la blockchain
+        await sendOwnersInBatches(ownerData);
+        await sendPlayersInBatches(playerData);
 
         // // 12. Vérification des membres/propriétaires sur la blockchain
-        // await ismemberandowner();
+        await ismemberandowner();
 
-        // // 13. Synchronisation des propriétaires de lands
-        // await processLandData();
+        // 13. Synchronisation des propriétaires de lands
+        await processLandData();
 
-        // // 14. Mise à jour du timestamp de dernière exécution
-        // const updatetime = Date.now();
-        // const lastUpdate = (updatetime / 1000).toFixed(0);
-        // await db.run(`UPDATE config SET last_update = ?`, [lastUpdate]);
+        // 14. Mise à jour du timestamp de dernière exécution
+        const updatetime = Date.now();
+        const lastUpdate = (updatetime / 1000).toFixed(0);
+        await db.run(`UPDATE config SET last_update = ?`, [lastUpdate]);
 
     } catch (error) {
         console.error('[mainFunction] Erreur globale :', error);

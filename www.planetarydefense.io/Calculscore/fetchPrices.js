@@ -19,7 +19,7 @@ function chunkArray(array, chunkSize) {
 
 // ==================== Récupération des prix pour un chunk de templates ====================
 async function fetchPricesForTemplates(templateIds) {
-    const url = `https://wax.api.atomicassets.io/atomicmarket/v1/sales/templates?state=1&symbol=WAX&template_id=${templateIds.join(',')}`;
+    const url = `https://atomic.3dkrender.com/atomicmarket/v1/sales/templates?state=1&symbol=WAX&template_id=${templateIds.join(',')}`;
     const response = await fetch(url);
     if (!response.ok) {
         throw new Error(`[fetchPricesForTemplates] Erreur lors de la requête API: ${response.statusText}`);

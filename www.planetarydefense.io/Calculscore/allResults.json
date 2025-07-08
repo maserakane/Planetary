@@ -732,17 +732,17 @@
         "type": "crew"
       },
       {
+        "template_id": "19649",
+        "count": 1,
+        "type": "faces"
+      },
+      {
         "template_id": "19651",
         "count": 1,
         "type": "faces"
       },
       {
         "template_id": "19657",
-        "count": 1,
-        "type": "faces"
-      },
-      {
-        "template_id": "19649",
         "count": 1,
         "type": "faces"
       }
@@ -4225,12 +4225,12 @@
         "type": "faces"
       },
       {
-        "template_id": "48127",
+        "template_id": "19660",
         "count": 1,
         "type": "faces"
       },
       {
-        "template_id": "19660",
+        "template_id": "48127",
         "count": 1,
         "type": "faces"
       },
@@ -11199,20 +11199,20 @@
     "owner": "bptls.c.wam",
     "totalSlots": 59,
     "defenseScores": {
-      "totalDefense": 355,
-      "totalAttack": 417,
-      "totalMoveCost": 800,
-      "totalAttackArm": 678,
-      "totalDefenseArm": 621
+      "totalDefense": 327,
+      "totalAttack": 406,
+      "totalMoveCost": 760,
+      "totalAttackArm": 653,
+      "totalDefenseArm": 588
     },
-    "totalArm": 22,
-    "totalCrew": 22,
+    "totalArm": 21,
+    "totalCrew": 21,
     "templates": [
       {
         "template_id": "19584",
-        "count": 3,
-        "totalAttack": 42,
-        "totalDefense": 15,
+        "count": 2,
+        "totalAttack": 28,
+        "totalDefense": 10,
         "type": "arms"
       },
       {
@@ -11367,13 +11367,6 @@
         "count": 2,
         "totalAttack": 34,
         "totalDefense": 22,
-        "type": "crew"
-      },
-      {
-        "template_id": "19641",
-        "count": 1,
-        "totalAttack": 11,
-        "totalDefense": 28,
         "type": "crew"
       },
       {
@@ -11970,11 +11963,11 @@
     "owner": "c2q...c.wam",
     "totalSlots": 12,
     "defenseScores": {
-      "totalDefense": 140,
-      "totalAttack": 142,
+      "totalDefense": 138,
+      "totalAttack": 140,
       "totalMoveCost": 430,
-      "totalAttackArm": 277,
-      "totalDefenseArm": 274
+      "totalAttackArm": 275,
+      "totalDefenseArm": 272
     },
     "totalArm": 12,
     "totalCrew": 12,
@@ -12065,9 +12058,9 @@
       },
       {
         "template_id": "19644",
-        "count": 2,
-        "totalAttack": 2,
-        "totalDefense": 2,
+        "count": 3,
+        "totalAttack": 3,
+        "totalDefense": 3,
         "type": "crew"
       },
       {
@@ -12083,13 +12076,6 @@
         "totalAttack": 33,
         "totalDefense": 27,
         "type": "arms"
-      },
-      {
-        "template_id": "141525",
-        "count": 1,
-        "totalAttack": 3,
-        "totalDefense": 3,
-        "type": "crew"
       },
       {
         "template_id": "141530",
@@ -13391,19 +13377,12 @@
       "totalDefense": 74,
       "totalAttack": 101,
       "totalMoveCost": 190,
-      "totalAttackArm": 155,
-      "totalDefenseArm": 134
+      "totalAttackArm": 162,
+      "totalDefenseArm": 127
     },
     "totalArm": 6,
     "totalCrew": 6,
     "templates": [
-      {
-        "template_id": "19585",
-        "count": 1,
-        "totalAttack": 7,
-        "totalDefense": 12,
-        "type": "arms"
-      },
       {
         "template_id": "19591",
         "count": 1,
@@ -13416,6 +13395,13 @@
         "count": 2,
         "totalAttack": 26,
         "totalDefense": 12,
+        "type": "arms"
+      },
+      {
+        "template_id": "19613",
+        "count": 1,
+        "totalAttack": 14,
+        "totalDefense": 5,
         "type": "arms"
       },
       {
@@ -13596,11 +13582,6 @@
     "templates": [
       {
         "template_id": "19648",
-        "count": 1,
-        "type": "faces"
-      },
-      {
-        "template_id": "19649",
         "count": 1,
         "type": "faces"
       }
@@ -15739,11 +15720,11 @@
     "owner": "frrbc.wam",
     "totalSlots": 8,
     "defenseScores": {
-      "totalDefense": 217,
-      "totalAttack": 113,
-      "totalMoveCost": 280,
-      "totalAttackArm": 273,
-      "totalDefenseArm": 328
+      "totalDefense": 222,
+      "totalAttack": 103,
+      "totalMoveCost": 290,
+      "totalAttackArm": 263,
+      "totalDefenseArm": 333
     },
     "totalArm": 8,
     "totalCrew": 8,
@@ -15799,9 +15780,9 @@
       },
       {
         "template_id": "19624",
-        "count": 2,
-        "totalAttack": 42,
-        "totalDefense": 46,
+        "count": 1,
+        "totalAttack": 21,
+        "totalDefense": 23,
         "type": "crew"
       },
       {
@@ -15820,15 +15801,10 @@
       },
       {
         "template_id": "19641",
-        "count": 2,
-        "totalAttack": 22,
-        "totalDefense": 56,
+        "count": 3,
+        "totalAttack": 33,
+        "totalDefense": 84,
         "type": "crew"
-      },
-      {
-        "template_id": "19648",
-        "count": 1,
-        "type": "faces"
       },
       {
         "template_id": "19649",
@@ -22210,16 +22186,16 @@
   },
   {
     "owner": "lftve.wam",
-    "totalSlots": 9,
+    "totalSlots": 10,
     "defenseScores": {
-      "totalDefense": 215,
-      "totalAttack": 181,
-      "totalMoveCost": 360,
-      "totalAttackArm": 350,
-      "totalDefenseArm": 350
+      "totalDefense": 223,
+      "totalAttack": 192,
+      "totalMoveCost": 380,
+      "totalAttackArm": 374,
+      "totalDefenseArm": 364
     },
-    "totalArm": 9,
-    "totalCrew": 9,
+    "totalArm": 10,
+    "totalCrew": 10,
     "templates": [
       {
         "template_id": "19587",
@@ -22251,9 +22227,9 @@
       },
       {
         "template_id": "19616",
-        "count": 3,
-        "totalAttack": 39,
-        "totalDefense": 18,
+        "count": 4,
+        "totalAttack": 52,
+        "totalDefense": 24,
         "type": "arms"
       },
       {
@@ -22275,6 +22251,13 @@
         "count": 1,
         "totalAttack": 17,
         "totalDefense": 17,
+        "type": "crew"
+      },
+      {
+        "template_id": "19638",
+        "count": 1,
+        "totalAttack": 11,
+        "totalDefense": 8,
         "type": "crew"
       },
       {
@@ -22326,6 +22309,11 @@
       },
       {
         "template_id": "19649",
+        "count": 1,
+        "type": "faces"
+      },
+      {
+        "template_id": "19651",
         "count": 1,
         "type": "faces"
       },
@@ -23042,11 +23030,11 @@
     "owner": "m2jgm.wam",
     "totalSlots": 82,
     "defenseScores": {
-      "totalDefense": 2351,
-      "totalAttack": 3669,
-      "totalMoveCost": 2480,
-      "totalAttackArm": 6438,
-      "totalDefenseArm": 4467
+      "totalDefense": 2331,
+      "totalAttack": 3652,
+      "totalMoveCost": 2470,
+      "totalAttackArm": 6421,
+      "totalDefenseArm": 4447
     },
     "totalArm": 82,
     "totalCrew": 82,
@@ -23074,9 +23062,9 @@
       },
       {
         "template_id": "19639",
-        "count": 11,
-        "totalAttack": 220,
-        "totalDefense": 253,
+        "count": 10,
+        "totalAttack": 200,
+        "totalDefense": 230,
         "type": "crew"
       },
       {
@@ -23199,6 +23187,13 @@
         "type": "crew"
       },
       {
+        "template_id": "141537",
+        "count": 1,
+        "totalAttack": 3,
+        "totalDefense": 3,
+        "type": "crew"
+      },
+      {
         "template_id": "141540",
         "count": 13,
         "totalAttack": 780,
@@ -23221,7 +23216,7 @@
       },
       {
         "template_id": "19649",
-        "count": 14,
+        "count": 13,
         "type": "faces"
       },
       {
@@ -23250,12 +23245,12 @@
         "type": "faces"
       },
       {
-        "template_id": "19657",
+        "template_id": "48120",
         "count": 2,
         "type": "faces"
       },
       {
-        "template_id": "48120",
+        "template_id": "19657",
         "count": 2,
         "type": "faces"
       },
@@ -31216,20 +31211,20 @@
     "owner": "r3ebc.wam",
     "totalSlots": 19,
     "defenseScores": {
-      "totalDefense": 300,
-      "totalAttack": 329,
-      "totalMoveCost": 650,
-      "totalAttackArm": 570,
-      "totalDefenseArm": 484
+      "totalDefense": 310,
+      "totalAttack": 345,
+      "totalMoveCost": 660,
+      "totalAttackArm": 564,
+      "totalDefenseArm": 483
     },
     "totalArm": 19,
     "totalCrew": 19,
     "templates": [
       {
         "template_id": "19583",
-        "count": 3,
-        "totalAttack": 3,
-        "totalDefense": 3,
+        "count": 4,
+        "totalAttack": 4,
+        "totalDefense": 4,
         "type": "arms"
       },
       {
@@ -31258,13 +31253,6 @@
         "count": 1,
         "totalAttack": 11,
         "totalDefense": 8,
-        "type": "arms"
-      },
-      {
-        "template_id": "19599",
-        "count": 1,
-        "totalAttack": 23,
-        "totalDefense": 12,
         "type": "arms"
       },
       {
@@ -31352,10 +31340,17 @@
         "type": "crew"
       },
       {
+        "template_id": "19635",
+        "count": 1,
+        "totalAttack": 17,
+        "totalDefense": 11,
+        "type": "crew"
+      },
+      {
         "template_id": "19637",
-        "count": 2,
-        "totalAttack": 2,
-        "totalDefense": 2,
+        "count": 1,
+        "totalAttack": 1,
+        "totalDefense": 1,
         "type": "crew"
       },
       {
@@ -31410,11 +31405,6 @@
       {
         "template_id": "19653",
         "count": 3,
-        "type": "faces"
-      },
-      {
-        "template_id": "19649",
-        "count": 1,
         "type": "faces"
       },
       {
@@ -31484,14 +31474,14 @@
     "owner": "r5.r2.wam",
     "totalSlots": 14,
     "defenseScores": {
-      "totalDefense": 208,
-      "totalAttack": 108,
-      "totalMoveCost": 390,
-      "totalAttackArm": 279,
-      "totalDefenseArm": 372
+      "totalDefense": 190,
+      "totalAttack": 93,
+      "totalMoveCost": 380,
+      "totalAttackArm": 248,
+      "totalDefenseArm": 346
     },
-    "totalArm": 11,
-    "totalCrew": 11,
+    "totalArm": 10,
+    "totalCrew": 10,
     "templates": [
       {
         "template_id": "19592",
@@ -31530,9 +31520,9 @@
       },
       {
         "template_id": "19617",
-        "count": 3,
-        "totalAttack": 48,
-        "totalDefense": 24,
+        "count": 2,
+        "totalAttack": 32,
+        "totalDefense": 16,
         "type": "arms"
       },
       {
@@ -31589,13 +31579,6 @@
         "count": 2,
         "totalAttack": 6,
         "totalDefense": 6,
-        "type": "crew"
-      },
-      {
-        "template_id": "141518",
-        "count": 1,
-        "totalAttack": 15,
-        "totalDefense": 18,
         "type": "crew"
       },
       {
@@ -32980,12 +32963,12 @@
         "type": "faces"
       },
       {
-        "template_id": "19650",
+        "template_id": "19651",
         "count": 4,
         "type": "faces"
       },
       {
-        "template_id": "19651",
+        "template_id": "19650",
         "count": 4,
         "type": "faces"
       },
@@ -32997,6 +32980,11 @@
       {
         "template_id": "19656",
         "count": 2,
+        "type": "faces"
+      },
+      {
+        "template_id": "48120",
+        "count": 1,
         "type": "faces"
       },
       {
@@ -33031,11 +33019,6 @@
       },
       {
         "template_id": "48119",
-        "count": 1,
-        "type": "faces"
-      },
-      {
-        "template_id": "48120",
         "count": 1,
         "type": "faces"
       }
@@ -36647,20 +36630,20 @@
     "owner": "w.cay.wam",
     "totalSlots": 8,
     "defenseScores": {
-      "totalDefense": 280,
-      "totalAttack": 151,
-      "totalMoveCost": 460,
-      "totalAttackArm": 287,
-      "totalDefenseArm": 372
+      "totalDefense": 282,
+      "totalAttack": 128,
+      "totalMoveCost": 430,
+      "totalAttackArm": 263,
+      "totalDefenseArm": 375
     },
     "totalArm": 8,
     "totalCrew": 8,
     "templates": [
       {
         "template_id": "19592",
-        "count": 1,
-        "totalAttack": 14,
-        "totalDefense": 11,
+        "count": 2,
+        "totalAttack": 28,
+        "totalDefense": 22,
         "type": "arms"
       },
       {
@@ -36686,9 +36669,9 @@
       },
       {
         "template_id": "19607",
-        "count": 2,
-        "totalAttack": 30,
-        "totalDefense": 20,
+        "count": 1,
+        "totalAttack": 15,
+        "totalDefense": 10,
         "type": "arms"
       },
       {
@@ -36706,17 +36689,17 @@
         "type": "crew"
       },
       {
-        "template_id": "19631",
-        "count": 3,
-        "totalAttack": 63,
-        "totalDefense": 111,
+        "template_id": "19629",
+        "count": 2,
+        "totalAttack": 18,
+        "totalDefense": 62,
         "type": "crew"
       },
       {
-        "template_id": "19639",
-        "count": 1,
-        "totalAttack": 20,
-        "totalDefense": 23,
+        "template_id": "19631",
+        "count": 2,
+        "totalAttack": 42,
+        "totalDefense": 74,
         "type": "crew"
       },
       {
@@ -37672,16 +37655,16 @@
   },
   {
     "owner": "x3js4.wam",
-    "totalSlots": 86,
+    "totalSlots": 89,
     "defenseScores": {
-      "totalDefense": 2581,
-      "totalAttack": 2772,
-      "totalMoveCost": 3260,
-      "totalAttackArm": 3542,
-      "totalDefenseArm": 3253
+      "totalDefense": 2562,
+      "totalAttack": 2756,
+      "totalMoveCost": 3270,
+      "totalAttackArm": 3561,
+      "totalDefenseArm": 3286
     },
-    "totalArm": 43,
-    "totalCrew": 83,
+    "totalArm": 46,
+    "totalCrew": 84,
     "templates": [
       {
         "template_id": "19583",
@@ -37744,6 +37727,13 @@
         "count": 3,
         "totalAttack": 15,
         "totalDefense": 42,
+        "type": "arms"
+      },
+      {
+        "template_id": "19605",
+        "count": 1,
+        "totalAttack": 13,
+        "totalDefense": 12,
         "type": "arms"
       },
       {
@@ -37811,9 +37801,9 @@
       },
       {
         "template_id": "19619",
-        "count": 1,
-        "totalAttack": 1,
-        "totalDefense": 1,
+        "count": 2,
+        "totalAttack": 2,
+        "totalDefense": 2,
         "type": "arms"
       },
       {
@@ -37874,9 +37864,9 @@
       },
       {
         "template_id": "19632",
-        "count": 4,
-        "totalAttack": 4,
-        "totalDefense": 4,
+        "count": 5,
+        "totalAttack": 5,
+        "totalDefense": 5,
         "type": "crew"
       },
       {
@@ -37895,9 +37885,9 @@
       },
       {
         "template_id": "19639",
-        "count": 8,
-        "totalAttack": 160,
-        "totalDefense": 184,
+        "count": 7,
+        "totalAttack": 140,
+        "totalDefense": 161,
         "type": "crew"
       },
       {
@@ -37926,6 +37916,13 @@
         "count": 1,
         "totalAttack": 3,
         "totalDefense": 3,
+        "type": "arms"
+      },
+      {
+        "template_id": "141409",
+        "count": 1,
+        "totalAttack": 21,
+        "totalDefense": 39,
         "type": "arms"
       },
       {
@@ -38007,9 +38004,9 @@
       },
       {
         "template_id": "141530",
-        "count": 1,
-        "totalAttack": 3,
-        "totalDefense": 3,
+        "count": 2,
+        "totalAttack": 6,
+        "totalDefense": 6,
         "type": "crew"
       },
       {
@@ -38070,7 +38067,7 @@
         "type": "faces"
       },
       {
-        "template_id": "19649",
+        "template_id": "19652",
         "count": 2,
         "type": "faces"
       },
@@ -38080,13 +38077,8 @@
         "type": "faces"
       },
       {
-        "template_id": "19652",
-        "count": 1,
-        "type": "faces"
-      },
-      {
-        "template_id": "19654",
-        "count": 1,
+        "template_id": "19649",
+        "count": 2,
         "type": "faces"
       },
       {
@@ -38106,6 +38098,11 @@
       },
       {
         "template_id": "48122",
+        "count": 1,
+        "type": "faces"
+      },
+      {
+        "template_id": "13728",
         "count": 1,
         "type": "faces"
       }
@@ -38243,11 +38240,11 @@
     "owner": "xdfqy.wam",
     "totalSlots": 17,
     "defenseScores": {
-      "totalDefense": 412,
-      "totalAttack": 352,
-      "totalMoveCost": 605,
-      "totalAttackArm": 545,
-      "totalDefenseArm": 624
+      "totalDefense": 391,
+      "totalAttack": 331,
+      "totalMoveCost": 595,
+      "totalAttackArm": 524,
+      "totalDefenseArm": 603
     },
     "totalArm": 17,
     "totalCrew": 17,
@@ -38323,10 +38320,10 @@
         "type": "crew"
       },
       {
-        "template_id": "19636",
+        "template_id": "19637",
         "count": 1,
-        "totalAttack": 22,
-        "totalDefense": 22,
+        "totalAttack": 1,
+        "totalDefense": 1,
         "type": "crew"
       },
       {

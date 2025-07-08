@@ -459,7 +459,7 @@ async function displayPlayerLands(playerName) {
 
             for (const landId of landData) {
                 try {
-                    const templateResponse = await fetch(`https://wax.api.atomicassets.io/atomicassets/v1/assets/${landId}`);
+                    const templateResponse = await fetch(`https://atomic.3dkrender.com/atomicassets/v1/assets/${landId}`);
                     const templateData = await templateResponse.json();
                     const landElement = document.createElement('div');
                     landElement.textContent = `Land ID: ${landId} - ${templateData.data.name}`;

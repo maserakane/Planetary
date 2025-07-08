@@ -84,9 +84,14 @@ async function fetchAndProcessOwnersData(pairs) {
                 // ================= Récupération des mercenaires planetdefnft =================
                 let extraMercenaries = [];
                 const endpoints = [
+                    "https://atomic.3dkrender.com",
+                    "https://aa.wax.blacklusion.io",
+                    "https://api.atomicassets.io",
                     "https://atomic-wax.tacocrypto.io",
-                    "https://wax.blokcrafters.io",
-                    "https://api.atomicassets.io"
+                    "https://wax-aa.eu.eosamsterdam.net",
+                    "https://atomicassets.ledgerwise.io",
+                    "https://atomicassets-api.wax.cryptolions.io",
+                    "https://wax-atomic-api.eosphere.io"
                 ];
                 let found = false;
                 for (const endpoint of endpoints) {
@@ -180,9 +185,14 @@ async function fetchAndProcessPlayerData(address) {
             // ================= Récupération des mercenaires planetdefnft pour le joueur =================
             let extraMercenaries = [];
             const endpoints = [
+                "https://atomic.3dkrender.com",
+                "https://aa.wax.blacklusion.io",
+                "https://api.atomicassets.io",
                 "https://atomic-wax.tacocrypto.io",
-                "https://wax.blokcrafters.io",
-                "https://api.atomicassets.io"
+                "https://wax-aa.eu.eosamsterdam.net",
+                "https://atomicassets.ledgerwise.io",
+                "https://atomicassets-api.wax.cryptolions.io",
+                "https://wax-atomic-api.eosphere.io"
             ];
             let found = false;
             for (const endpoint of endpoints) {
