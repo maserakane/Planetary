@@ -20,6 +20,7 @@ const {
 require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
 const dbPath = process.env.DATABASE_PATH;
+console.log(dbPath);
 
 // Calcule et sauvegarde les scores pour tous les joueurs
 async function Playerscore() {
