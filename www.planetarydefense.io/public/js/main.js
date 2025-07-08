@@ -959,7 +959,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Récupérer l'avatar
         try {
             const assetResponse = await $.ajax({
-                url: `https://atomic.3dkrender.com//atomicassets/v1/assets/${playerAvatar}`,
+                url: `https://atomic.3dkrender.com/atomicassets/v1/assets/${playerAvatar}`,
                 type: 'GET',
                 contentType: 'application/json',
             });
