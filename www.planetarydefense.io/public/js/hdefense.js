@@ -60,11 +60,21 @@ $(document).ready(function() {
         });
     }
 
-    async function getPlayerInfo(player) {
+    // Helper pour attendre un délai
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    // Helper pour tourner sur les endpoints
+    let endpointIndex = 0;
+    function getNextEndpoint(apiEndpoints) {
+        endpointIndex = (endpointIndex + 1) % apiEndpoints.length;
+        return apiEndpoints[endpointIndex];
+    }
+    // Version optimisée de getPlayerInfo
+    async function getPlayerInfoOptimized(player, apiEndpoints, playerDetailsCache, throttleMs = 200) {
         if (playerDetailsCache[player]) {
             return playerDetailsCache[player];
         }
-    
         const requestData = {
             json: true,
             code: 'federation',
@@ -74,39 +84,21 @@ $(document).ready(function() {
             lower_bound: player,
             upper_bound: player
         };
-        
-        let lastError = null; // Stocker la dernière erreur rencontrée
-        
-        // Essayer chaque endpoint avec retry et fallback
-        for (let endpoint of apiEndpoints) {
+        for (let i = 0; i < apiEndpoints.length; i++) {
+            const endpoint = getNextEndpoint(apiEndpoints);
             try {
                 const response = await apiRequestWithRetryh(endpoint, requestData);
-    
                 if (response.rows && response.rows.length > 0) {
                     const playerInfo = response.rows[0];
-                    const playerData = {
-                        avatar: playerInfo.avatar || '1099538252468', // Valeur par défaut pour l'avatar
-                        tag: playerInfo.tag || 'No Tag' // Valeur par défaut pour le tag
-                    };
-                    playerDetailsCache[player] = playerData; // Mise en cache
-                    return playerData; // Retourne l'info joueur si trouvée
-                } else {
-                    // Utilisation des valeurs par défaut si aucun joueur trouvé
-                    const defaultPlayerData = {
-                        avatar: '1099538252468',
-                        tag: 'No Tag'
-                    };
-                    playerDetailsCache[player] = defaultPlayerData; // Mise en cache des valeurs par défaut
-                    return defaultPlayerData; // Retourner les valeurs par défaut
+                    playerDetailsCache[player] = playerInfo;
+                    await sleep(throttleMs);
+                    return playerInfo;
                 }
             } catch (error) {
                 console.error(`Failed to get player info from endpoint ${endpoint}. Trying next...`);
-                showToast('Error retrieving player info. Retrying with another server.', 'error');
             }
-            
+            await sleep(throttleMs);
         }
-    
-        // En cas de défaillance complète, renvoyer les valeurs par défaut
         const defaultPlayerData = {
             avatar: '1099538252468',
             tag: 'No Tag'
@@ -185,7 +177,7 @@ function displayMissionDetails(missionName, row) {
 
     loadAllMissionDetails(missionName, function(details) {
         const playerRequests = details.map(detail => {
-            return getPlayerInfo(detail.owner_address)
+            return getPlayerInfoOptimized(detail.owner_address, apiEndpoints, playerDetailsCache, 200)
                 .then(playerInfo => ({
                     avatar: playerInfo.avatar || 'N/A',  
                     player: detail.owner_address,

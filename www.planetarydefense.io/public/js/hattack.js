@@ -120,58 +120,51 @@ $(document).ready(function() {
         }
     }
 
-    async function getPlayerInfo(player) {
-        const deferred = $.Deferred();
-    
+    // Helper pour attendre un délai
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    // Helper pour tourner sur les endpoints
+    let endpointIndex = 0;
+    function getNextEndpoint(apiEndpoints) {
+        endpointIndex = (endpointIndex + 1) % apiEndpoints.length;
+        return apiEndpoints[endpointIndex];
+    }
+    // Version optimisée de getPlayerInfo
+    async function getPlayerInfoOptimized(player, apiEndpoints, playerDetailsCache, throttleMs = 200) {
         if (playerDetailsCache[player]) {
-            deferred.resolve(playerDetailsCache[player]);
-        } else {
-            const requestData = {
-                json: true,
-                code: 'federation',
-                table: 'players',
-                scope: 'federation',
-                limit: 1,
-                lower_bound: player,
-                upper_bound: player
-            };
-    
-            let lastError = null; // Stocker la dernière erreur rencontrée
-    
-            for (let endpoint of apiEndpoints) {
-                try {
-                    const response = await apiRequestWithRetryh(endpoint, requestData);
-                    if (response.rows && response.rows.length > 0) {
-                        const playerInfo = response.rows[0];
-                        const playerData = {
-                            avatar: playerInfo.avatar || '1099538252468',
-                            tag: playerInfo.tag || 'No Tag'
-                        };
-                        playerDetailsCache[player] = playerData;
-                        deferred.resolve(playerData);
-                        return deferred.promise(); // Sortir après un succès
-                    } else {
-                        const defaultPlayerData = {
-                            avatar: '1099538252468',
-                            tag: 'No Tag'
-                        };
-                        playerDetailsCache[player] = defaultPlayerData;
-                        deferred.resolve(defaultPlayerData);
-                        return deferred.promise(); // Sortir après un succès
-                    }
-                } catch (error) {
-                    lastError = error; // Mettre à jour la dernière erreur
-                    console.error(`Failed to get player info from endpoint ${endpoint}. Trying next...`);
-                }
-            }
-    
-            // Si on arrive ici, tous les endpoints ont échoué
-            showToast('Error retrieving player info. All endpoints failed.', 'error');
-            console.error("All endpoints failed for getPlayerInfo.");
-            deferred.reject(lastError); // Rejeter avec la dernière erreur
+            return playerDetailsCache[player];
         }
-    
-        return deferred.promise();
+        const requestData = {
+            json: true,
+            code: 'federation',
+            table: 'players',
+            scope: 'federation',
+            limit: 1,
+            lower_bound: player,
+            upper_bound: player
+        };
+        for (let i = 0; i < apiEndpoints.length; i++) {
+            const endpoint = getNextEndpoint(apiEndpoints);
+            try {
+                const response = await apiRequestWithRetryh(endpoint, requestData);
+                if (response.rows && response.rows.length > 0) {
+                    const playerInfo = response.rows[0];
+                    playerDetailsCache[player] = playerInfo;
+                    await sleep(throttleMs);
+                    return playerInfo;
+                }
+            } catch (error) {
+                console.error(`Failed to get player info from endpoint ${endpoint}. Trying next...`);
+            }
+            await sleep(throttleMs);
+        }
+        const defaultPlayerData = {
+            avatar: '1099538252468',
+            tag: 'No Tag'
+        };
+        playerDetailsCache[player] = defaultPlayerData;
+        return defaultPlayerData;
     }
 
     async function getAvatarImages(avatarIds) {
@@ -263,7 +256,7 @@ function displayMissionDetails(missionName, row) {
 
     // Map through details and create promises for each player info request
     const playerRequests = details.map(detail => {
-        return getPlayerInfo(detail.player)
+        return getPlayerInfoOptimized(detail.player, apiEndpoints, playerDetailsCache, 200)
             .then(playerInfo => ({
                 avatar: playerInfo.avatar || 'N/A',  // Utiliser N/A si l'avatar n'est pas trouvé
                 player: detail.player,  // On garde le player depuis l'API des missions

@@ -49,11 +49,21 @@ $(document).ready(function() {
         }
     }
 
-    async function getPlayerInfo(player) {
+    // Helper pour attendre un délai
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    // Helper pour tourner sur les endpoints
+    let endpointIndex = 0;
+    function getNextEndpoint(apiEndpoints) {
+        endpointIndex = (endpointIndex + 1) % apiEndpoints.length;
+        return apiEndpoints[endpointIndex];
+    }
+    // Version optimisée de getPlayerInfo
+    async function getPlayerInfoOptimized(player, apiEndpoints, playerDetailsCache, throttleMs = 200) {
         if (playerDetailsCache[player]) {
             return playerDetailsCache[player];
         }
-    
         const requestData = {
             json: true,
             code: 'federation',
@@ -63,29 +73,21 @@ $(document).ready(function() {
             lower_bound: player,
             upper_bound: player
         };
-    
-        for (let endpoint of apiEndpoints) {
+        for (let i = 0; i < apiEndpoints.length; i++) {
+            const endpoint = getNextEndpoint(apiEndpoints);
             try {
                 const response = await apiRequestWithRetryh(endpoint, requestData);
-    
                 if (response.rows && response.rows.length > 0) {
                     const playerInfo = response.rows[0];
-                    playerDetailsCache[player] = playerInfo; // Mise en cache des données joueur
+                    playerDetailsCache[player] = playerInfo;
+                    await sleep(throttleMs);
                     return playerInfo;
-                } else {
-                    const defaultPlayerData = {
-                        avatar: '1099538252468',
-                        tag: 'No Tag'
-                    };
-                    playerDetailsCache[player] = defaultPlayerData;
-                    return defaultPlayerData;
                 }
             } catch (error) {
                 console.error(`Failed to get player info from endpoint ${endpoint}. Trying next...`);
             }
+            await sleep(throttleMs);
         }
-    
-        // Si tous les endpoints échouent, renvoyer les valeurs par défaut
         const defaultPlayerData = {
             avatar: '1099538252468',
             tag: 'No Tag'
@@ -138,7 +140,7 @@ $(document).ready(function() {
 
     function renderPvPHistory(filteredCache) {
         const pvpTableBody = $('#battle-table tbody');
-        const playerRequests = filteredCache.map(mission => getPlayerInfo(mission.selected_player));
+        const playerRequests = filteredCache.map(mission => getPlayerInfoOptimized(mission.selected_player, apiEndpoints, playerDetailsCache, 200));
 
         $.when.apply($, playerRequests).done(function() {
             let playerInfos;
@@ -256,7 +258,7 @@ function displayMissionDetails(missionId, row) {
         details.push({ player, type: 'attack' });
     });
 
-    const playerRequests = details.map(detail => getPlayerInfo(detail.player));
+    const playerRequests = details.map(detail => getPlayerInfoOptimized(detail.player, apiEndpoints, playerDetailsCache, 200));
 
     $.when.apply($, playerRequests).done(function() {
         let playerInfos;
