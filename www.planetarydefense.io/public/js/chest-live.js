@@ -153,31 +153,62 @@ async function getVotepower(planet) {
     throw new Error(`Failed to fetch votepower for ${planet}.`);
 }
 
-// Nouvelle fonction pour additionner le VP et récupérer le dernier vote_time_stamp sur toutes les scopes
+// Nouvelle fonction pour récupérer le decay (vote_time_stamp) pour une planète donnée
+async function getDecay(planet, userAccount) {
+    const requestData = {
+        code: 'dao.worlds',
+        table: 'votes',
+        scope: planet,
+        json: true,
+        limit: 100,
+        lower_bound: userAccount,
+        upper_bound: userAccount,
+    };
+    for (let endpoint of apiEndpointsLive) {
+        try {
+            const data = await apiRequestWithRetryh(endpoint, requestData, 1, 5000);
+            return data;
+        } catch (error) {
+            console.error(`Failed to fetch decay data from endpoint ${endpoint} pour ${planet}. Trying next...`, error);
+        }
+    }
+    showToast(`Failed to fetch decay data for ${planet} after multiple attempts.`, 'error');
+    throw new Error(`Failed to fetch decay data for ${planet}.`);
+}
+
+// Nouvelle fonction pour additionner le VP et récupérer le dernier vote_time_stamp sur toutes les scopes (en utilisant la table votes pour le decay)
 async function getTotalVotepowerAndLastVoteTime() {
     let total = 0;
     let lastVoteTimeStamp = null;
-    const planets = ['magor', 'kavian', 'eyeke', 'kavianunn', 'eyekeunn', 'magorunn'];
+    const userAccount = localStorage.getItem("userAccount");
+    const planets = ['magor', 'kavian', 'eyeke', 'magorunn', 'kavianunn', 'eyekeunn'];
     let details = [];
     for (const planet of planets) {
+        // VP
+        let vp = 0;
         try {
-            const response = await getVotepower(planet);
-            let vp = 0;
-            let vote_time_stamp = null;
-            if (response.rows.length > 0) {
-                vp = response.rows[0].weight / 10000;
-                if (response.rows[0].vote_time_stamp) {
-                    vote_time_stamp = new Date(response.rows[0].vote_time_stamp);
-                }
-            }
-            total += vp;
-            details.push({ planet, vp, vote_time_stamp });
-            if (vote_time_stamp && (!lastVoteTimeStamp || vote_time_stamp > lastVoteTimeStamp)) {
-                lastVoteTimeStamp = vote_time_stamp;
+            const vpResponse = await getVotepower(planet);
+            if (vpResponse.rows.length > 0) {
+                vp = vpResponse.rows[0].weight / 10000;
             }
         } catch (error) {
-            console.error(`Erreur lors de la récupération du votepower pour ${planet} :`, error);
-            details.push({ planet, vp: 0, vote_time_stamp: null });
+            console.error(`Erreur lors de la récupération du VP pour ${planet} :`, error);
+        }
+        total += vp;
+
+        // Decay (vote_time_stamp)
+        let vote_time_stamp = null;
+        try {
+            const decayResponse = await getDecay(planet, userAccount);
+            if (decayResponse.rows.length > 0 && decayResponse.rows[0].vote_time_stamp) {
+                vote_time_stamp = new Date(decayResponse.rows[0].vote_time_stamp);
+            }
+        } catch (error) {
+            console.error(`Erreur lors de la récupération du decay pour ${planet} :`, error);
+        }
+        details.push({ planet, vp, vote_time_stamp });
+        if (vote_time_stamp && (!lastVoteTimeStamp || vote_time_stamp > lastVoteTimeStamp)) {
+            lastVoteTimeStamp = vote_time_stamp;
         }
     }
     // Affichage détaillé
