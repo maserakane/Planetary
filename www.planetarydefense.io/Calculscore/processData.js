@@ -75,7 +75,8 @@ async function fetchAndProcessOwnersData(pairs) {
                         case 'land.worlds':
                             if (
                                 template.details.attributes.planet === '10491499835444449792' ||
-                                template.details.attributes.planet === '9346907992691696272') {
+                                template.details.attributes.planet === '9346907992691696272'  ||
+                                template.details.attributes.planet === '6310955965768028672') {
                                 landWorlds.push(template);
                             }
                             break;

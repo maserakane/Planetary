@@ -52,6 +52,11 @@ async function insertLandowners(db, ownerData) {
         WHERE owner = ?
     `;
     for (const record of ownerData) {
+        if (!record.owner) {
+            console.warn('[insertLandowners] Donnée avec owner null :', JSON.stringify(record, null, 2));
+            continue;
+        }
+
         const ownerExists = await checkIfOwnerExists(db, record.owner);
         const values = [
             record.totalSlots,

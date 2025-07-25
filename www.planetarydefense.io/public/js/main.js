@@ -652,7 +652,7 @@ async function updateLiveStats() {
         const totalLandCount = await fetchLiveDefenseData(filteredSupporters, defenseTarget);
         const NbPlanet = window.planetData.NbPlanet;
         // Afficher le totalLandCount
-        liveStatsTextElement.innerHTML += `<br>Lands Fully Defended: <span class="color-point">${sanitizeHTML(totalLandCount)}</span> / <span class="color-point">${NbPlanet}</span>`;
+        liveStatsTextElement.innerHTML += `<br>Lands Fully Defended: <span class="color-point">${sanitizeHTML(totalLandCount)}</span> / <span class="color-point">1729</span>`;
     } else {
         // Si aucun supporter ne répond aux critères, afficher 0
         liveStatsTextElement.innerHTML += `<br>Lands at 100% / Land of the planet: 0`;

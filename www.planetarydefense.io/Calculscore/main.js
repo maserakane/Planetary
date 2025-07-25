@@ -66,7 +66,7 @@ async function mainFunction() {
         // 4. Enrichissement des assets avec les prix
         await getAndAssociatePrices();
 
-        // // 5. Lecture des résultats JSON
+        // 5. Lecture des résultats JSON
         const playerData = JSON.parse(await fs.readFile('./allResults.json', 'utf8'));
         const ownerData = JSON.parse(await fs.readFile('./ownerscore.json', 'utf8'));
 
@@ -117,6 +117,7 @@ async function mainFunction() {
         }
         const endTime = Date.now();
         const executionTime = (endTime - startTime) / 1000;
+        console.log(`[mainFunction] Temps d'exécution : ${executionTime} secondes`);
     }
 }
 

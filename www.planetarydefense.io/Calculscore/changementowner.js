@@ -129,20 +129,52 @@ async function removeLand(owner, landId) {
     }
 }
 
-async function modifyChest(landId, newOwner) {
+async function modifyChest(landId, newOwner, newLevel, newTlm, tlmToWithdraw) {
     try {
         const action = {
             account: accountName,
             name: 'modifychest',
             authorization: [{ actor: accountName, permission: permissionName }],
-            data: { land_id: landId.toString(), new_owner: newOwner },
+            data: {
+                land_id: landId.toString(),
+                new_owner: newOwner,
+                new_level: newLevel,
+                new_tlm: newTlm,
+                tlm_to_withdraw: tlmToWithdraw
+            },
         };
         const result = await session.transact({ actions: [action] }, { blocksBehind: 3, expireSeconds: 30 });
         if (result && result.transaction_id) {
             console.log(`[modifyChest] Transaction modifychest réussie ! ID : ${result.transaction_id}`);
+        } else {
+            console.log('[modifyChest] Transaction peut-être réussie mais pas de transaction_id retourné', result);
         }
     } catch (error) {
         console.error(`[modifyChest] Erreur : ${error.message}`);
+    }
+}
+
+async function addChest(landId, owner, chestLevel, TLM) {
+    try {
+        const action = {
+            account: accountName,
+            name: 'addchest',
+            authorization: [{ actor: accountName, permission: permissionName }],
+            data: {
+                land_id: landId.toString(),
+                owner: owner,
+                chest_level: chestLevel,
+                TLM: TLM
+            },
+        };
+        const result = await session.transact({ actions: [action] }, { blocksBehind: 3, expireSeconds: 30 });
+        if (result && result.transaction_id) {
+            console.log(`[addChest] Transaction addchest réussie ! ID : ${result.transaction_id}`);
+        } else {
+            console.log('[addChest] Transaction peut-être réussie mais pas de transaction_id retourné', result);
+        }
+    } catch (error) {
+        console.error(`[addChest] Erreur : ${error.message}`);
     }
 }
 
@@ -179,59 +211,17 @@ async function processLandData() {
         console.log(`Nombre d'entrées locales Landowners: ${localLandownersData.length}`);
         console.log(`Nombre d'entrées blockchain owners: ${blockchainLandownersData.length}`);
 
-        // 0. Nettoyage des doublons locaux AVANT toute synchronisation
-        console.log('--- Début du nettoyage des doublons locaux (landId attribué à plusieurs propriétaires) ---');
-
-        // Construction d'une map landId -> Set(propriétaires)
-        const landIdToOwners = {};
+        // 2. Préparation des maps pour comparaison rapide
+        const localLandIdToOwners = {}; // landId -> Set(owners)
+        const localOwnerToLandIds = {}; // owner -> Set(landIds)
         localLandownersData.forEach(item => {
             const owner = item.owner;
             const landIds = JSON.parse(item.landIds);
+            if (!localOwnerToLandIds[owner]) localOwnerToLandIds[owner] = new Set();
             landIds.forEach(id => {
-                if (!landIdToOwners[id]) landIdToOwners[id] = new Set();
-                landIdToOwners[id].add(owner);
-            });
-        });
-
-        const db = new sqlite3.Database(dbPath);
-
-        for (const [landId, ownersSet] of Object.entries(landIdToOwners)) {
-            const owners = Array.from(ownersSet);
-            if (owners.length > 1) {
-                console.log(`LandId ${landId} est attribué à plusieurs propriétaires dans la base locale : ${owners.join(', ')}`);
-                // On interroge la blockchain pour trouver le vrai propriétaire
-                const trueOwner = await getOwnerFromBlockchain(landId);
-                if (trueOwner) {
-                    console.log(`Le propriétaire blockchain de landId ${landId} est ${trueOwner}. Suppression des autres propriétaires dans la base locale...`);
-                    for (const owner of owners) {
-                        if (owner !== trueOwner) {
-                            db.run(
-                                'DELETE FROM Landowners WHERE landIds LIKE ? AND owner = ?',
-                                [`%${landId}%`, owner],
-                                function(err) {
-                                    if (err) {
-                                        console.error(`Erreur lors de la suppression du landId ${landId} pour le propriétaire ${owner} :`, err.message);
-                                    } else {
-                                        console.log(`LandId ${landId} supprimé pour le propriétaire ${owner} dans la base locale.`);
-                                    }
-                                }
-                            );
-                        }
-                    }
-                } else {
-                    console.warn(`Impossible de trouver le propriétaire blockchain pour landId ${landId}. Aucun nettoyage effectué.`);
-                }
-            }
-        }
-        db.close();
-
-        // 2. Construction des maps pour comparaison rapide
-        const localLandIdToOwner = {};
-        localLandownersData.forEach(item => {
-            const owner = item.owner;
-            const landIds = JSON.parse(item.landIds);
-            landIds.forEach(id => {
-                localLandIdToOwner[id] = owner;
+                if (!localLandIdToOwners[id]) localLandIdToOwners[id] = new Set();
+                localLandIdToOwners[id].add(owner);
+                localOwnerToLandIds[owner].add(id);
             });
         });
         const blockchainLandIdToOwner = {};
@@ -242,36 +232,116 @@ async function processLandData() {
             });
         });
 
-        // 3. Correction blockchain : retire les mauvais propriétaires et signale les manquants
-        for (const [landId, localOwner] of Object.entries(localLandIdToOwner)) {
-            const chainOwner = blockchainLandIdToOwner[landId];
-            if (chainOwner && chainOwner !== localOwner) {
-                console.log(`Correction blockchain : landId ${landId} appartient à ${chainOwner} sur la blockchain, mais devrait appartenir à ${localOwner}.`);
-                await removeLand(chainOwner, landId);
-            }
-            if (!chainOwner) {
-                console.log(`LandId ${landId} n'existe pas sur la blockchain, il devrait appartenir à ${localOwner}. (Action d'ajout à prévoir si besoin)`);
+        // 3. Nettoyage des doublons locaux (batch + transaction)
+        console.log('--- Nettoyage des doublons locaux (landId attribué à plusieurs propriétaires) ---');
+        let doublonsCorriges = 0;
+        let suppressionsLocales = 0;
+        const suppressionsBatch = [];
+        for (const [landId, ownersSet] of Object.entries(localLandIdToOwners)) {
+            const owners = Array.from(ownersSet);
+            if (owners.length > 1) {
+                doublonsCorriges++;
+                // On utilise la map blockchain pour trouver le vrai propriétaire
+                const trueOwner = blockchainLandIdToOwner[landId];
+                if (trueOwner) {
+                    console.log(`LandId ${landId} : vrai propriétaire blockchain = ${trueOwner}, suppression des autres dans la base locale...`);
+                    for (const owner of owners) {
+                        if (owner !== trueOwner) {
+                            suppressionsBatch.push({ landId, owner });
+                        }
+                    }
+                } else {
+                    console.warn(`LandId ${landId} : pas de propriétaire blockchain trouvé, aucun nettoyage effectué.`);
+                }
             }
         }
+        if (suppressionsBatch.length > 0) {
+            const db = new sqlite3.Database(dbPath);
+            db.serialize(() => {
+                db.run('BEGIN TRANSACTION');
+                for (const {landId, owner} of suppressionsBatch) {
+                    db.run('DELETE FROM Landowners WHERE landIds LIKE ? AND owner = ?', [`%${landId}%`, owner], function(err) {
+                        if (err) {
+                            console.error(`Erreur lors de la suppression du landId ${landId} pour le propriétaire ${owner} :`, err.message);
+                        } else {
+                            suppressionsLocales++;
+                            console.log(`LandId ${landId} supprimé pour le propriétaire ${owner} dans la base locale.`);
+                        }
+                    });
+                }
+                db.run('COMMIT');
+            });
+            db.close();
+        }
 
-        // 4. Suppression sur la blockchain des landIds inexistants localement
-        for (const [landId, chainOwner] of Object.entries(blockchainLandIdToOwner)) {
-            if (!localLandIdToOwner[landId]) {
-                console.log(`LandId ${landId} existe sur la blockchain (propriétaire ${chainOwner}) mais pas dans la base locale. Suppression...`);
+        // 4. Correction blockchain : retire les mauvais propriétaires et signale les manquants
+        let suppressionsBlockchain = 0;
+        for (const [landId, localOwnersSet] of Object.entries(localLandIdToOwners)) {
+            const localOwners = Array.from(localOwnersSet);
+            const chainOwner = blockchainLandIdToOwner[landId];
+            // Si le landId existe sur la blockchain mais le propriétaire ne correspond pas à la base locale
+            if (chainOwner && !localOwners.includes(chainOwner)) {
+                console.log(`Correction blockchain : landId ${landId} appartient à ${chainOwner} sur la blockchain, mais devrait appartenir à ${localOwners[0]}. Suppression sur la blockchain...`);
                 await removeLand(chainOwner, landId);
+                suppressionsBlockchain++;
+            }
+            // Si le landId n'existe pas sur la blockchain mais existe localement
+            if (!chainOwner) {
+                console.log(`LandId ${landId} n'existe pas sur la blockchain, il devrait appartenir à ${localOwners[0]}. (Action d'ajout à prévoir si besoin)`);
+            }
+        }
+        // Suppression sur la blockchain des landIds inexistants localement
+        for (const [landId, chainOwner] of Object.entries(blockchainLandIdToOwner)) {
+            if (!localLandIdToOwners[landId]) {
+                console.log(`LandId ${landId} existe sur la blockchain (propriétaire ${chainOwner}) mais pas dans la base locale. Suppression sur la blockchain...`);
+                await removeLand(chainOwner, landId);
+                suppressionsBlockchain++;
             }
         }
 
         // 5. Vérification des chests
         const chestData = await chargerDonneesBlockchainChest();
         const discrepancies = comparerLandIds(blockchainLandownersData, chestData);
-        if (discrepancies.length > 0) {
-            console.log('Discrepancies entre owners et chests:', JSON.stringify(discrepancies, null, 2));
-        }
+        let correctionsChests = 0;
+
+        // Initialisation ou correction des chests manquants ou incorrects
         for (const discrepancy of discrepancies) {
-            console.log(`[processLandData] Correction Land ID ${discrepancy.landId} vers ${discrepancy.owner}`);
-            //await modifyChest(discrepancy.landId, discrepancy.owner);
+            if (discrepancy.issue === 'Land ID not found in chest table') {
+                console.log(`[addChest] Création du chest pour landId ${discrepancy.landId} (owner: ${discrepancy.owner})`);
+                try {
+                    await addChest(
+                        discrepancy.landId,
+                        discrepancy.owner || '', // owner si connu, sinon vide
+                        0,  // chest_level
+                        0   // TLM
+                    );
+                    console.log(`[addChest] Succès pour landId ${discrepancy.landId}`);
+                    correctionsChests++;
+                } catch (e) {
+                    console.error(`[addChest] Échec pour landId ${discrepancy.landId} :`, e.message);
+                }
+            } else if (discrepancy.issue && discrepancy.issue.startsWith('Land ID belongs to')) {
+                console.log(`[processLandData] Correction du propriétaire du chest pour landId ${discrepancy.landId} vers ${discrepancy.owner}`);
+                try {
+                    await modifyChest(
+                        discrepancy.landId,
+                        discrepancy.owner,
+                    );
+                    console.log(`[processLandData] Correction réussie pour landId ${discrepancy.landId}`);
+                    correctionsChests++;
+                } catch (e) {
+                    console.error(`[processLandData] Correction échouée pour landId ${discrepancy.landId} :`, e.message);
+                }
+            }
         }
+        console.log(`Nombre total de chests initialisés ou corrigés : ${correctionsChests}`);
+
+        // 6. Résumé global
+        console.log('--- Résumé de la synchronisation ---');
+        console.log(`Doublons locaux corrigés : ${doublonsCorriges}`);
+        console.log(`Suppressions locales effectuées : ${suppressionsLocales}`);
+        console.log(`Suppressions/corrections blockchain effectuées : ${suppressionsBlockchain}`);
+        console.log(`Corrections chests à faire : ${correctionsChests}`);
         console.log('--- Fin de la synchronisation des propriétaires de lands ---');
     } catch (error) {
         console.error('[processLandData] Erreur lors de la synchronisation des propriétaires de lands :', error);

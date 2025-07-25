@@ -125,12 +125,14 @@ async function fetchLand() {
 function saveSelectedLandId(landId) {
     localStorage.setItem('selectedLandId', landId);
 }
-async function getVotepower() {
+
+// Nouvelle fonction pour récupérer le vote power pour une planète donnée
+async function getVotepower(planet) {
     const userAccount = localStorage.getItem("userAccount");
     const requestData = {
         code: 'stkvt.worlds',
         table: 'weights',
-        scope: 'magor',
+        scope: planet, // planète dynamique
         json: true,
         limit: 100,
         lower_bound: userAccount,
@@ -142,12 +144,28 @@ async function getVotepower() {
             const data = await apiRequestWithRetryh(endpoint, requestData, 1, 5000);
             return data; // Retourne les données si la requête réussit
         } catch (error) {
-            console.error(`Failed to fetch votepower from endpoint ${endpoint}. Trying next...`, error);
+            console.error(`Failed to fetch votepower from endpoint ${endpoint} pour ${planet}. Trying next...`, error);
         }
     }
+    showToast(`Failed to fetch votepower for ${planet} after multiple attempts.`, 'error');
+    throw new Error(`Failed to fetch votepower for ${planet}.`);
+}
 
-    showToast('Failed to fetch votepower after multiple attempts.', 'error');
-    throw new Error('Failed to fetch votepower.');
+// Nouvelle fonction pour additionner le vote power des trois planètes
+async function getTotalVotepower() {
+    let total = 0;
+    const planets = ['magor', 'kavian', 'eyeke'];
+    for (const planet of planets) {
+        try {
+            const response = await getVotepower(planet);
+            if (response.rows.length > 0) {
+                total += response.rows[0].weight / 10000;
+            }
+        } catch (error) {
+            console.error(`Erreur lors de la récupération du votepower pour ${planet} :`, error);
+        }
+    }
+    return total;
 }
 
 async function getDecay() {
@@ -238,7 +256,7 @@ async function fetchChest(landId) {
             const upgradeCost = await getUpgradeCost(chestData.chest_level);
             const chestImageUrl = getChestImageUrl(chestData.chest_level);
             const chestTier = getTier(chestData.chest_level);
-            const voteafterdecay = await calculateVoteAfterDecay();
+            const voteafterdecay = await getTotalVotepower();
             const bonusVP = await getBonusVP(voteafterdecay);
 
             const baseReward = (1 / 100) * chestData.TLM;

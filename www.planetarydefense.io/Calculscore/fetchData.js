@@ -7,10 +7,12 @@
 // ------------------------------------------------------------
 
 const axios = require('axios');
+const VERBOSE = process.env.VERBOSE === '1';
+const MAX_PARALLEL = 10; // Nombre de requêtes simultanées
+const TIMEOUT_MS = 8000;
 
-// ==================== Récupération des assets pour un batch d'IDs ====================
+// ==================== Récupération des assets pour un batch d'IDs (optimisé) ====================
 async function fetchDataForBatchIDs(batchIds) {
-    // Liste élargie d'endpoints à essayer
     const endpoints = [
         "https://atomic.3dkrender.com",
         "https://aa.wax.blacklusion.io",
@@ -21,73 +23,94 @@ async function fetchDataForBatchIDs(batchIds) {
         "https://atomicassets-api.wax.cryptolions.io",
         "https://wax-atomic-api.eosphere.io"
     ];
-    console.log(`[FETCH] Début du batch : ${batchIds.length} landIds à traiter`);
-    const idParam = batchIds.join(',');
-    // Pour chaque ID, on va essayer tous les endpoints jusqu'à obtenir une réponse satisfaisante
-    const results = [];
+    if (VERBOSE) console.log(`[FETCH] Début du batch : ${batchIds.length} landIds à traiter`);
     let foundCount = 0;
-    for (let i = 0; i < batchIds.length; i++) {
-        const id = batchIds[i];
+    const results = [];
+
+    // Fonction utilitaire pour fetch avec timeout
+    function fetchWithTimeout(url, options = {}) {
+        return Promise.race([
+            fetch(url, options),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), TIMEOUT_MS))
+        ]);
+    }
+
+    // Parallélisation contrôlée
+    async function processId(id) {
         let foundOwner = null;
         let foundVia = null;
         // 1. Essayer tous les endpoints en batch
         for (const endpoint of endpoints) {
             try {
-                console.log(`[TRY][BATCH] landId: ${id} | Endpoint: ${endpoint}`);
-                const response = await fetch(`${endpoint}/atomicassets/v1/assets?ids=${id}&collection_name=alienworlds&schema_name=land`);
+                if (VERBOSE) console.log(`[TRY][BATCH] landId: ${id} | Endpoint: ${endpoint}`);
+                const response = await fetchWithTimeout(`${endpoint}/atomicassets/v1/assets?ids=${id}&collection_name=alienworlds&schema_name=land`);
                 if (response.ok) {
                     const jsonResponse = await response.json();
                     if (Array.isArray(jsonResponse.data) && jsonResponse.data.length > 0 && jsonResponse.data[0].owner) {
                         foundOwner = jsonResponse.data[0].owner;
                         foundVia = `[BATCH] ${endpoint}`;
-                        console.log(`[SUCCESS][BATCH] landId: ${id} | Owner: ${foundOwner} | Endpoint: ${endpoint}`);
+                        if (VERBOSE) console.log(`[SUCCESS][BATCH] landId: ${id} | Owner: ${foundOwner} | Endpoint: ${endpoint}`);
                         break;
                     } else {
-                        console.log(`[FAIL][BATCH] landId: ${id} | Endpoint: ${endpoint} | Pas d'owner trouvé dans la réponse.`);
+                        if (VERBOSE) console.log(`[FAIL][BATCH] landId: ${id} | Endpoint: ${endpoint} | Pas d'owner trouvé dans la réponse.`);
                     }
                 } else {
-                    console.log(`[ERROR][BATCH] landId: ${id} | Endpoint: ${endpoint} | Status: ${response.status}`);
+                    if (VERBOSE) console.log(`[ERROR][BATCH] landId: ${id} | Endpoint: ${endpoint} | Status: ${response.status}`);
                 }
             } catch (e) {
-                console.log(`[EXCEPTION][BATCH] landId: ${id} | Endpoint: ${endpoint} | Erreur: ${e.message}`);
+                if (VERBOSE) console.log(`[EXCEPTION][BATCH] landId: ${id} | Endpoint: ${endpoint} | Erreur: ${e.message}`);
             }
         }
         // 2. Si pas trouvé, essayer tous les endpoints en individuel
         if (!foundOwner) {
             for (const endpoint of endpoints) {
                 try {
-                    console.log(`[TRY][INDIV] landId: ${id} | Endpoint: ${endpoint}`);
-                    const singleResp = await fetch(`${endpoint}/atomicassets/v1/assets/${id}`);
+                    if (VERBOSE) console.log(`[TRY][INDIV] landId: ${id} | Endpoint: ${endpoint}`);
+                    const singleResp = await fetchWithTimeout(`${endpoint}/atomicassets/v1/assets/${id}`);
                     if (singleResp.ok) {
                         const singleJson = await singleResp.json();
                         if (singleJson.data && singleJson.data.owner) {
                             foundOwner = singleJson.data.owner;
                             foundVia = `[INDIV] ${endpoint}`;
-                            console.log(`[SUCCESS][INDIV] landId: ${id} | Owner: ${foundOwner} | Endpoint: ${endpoint}`);
+                            if (VERBOSE) console.log(`[SUCCESS][INDIV] landId: ${id} | Owner: ${foundOwner} | Endpoint: ${endpoint}`);
                             break;
                         } else {
-                            console.log(`[FAIL][INDIV] landId: ${id} | Endpoint: ${endpoint} | Pas d'owner trouvé dans la réponse.`);
+                            if (VERBOSE) console.log(`[FAIL][INDIV] landId: ${id} | Endpoint: ${endpoint} | Pas d'owner trouvé dans la réponse.`);
                         }
                     } else {
-                        console.log(`[ERROR][INDIV] landId: ${id} | Endpoint: ${endpoint} | Status: ${singleResp.status}`);
+                        if (VERBOSE) console.log(`[ERROR][INDIV] landId: ${id} | Endpoint: ${endpoint} | Status: ${singleResp.status}`);
                     }
                 } catch (e) {
-                    console.log(`[EXCEPTION][INDIV] landId: ${id} | Endpoint: ${endpoint} | Erreur: ${e.message}`);
+                    if (VERBOSE) console.log(`[EXCEPTION][INDIV] landId: ${id} | Endpoint: ${endpoint} | Erreur: ${e.message}`);
                 }
             }
         }
-        // 3. Log si toujours pas trouvé
         if (!foundOwner) {
-            console.log(`[API DEBUG] landId: ${id} | Aucun owner trouvé sur tous les endpoints.`);
+            if (VERBOSE) console.log(`[API DEBUG] landId: ${id} | Aucun owner trouvé sur tous les endpoints.`);
         } else {
             foundCount++;
         }
-        if ((i+1) % 10 === 0 || i === batchIds.length-1) {
-            console.log(`[FETCH] Progression : ${i+1}/${batchIds.length} | Owners trouvés : ${foundCount}`);
-        }
-        results.push({ landName: id, owner: foundOwner, via: foundVia });
+        return { landName: id, owner: foundOwner, via: foundVia };
     }
-    console.log(`[FETCH] Fin du batch. Owners trouvés : ${foundCount}/${batchIds.length}`);
+
+    // Gestion du parallélisme contrôlé
+    let i = 0;
+    async function next() {
+        if (i >= batchIds.length) return null;
+        const id = batchIds[i++];
+        return processId(id);
+    }
+    const workers = Array.from({length: Math.min(MAX_PARALLEL, batchIds.length)}, async function worker() {
+        let result;
+        while ((result = await next()) !== null) {
+            results.push(result);
+            if (VERBOSE && results.length % 10 === 0) {
+                console.log(`[FETCH] Progression : ${results.length}/${batchIds.length} | Owners trouvés : ${foundCount}`);
+            }
+        }
+    });
+    await Promise.all(workers);
+    if (VERBOSE) console.log(`[FETCH] Fin du batch. Owners trouvés : ${foundCount}/${batchIds.length}`);
     return results;
 }
 
