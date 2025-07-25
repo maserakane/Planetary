@@ -22,7 +22,8 @@ const session = new Session({
 
 const fs = require('fs').promises;
 
-async function getVotepower(owner) {
+// Nouvelle fonction pour récupérer le VP pour une planète donnée
+async function getVotepower(owner, planet) {
   try {
     const response = await fetch('https://wax.cryptolions.io/v1/chain/get_table_rows', {
       method: 'POST',
@@ -30,26 +31,41 @@ async function getVotepower(owner) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        code: 'stkvt.worlds', // Le contrat intelligent (smart contract) EOSIO
-        table: 'weights', // La table que vous souhaitez interroger
-        scope: 'magor', // La portée de la table
-        json: true, // Demande des résultats au format JSON
-        limit: 100, // Limite le nombre de résultats retournés
-        lower_bound: owner, // Clé de début (facultatif)
-        upper_bound: owner, // Clé de fin (facultatif)
+        code: 'stkvt.worlds',
+        table: 'weights',
+        scope: planet,
+        json: true,
+        limit: 100,
+        lower_bound: owner,
+        upper_bound: owner,
       }),
     });
-
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-
     const data = await response.json();
-    return data; // Retourne les données sous forme d'objet JSON
+    return data;
   } catch (error) {
-    console.error('Error:', error);
-    throw error; // Propage l'erreur pour être gérée par l'appelant
+    console.error(`Erreur lors de la récupération du VP pour ${planet} :`, error);
+    return { rows: [] };
   }
+}
+
+// Fonction pour additionner le VP des trois planètes
+async function getTotalVotepower(owner) {
+  const planets = ['magor', 'kavian', 'eyeke'];
+  let total = 0;
+  for (const planet of planets) {
+    const response = await getVotepower(owner, planet);
+    let vp = 0;
+    if (response.rows.length > 0) {
+      vp = response.rows[0].weight / 10000;
+    }
+    total += vp;
+    console.log(`VP pour ${owner} sur ${planet} :`, vp);
+  }
+  console.log(`VP total pour ${owner} (magor+kavian+eyeke) :`, total);
+  return total;
 }
 
 async function getDecay(user) {
@@ -322,10 +338,7 @@ async function reward(landid) {
 
       let weight = 0; // Initialiser le poids à 0 par défaut
       try {
-        const votepowerResponse = await getVotepower(owner);
-        if (votepowerResponse.rows.length > 0) {
-          weight = votepowerResponse.rows[0].weight / 10000;
-        }
+        weight = await getTotalVotepower(owner);
       } catch (error) {
         console.error("Erreur lors de la récupération du votepower :", error);
       }

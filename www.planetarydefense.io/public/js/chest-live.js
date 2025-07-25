@@ -153,10 +153,10 @@ async function getVotepower(planet) {
     throw new Error(`Failed to fetch votepower for ${planet}.`);
 }
 
-// Nouvelle fonction pour additionner le vote power des trois planètes
+// Nouvelle fonction pour additionner le vote power des six planètes
 async function getTotalVotepower() {
     let total = 0;
-    const planets = ['magor', 'kavian', 'eyeke'];
+    const planets = ['magor', 'kavian', 'eyeke', 'kavianunn', 'eyekeunn', 'magorunn'];
     for (const planet of planets) {
         try {
             const response = await getVotepower(planet);
