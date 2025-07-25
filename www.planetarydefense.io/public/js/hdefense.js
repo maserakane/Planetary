@@ -71,6 +71,10 @@ $(document).ready(function() {
         return apiEndpoints[endpointIndex];
     }
     // Version optimisée de getPlayerInfo
+    // Liste dynamique d'endpoints actifs pour la session
+    let activeApiEndpoints = [...apiEndpoints];
+    let endpointFailures = {};
+
     async function getPlayerInfoOptimized(player, apiEndpoints, playerDetailsCache, throttleMs = 200) {
         if (playerDetailsCache[player]) {
             return playerDetailsCache[player];
@@ -84,21 +88,32 @@ $(document).ready(function() {
             lower_bound: player,
             upper_bound: player
         };
-        for (let i = 0; i < apiEndpoints.length; i++) {
-            const endpoint = getNextEndpoint(apiEndpoints);
+        for (let i = 0; i < activeApiEndpoints.length; i++) {
+            const endpoint = activeApiEndpoints[i];
             try {
                 const response = await apiRequestWithRetryh(endpoint, requestData);
                 if (response.rows && response.rows.length > 0) {
                     const playerInfo = response.rows[0];
                     playerDetailsCache[player] = playerInfo;
                     await sleep(throttleMs);
+                    // Reset failure count on success
+                    endpointFailures[endpoint] = 0;
                     return playerInfo;
                 }
             } catch (error) {
+                // Compte les échecs pour chaque endpoint
+                endpointFailures[endpoint] = (endpointFailures[endpoint] || 0) + 1;
                 console.error(`Failed to get player info from endpoint ${endpoint}. Trying next...`);
+                // Si l'endpoint échoue 3 fois, on le retire temporairement
+                if (endpointFailures[endpoint] >= 3) {
+                    activeApiEndpoints = activeApiEndpoints.filter(e => e !== endpoint);
+                    console.warn(`Endpoint ${endpoint} retiré temporairement de la liste (trop d'échecs).`);
+                }
             }
             await sleep(throttleMs);
         }
+        // Si tous les endpoints échouent, on affiche une seule erreur utilisateur
+        showToast('Impossible de récupérer les infos joueurs : tous les serveurs WAX sont inaccessibles.', 'error');
         const defaultPlayerData = {
             avatar: '1099538252468',
             tag: 'No Tag'
