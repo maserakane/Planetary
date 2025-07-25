@@ -141,7 +141,9 @@ async function getVotepower(planet) {
 
     for (let endpoint of apiEndpointsLive) {
         try {
+            console.log(`[API DEBUG] Appel à ${endpoint} avec :`, requestData);
             const data = await apiRequestWithRetryh(endpoint, requestData, 1, 5000);
+            console.log(`[API DEBUG] Réponse brute pour ${planet} :`, data);
             return data; // Retourne les données si la requête réussit
         } catch (error) {
             console.error(`Failed to fetch votepower from endpoint ${endpoint} pour ${planet}. Trying next...`, error);
