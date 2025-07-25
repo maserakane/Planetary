@@ -157,16 +157,81 @@ async function getVotepower(planet) {
 async function getTotalVotepower() {
     let total = 0;
     const planets = ['magor', 'kavian', 'eyeke', 'kavianunn', 'eyekeunn', 'magorunn'];
+    let details = [];
     for (const planet of planets) {
         try {
             const response = await getVotepower(planet);
+            let vp = 0;
             if (response.rows.length > 0) {
-                total += response.rows[0].weight / 10000;
+                vp = response.rows[0].weight / 10000;
             }
+            total += vp;
+            details.push({ planet, vp });
         } catch (error) {
             console.error(`Erreur lors de la récupération du votepower pour ${planet} :`, error);
+            details.push({ planet, vp: 0 });
         }
     }
+    // Affichage détaillé
+    console.log('--- Détail VP par planète ---');
+    details.forEach(d => console.log(`${d.planet} : ${d.vp}`));
+    console.log('VP total (toutes planètes) :', total);
+    // Calcul du bonus VP et affichage du palier
+    getBonusVP(total).then(bonusVP => {
+        console.log(`Bonus VP obtenu : ${bonusVP}%`);
+        // Trouver le palier atteint
+        const bonusVPMap = [
+            { threshold: 1, bonus: 0.5 },
+            { threshold: 1000, bonus: 1 },
+            { threshold: 3000, bonus: 1.5 },
+            { threshold: 5000, bonus: 2 },
+            { threshold: 10000, bonus: 2.5 },
+            { threshold: 15000, bonus: 3 },
+            { threshold: 20000, bonus: 3.5 },
+            { threshold: 25000, bonus: 4 },
+            { threshold: 50000, bonus: 4.5 },
+            { threshold: 75000, bonus: 5 },
+            { threshold: 100000, bonus: 5.5 },
+            { threshold: 125000, bonus: 6 },
+            { threshold: 150000, bonus: 6.5 },
+            { threshold: 200000, bonus: 7 },
+            { threshold: 250000, bonus: 7.5 },
+            { threshold: 300000, bonus: 8 },
+            { threshold: 350000, bonus: 8.5 },
+            { threshold: 400000, bonus: 9 },
+            { threshold: 450000, bonus: 9.5 },
+            { threshold: 500000, bonus: 10 },
+            { threshold: 600000, bonus: 10.5 },
+            { threshold: 700000, bonus: 11 },
+            { threshold: 800000, bonus: 11.5 },
+            { threshold: 900000, bonus: 12 },
+            { threshold: 1000000, bonus: 12.5 },
+            { threshold: 1250000, bonus: 13 },
+            { threshold: 1500000, bonus: 13.5 },
+            { threshold: 2000000, bonus: 14 },
+            { threshold: 2500000, bonus: 14.5 },
+            { threshold: 3000000, bonus: 15 },
+            { threshold: 3500000, bonus: 15.5 },
+            { threshold: 4000000, bonus: 16 },
+            { threshold: 4500000, bonus: 16.5 },
+            { threshold: 5000000, bonus: 17 },
+            { threshold: 6000000, bonus: 17.5 },
+            { threshold: 7000000, bonus: 18 },
+            { threshold: 8000000, bonus: 18.5 },
+            { threshold: 9000000, bonus: 19 },
+            { threshold: 10000000, bonus: 19.5 },
+            { threshold: 15000000, bonus: 20 }
+        ];
+        let palier = bonusVPMap[0];
+        for (const entry of bonusVPMap) {
+            if (total >= entry.threshold) {
+                palier = entry;
+            } else {
+                break;
+            }
+        }
+        console.log(`Palier atteint : VP >= ${palier.threshold} => Bonus ${palier.bonus}%`);
+    });
     return total;
 }
 
