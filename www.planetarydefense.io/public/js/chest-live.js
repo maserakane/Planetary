@@ -153,6 +153,45 @@ async function getVotepower(planet) {
     throw new Error(`Failed to fetch votepower for ${planet}.`);
 }
 
+// Nouvelle fonction pour additionner le VP et récupérer le dernier vote_time_stamp sur toutes les scopes
+async function getTotalVotepowerAndLastVoteTime() {
+    let total = 0;
+    let lastVoteTimeStamp = null;
+    const planets = ['magor', 'kavian', 'eyeke', 'kavianunn', 'eyekeunn', 'magorunn'];
+    let details = [];
+    for (const planet of planets) {
+        try {
+            const response = await getVotepower(planet);
+            let vp = 0;
+            let vote_time_stamp = null;
+            if (response.rows.length > 0) {
+                vp = response.rows[0].weight / 10000;
+                if (response.rows[0].vote_time_stamp) {
+                    vote_time_stamp = new Date(response.rows[0].vote_time_stamp);
+                }
+            }
+            total += vp;
+            details.push({ planet, vp, vote_time_stamp });
+            if (vote_time_stamp && (!lastVoteTimeStamp || vote_time_stamp > lastVoteTimeStamp)) {
+                lastVoteTimeStamp = vote_time_stamp;
+            }
+        } catch (error) {
+            console.error(`Erreur lors de la récupération du votepower pour ${planet} :`, error);
+            details.push({ planet, vp: 0, vote_time_stamp: null });
+        }
+    }
+    // Affichage détaillé
+    console.log('--- Détail VP par planète ---');
+    details.forEach(d => console.log(`${d.planet} : ${d.vp} (vote_time_stamp: ${d.vote_time_stamp})`));
+    console.log('VP total (toutes planètes) :', total);
+    if (lastVoteTimeStamp) {
+        console.log('Dernier vote_time_stamp trouvé :', lastVoteTimeStamp.toISOString());
+    } else {
+        console.log('Aucun vote_time_stamp trouvé.');
+    }
+    return { totalVP: total, lastVoteTimeStamp };
+}
+
 // Nouvelle fonction pour additionner le vote power des six planètes
 async function getTotalVotepower() {
     let total = 0;
@@ -323,10 +362,18 @@ async function fetchChest(landId) {
             const upgradeCost = await getUpgradeCost(chestData.chest_level);
             const chestImageUrl = getChestImageUrl(chestData.chest_level);
             const chestTier = getTier(chestData.chest_level);
-            // Utiliser le total VP (incluant les unn)
-            const totalVP = await getTotalVotepower();
-            const bonusVP = await getBonusVP(totalVP);
-            console.log('Total VP (toutes planètes, y compris unn) :', totalVP);
+            // Utiliser le total VP (incluant les unn) et appliquer le decay
+            const { totalVP, lastVoteTimeStamp } = await getTotalVotepowerAndLastVoteTime();
+            let voteafterdecay = 0;
+            if (totalVP > 0 && lastVoteTimeStamp) {
+                const currentTime = new Date();
+                const timeDifference = (currentTime - lastVoteTimeStamp) / 1000;
+                const fraction_s = timeDifference / 2629800;
+                voteafterdecay = totalVP / Math.pow(2, fraction_s);
+            }
+            console.log('VP total (avant decay) :', totalVP);
+            console.log('VP après decay (utilisé pour le bonus) :', voteafterdecay);
+            const bonusVP = await getBonusVP(voteafterdecay);
             console.log('Bonus VP (%) utilisé pour la récompense :', bonusVP);
             const vpReward = (bonusVP / 100) * chestData.TLM;
             console.log('VP Reward:', vpReward);
@@ -350,7 +397,7 @@ async function fetchChest(landId) {
                   <td><img src="../images/bonusvp.png" class="img-fluid img-chest"><p>Bonus VP</p></td>
                 </tr>
                 <tr>
-                  <td class="color-point fs-6">${voteafterdecay}</td>
+                  <td class="color-point fs-6">${voteafterdecay.toFixed(0)}</td>
                   <td class="color-point fs-6">${bonusVP}%</td>
                 </tr>
                 <tr>
