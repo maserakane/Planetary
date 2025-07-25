@@ -124,7 +124,7 @@ $(document).ready(function() {
             await sleep(throttleMs);
         }
         // Si tous les endpoints échouent, on affiche une seule erreur utilisateur
-        showToast('Impossible de récupérer les infos joueurs : tous les serveurs WAX sont inaccessibles.', 'error');
+        showErrorToastOnce('Impossible de récupérer les infos joueurs : tous les serveurs WAX sont inaccessibles.');
         console.error(`[DEBUG] Tous les endpoints sont KO pour ${player}.`);
         const defaultPlayerData = {
             avatar: '1099538252468',
@@ -270,7 +270,8 @@ $(document).ready(function() {
                 $('.detail-item').slideUp(function() {
                     $(this).remove();
                 });
-                // Show loading spinner
+                // Afficher le loading
+                console.log('[DEBUG] Affichage du loading pour chargement des détails PvP...');
                 $('#loading-overlay').show();
                 $('#battlehistory-center').addClass('blur');
                 displayMissionDetails(missionId, $(this));
@@ -396,15 +397,18 @@ function displayMissionDetails(missionId, row) {
             scrollToMissionRow(missionId);
 
             // Hide loading
+            console.log('[DEBUG] Masquage du loading : données PvP prêtes à afficher.');
             $('#loading-overlay').hide();
             $('#battlehistory-center').removeClass('blur');
         }).fail(function() {
             displayErrorMessage('Error loading avatars.');
+            console.log('[DEBUG] Masquage du loading : erreur lors du chargement des avatars.');
             $('#loading-overlay').hide();
             $('#battlehistory-center').removeClass('blur');
         });
     }).fail(function() {
         displayErrorMessage('Error loading player details.');
+        console.log('[DEBUG] Masquage du loading : erreur lors du chargement des infos joueurs.');
         $('#loading-overlay').hide();
         $('#battlehistory-center').removeClass('blur');
     });
@@ -423,6 +427,18 @@ function displayMissionDetails(missionId, row) {
         $('html, body').animate({
             scrollTop: row.offset().top - 100 // Adjust the offset as needed
         }, 600); // Adjust the duration as needed
+    }
+
+    // Protection anti-spam pour les toasts d'erreur
+    let lastErrorToastTime = 0;
+    function showErrorToastOnce(message) {
+        const now = Date.now();
+        if (now - lastErrorToastTime > 5000) { // 5 secondes entre deux toasts identiques
+            showToast(message, 'error');
+            lastErrorToastTime = now;
+        } else {
+            console.log('[DEBUG] Toast d\'erreur ignoré pour éviter le spam :', message);
+        }
     }
 
     loadAllData();

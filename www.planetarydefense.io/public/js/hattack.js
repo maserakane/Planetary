@@ -195,7 +195,7 @@ $(document).ready(function() {
             await sleep(throttleMs);
         }
         // Si tous les endpoints échouent, on affiche une seule erreur utilisateur
-        showToast('Impossible de récupérer les infos joueurs : tous les serveurs WAX sont inaccessibles.', 'error');
+        showErrorToastOnce('Impossible de récupérer les infos joueurs : tous les serveurs WAX sont inaccessibles.');
         console.error(`[DEBUG] Tous les endpoints sont KO pour ${player}.`);
         const defaultPlayerData = {
             avatar: '1099538252468',
@@ -405,11 +405,13 @@ function displayMissionDetails(missionName, row) {
             scrollToMissionRow(missionName);
 
             // Cacher le chargement
+            console.log('[DEBUG] Masquage du loading : données attaque prêtes à afficher.');
             $('#loading-overlay').hide();
             $('#battlehistory-center').removeClass('blur');
         });
     }).catch(() => {
         displayErrorMessage('Error loading player details.');
+        console.log('[DEBUG] Masquage du loading : erreur lors du chargement des infos joueurs.');
         $('#loading-overlay').hide();
         $('#battlehistory-center').removeClass('blur');
     });
@@ -447,11 +449,24 @@ function displayMissionDetails(missionName, row) {
             $('.detail-item').slideUp(function() {
                 $(this).remove();
             });
-            // Show loading spinner
+            // Afficher le loading
+            console.log('[DEBUG] Affichage du loading pour chargement des détails attaque...');
             $('#loading-overlay').show();
             $('#battlehistory-center').addClass('blur');
             displayMissionDetails(missionName, $(this));
         }
     });
 });
+
+// Protection anti-spam pour les toasts d'erreur
+let lastErrorToastTime = 0;
+function showErrorToastOnce(message) {
+    const now = Date.now();
+    if (now - lastErrorToastTime > 5000) { // 5 secondes entre deux toasts identiques
+        showToast(message, 'error');
+        lastErrorToastTime = now;
+    } else {
+        console.log('[DEBUG] Toast d\'erreur ignoré pour éviter le spam :', message);
+    }
+}
 

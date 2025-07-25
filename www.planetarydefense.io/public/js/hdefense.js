@@ -135,7 +135,7 @@ $(document).ready(function() {
             await sleep(throttleMs);
         }
         // Si tous les endpoints échouent, on affiche une seule erreur utilisateur
-        showToast('Impossible de récupérer les infos joueurs : tous les serveurs WAX sont inaccessibles.', 'error');
+        showErrorToastOnce('Impossible de récupérer les infos joueurs : tous les serveurs WAX sont inaccessibles.');
         console.error(`[DEBUG] Tous les endpoints sont KO pour ${player}.`);
         const defaultPlayerData = {
             avatar: '1099538252468',
@@ -331,6 +331,8 @@ function displayMissionDetails(missionName, row) {
 
                 $(`#detail-${missionName}`).addClass('expanded');
                 scrollToMissionRow(missionName);
+                // Cacher le chargement
+                console.log('[DEBUG] Masquage du loading : données défense prêtes à afficher.');
                 $('#loading-overlay').hide();
                 $('#battlehistory-center').removeClass('blur');
 
@@ -339,6 +341,7 @@ function displayMissionDetails(missionName, row) {
             });
         }).catch(() => {
             displayErrorMessage('Error loading player details.');
+            console.log('[DEBUG] Masquage du loading : erreur lors du chargement des infos joueurs.');
             $('#loading-overlay').hide();
             $('#battlehistory-center').removeClass('blur');
         });
@@ -487,7 +490,8 @@ function bindModalEvents() {
             $('.detail-item').slideUp(function() {
                 $(this).remove();
             });
-            // Show loading spinner
+            // Afficher le loading
+            console.log('[DEBUG] Affichage du loading pour chargement des détails défense...');
             $('#loading-overlay').show();
             $('#battlehistory-center').addClass('blur');
             displayMissionDetails(missionName, $(this));
