@@ -60,8 +60,13 @@ $(document).ready(function() {
         return apiEndpoints[endpointIndex];
     }
     // Version optimisée de getPlayerInfo
+    // Liste dynamique d'endpoints actifs pour la session
+    let activeApiEndpoints = [...apiEndpoints];
+    let endpointFailures = {};
+
     async function getPlayerInfoOptimized(player, apiEndpoints, playerDetailsCache, throttleMs = 200) {
         if (playerDetailsCache[player]) {
+            console.log(`[DEBUG] Cache hit pour le joueur ${player}`);
             return playerDetailsCache[player];
         }
         const requestData = {
@@ -73,21 +78,54 @@ $(document).ready(function() {
             lower_bound: player,
             upper_bound: player
         };
-        for (let i = 0; i < apiEndpoints.length; i++) {
-            const endpoint = getNextEndpoint(apiEndpoints);
+        console.log(`[DEBUG] Début de la récupération des infos pour ${player}`);
+        for (let i = 0; i < activeApiEndpoints.length; i++) {
+            const endpoint = activeApiEndpoints[i];
+            console.log(`[DEBUG] Tentative ${i + 1}/${activeApiEndpoints.length} : endpoint = ${endpoint}`);
             try {
                 const response = await apiRequestWithRetryh(endpoint, requestData);
+                console.log(`[DEBUG] Succès endpoint ${endpoint} pour ${player} :`, response);
                 if (response.rows && response.rows.length > 0) {
                     const playerInfo = response.rows[0];
                     playerDetailsCache[player] = playerInfo;
                     await sleep(throttleMs);
+                    // Reset failure count on success
+                    endpointFailures[endpoint] = 0;
+                    console.log(`[DEBUG] Infos trouvées pour ${player} sur ${endpoint}. Cache mis à jour.`);
                     return playerInfo;
+                } else {
+                    console.warn(`[DEBUG] Réponse vide pour ${player} sur ${endpoint}`);
                 }
             } catch (error) {
-                console.error(`Failed to get player info from endpoint ${endpoint}. Trying next...`);
+                // Compte les échecs pour chaque endpoint
+                endpointFailures[endpoint] = (endpointFailures[endpoint] || 0) + 1;
+                console.error(`[DEBUG] Échec endpoint ${endpoint} pour ${player} (tentative ${endpointFailures[endpoint]}) :`, error);
+                // Si l'endpoint échoue 3 fois, on le retire temporairement
+                let remove = false;
+                // Erreurs réseau/CORS/SSL détectées par readyState 0 ou status 0
+                if (
+                    (error && error.status === 0) ||
+                    (error && error.statusText && error.statusText.toLowerCase().includes('cors')) ||
+                    (error && error.statusText && error.statusText.toLowerCase().includes('ssl')) ||
+                    (error && error.readyState === 0)
+                ) {
+                    remove = true;
+                    console.warn(`[DEBUG] Endpoint ${endpoint} retiré (CORS/SSL/Network error détecté)`);
+                }
+                if (endpointFailures[endpoint] >= 3) {
+                    remove = true;
+                    console.warn(`[DEBUG] Endpoint ${endpoint} retiré (3 échecs consécutifs)`);
+                }
+                if (remove) {
+                    activeApiEndpoints = activeApiEndpoints.filter(e => e !== endpoint);
+                    console.log(`[DEBUG] Endpoints actifs restants :`, activeApiEndpoints);
+                }
             }
             await sleep(throttleMs);
         }
+        // Si tous les endpoints échouent, on affiche une seule erreur utilisateur
+        showToast('Impossible de récupérer les infos joueurs : tous les serveurs WAX sont inaccessibles.', 'error');
+        console.error(`[DEBUG] Tous les endpoints sont KO pour ${player}.`);
         const defaultPlayerData = {
             avatar: '1099538252468',
             tag: 'No Tag'
