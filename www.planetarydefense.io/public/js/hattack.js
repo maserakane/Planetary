@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    const avatarInfoUrl = 'https://wax.api.atomicassets.io/atomicassets/v1/assets';
+    const avatarInfoUrl = 'https://atomic.3dkrender.com/atomicassets/v1/assets';
     const missionCache = [];
     const missionDetailsCache = {};
     const playerDetailsCache = {};

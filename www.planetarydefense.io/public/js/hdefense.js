@@ -3,7 +3,7 @@ $(document).ready(function() {
     if(construction === '0'){
     $('.modal').modal();
     const playerInfoUrl = 'https://api.waxsweden.org:443/v1/chain/get_table_rows';
-    const avatarInfoUrl = 'https://wax.api.atomicassets.io/atomicassets/v1/assets';
+    const avatarInfoUrl = 'https://atomic.3dkrender.com/atomicassets/v1/assets';
     const missionCache = [];
     const missionDetailsCache = {};
     const playerDetailsCache = {};
