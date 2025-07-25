@@ -323,23 +323,11 @@ async function fetchChest(landId) {
             const upgradeCost = await getUpgradeCost(chestData.chest_level);
             const chestImageUrl = getChestImageUrl(chestData.chest_level);
             const chestTier = getTier(chestData.chest_level);
-            const voteafterdecay = await getTotalVotepower();
-            // Ajout des logs pour le debug du calcul du VP Percentage
-            const vpMagor = await getVotepower('magor');
-            const vpKavian = await getVotepower('kavian');
-            const vpEyeke = await getVotepower('eyeke');
-            let magorVP = 0, kavianVP = 0, eyekeVP = 0;
-            if (vpMagor.rows.length > 0) magorVP = vpMagor.rows[0].weight / 10000;
-            if (vpKavian.rows.length > 0) kavianVP = vpKavian.rows[0].weight / 10000;
-            if (vpEyeke.rows.length > 0) eyekeVP = vpEyeke.rows[0].weight / 10000;
-            const totalVP = magorVP + kavianVP + eyekeVP;
-            console.log('VP Magor:', magorVP);
-            console.log('VP Kavian:', kavianVP);
-            console.log('VP Eyeke:', eyekeVP);
-            console.log('Total VP:', totalVP);
+            // Utiliser le total VP (incluant les unn)
+            const totalVP = await getTotalVotepower();
             const bonusVP = await getBonusVP(totalVP);
-            console.log('Bonus VP (%):', bonusVP);
-            console.log('chestData.TLM:', chestData.TLM);
+            console.log('Total VP (toutes planètes, y compris unn) :', totalVP);
+            console.log('Bonus VP (%) utilisé pour la récompense :', bonusVP);
             const vpReward = (bonusVP / 100) * chestData.TLM;
             console.log('VP Reward:', vpReward);
 
