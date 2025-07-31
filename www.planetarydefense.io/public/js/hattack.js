@@ -5,6 +5,18 @@ $(document).ready(function() {
     const playerDetailsCache = {};
     const avatarImagesCache = {};
     const cacheDuration = 24 * 60 * 60 * 1000; // Cache duration in milliseconds (24 hours)
+    
+    // Protection anti-spam pour les toasts d'erreur
+    let lastErrorToastTime = 0;
+    function showErrorToastOnce(message) {
+        const now = Date.now();
+        if (now - lastErrorToastTime > 5000) { // 5 secondes entre deux toasts identiques
+            showToast(message, 'error');
+            lastErrorToastTime = now;
+        } else {
+            console.log('[DEBUG] Toast d\'erreur ignoré pour éviter le spam :', message);
+        }
+    }
 
     // Function to extract numeric values from rewards
     $.fn.dataTable.ext.type.order['reward-pre'] = function(data) {
@@ -457,16 +469,4 @@ function displayMissionDetails(missionName, row) {
         }
     });
 });
-
-// Protection anti-spam pour les toasts d'erreur
-let lastErrorToastTime = 0;
-function showErrorToastOnce(message) {
-    const now = Date.now();
-    if (now - lastErrorToastTime > 5000) { // 5 secondes entre deux toasts identiques
-        showToast(message, 'error');
-        lastErrorToastTime = now;
-    } else {
-        console.log('[DEBUG] Toast d\'erreur ignoré pour éviter le spam :', message);
-    }
-}
 
