@@ -11,17 +11,80 @@
     let periodicUpdateInterval;
     let isRefreshing = false;
     
+    // Cache pour améliorer les performances
+    const cache = {
+        pvpData: null,
+        chestData: null,
+        votepowerData: null,
+        decayData: null,
+        avatarData: {},
+        lastUpdate: 0,
+        cacheDuration: 30000 // 30 secondes de cache
+    };
+    
     const userAccount = localStorage.getItem("userAccount");
+    
+    // Fonction optimisée pour les requêtes API avec cache et timeout réduit
+    async function optimizedApiRequest(endpoint, requestData, timeout = 3000) {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), timeout);
+            
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData),
+                signal: controller.signal
+            });
+            
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            
+            return await response.json();
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                throw new Error('Timeout');
+            }
+            throw error;
+        }
+    }
+    
+    // Fonction pour faire des requêtes en parallèle avec fallback rapide
+    async function parallelApiRequest(requestData, timeout = 3000) {
+        const promises = apiEndpointsLive.map(endpoint => 
+            optimizedApiRequest(endpoint, requestData, timeout)
+                .catch(error => ({ error, endpoint }))
+        );
+        
+        // Attendre le premier succès ou tous les échecs
+        const results = await Promise.allSettled(promises);
+        
+        for (const result of results) {
+            if (result.status === 'fulfilled' && !result.value.error) {
+                return result.value;
+            }
+        }
+        
+        throw new Error('Tous les endpoints ont échoué');
+    }
+    
     async function startPeriodicUpdate() {
         if (periodicUpdateInterval) {
             clearInterval(periodicUpdateInterval);
         }
         periodicUpdateInterval = setInterval(async () => {
-            if (document.getElementById('pvp-center')) { // Assuming 'pvp-center' is a unique element in pvp.html
+            if (document.getElementById('pvp-center')) {
                 await periodicUpdate();
             }
-        }, 1 * 60 * 1000); // 5 minutes
+        }, 2 * 60 * 1000); // Réduit à 2 minutes au lieu de 5
     }
+    
     function stopPeriodicUpdate() {
         if (periodicUpdateInterval) {
             clearInterval(periodicUpdateInterval);
@@ -29,53 +92,86 @@
         }
     }
 
-        async function initializePvP() {
-			if (!document.currentScript || !document.currentScript.src.includes("pvp.js")) {
-				console.warn("Script exécuté depuis VMxxxx, arrêt...");
-				return;
-			}
-            showLoading();
-            try {
-                let pvpData = await fetchPvpData();
-                votepowerData = await getVotepower(pvpData.selected_player);
-                decayData = await getDecay(pvpData.selected_player);
-                chestData = await fetchDataChestDetail();
-                // Filtrer les coffres par pvpData.land_id uniquement
-                const playerChests = chestData.filter(chest => chest.land_id === pvpData.land_id);
-                // Calculer le total des TLM pour ce land_id
-                const totalChest = playerChests.reduce((sum, chest) => sum + chest.TLM, 0);
-                const chestRewards = await calculateChestRewards(playerChests);
-                displayPhase(pvpData);
-                
-            // Exemple d'utilisation dans initializePvP
-            const avatarImage = await fetchPlayerAvatar(pvpData.selected_player);
-            const avatarContainer = document.getElementById('avatar-container');
-            if (avatarContainer) {
-                const avatarElement = document.getElementById('avatarImagepvp');
-                avatarElement.src = avatarImage || defaultAvatarUrl;
-                avatarContainer.style.display = 'flex';
-            }
-                hideLoading();
-                startPeriodicUpdate(); // Ajoutez cet appel pour démarrer les mises à jour périodiques
-                window.addEventListener('beforeunload', function() {
-                    stopPeriodicUpdate();
-                });
-            } catch (error) {
-                console.error('Error initializing PvP:', error);
-                hideLoading();
-            }
+    async function initializePvP() {
+        if (!document.currentScript || !document.currentScript.src.includes("pvp.js")) {
+            console.warn("Script exécuté depuis VMxxxx, arrêt...");
+            return;
         }
+        
+        showLoading();
+        try {
+            // Vérifier le cache d'abord
+            const now = Date.now();
+            if (cache.pvpData && (now - cache.lastUpdate) < cache.cacheDuration) {
+                console.log('Utilisation du cache PvP');
+                displayPhase(cache.pvpData);
+                hideLoading();
+                startPeriodicUpdate();
+                return;
+            }
+            
+            // Récupérer les données en parallèle
+            const [pvpData, chestDataResult] = await Promise.all([
+                fetchPvpData(),
+                fetchDataChestDetail()
+            ]);
+            
+            // Mettre à jour le cache
+            cache.pvpData = pvpData;
+            cache.chestData = chestDataResult;
+            cache.lastUpdate = now;
+            
+            // Récupérer les données de vote power et decay en parallèle
+            const [votepowerResult, decayResult] = await Promise.all([
+                getVotepower(pvpData.selected_player),
+                getDecay(pvpData.selected_player)
+            ]);
+            
+            votepowerData = votepowerResult;
+            decayData = decayResult;
+            
+            // Filtrer les coffres par pvpData.land_id uniquement
+            const playerChests = chestDataResult.filter(chest => chest.land_id === pvpData.land_id);
+            const totalChest = playerChests.reduce((sum, chest) => sum + chest.TLM, 0);
+            const chestRewards = calculateChestRewards(playerChests);
+            
+            displayPhase(pvpData);
+            
+            // Charger l'avatar en arrière-plan
+            fetchPlayerAvatar(pvpData.selected_player).then(avatarImage => {
+                const avatarContainer = document.getElementById('avatar-container');
+                if (avatarContainer) {
+                    const avatarElement = document.getElementById('avatarImagepvp');
+                    if (avatarElement) {
+                        avatarElement.src = avatarImage || defaultAvatarUrl;
+                        avatarContainer.style.display = 'flex';
+                    }
+                }
+            });
+            
+            hideLoading();
+            startPeriodicUpdate();
+            window.addEventListener('beforeunload', function() {
+                stopPeriodicUpdate();
+            });
+        } catch (error) {
+            console.error('Error initializing PvP:', error);
+            hideLoading();
+            showToast('Erreur lors du chargement des données PvP', 'error');
+        }
+    }
 
-        window.initializePvP = initializePvP;
+    window.initializePvP = initializePvP;
+    
     function checkAndInitializePvP() {
-        if (document.getElementById('pvp-center')) { // Assuming 'pvp-center' is a unique element in pvp.html
+        if (document.getElementById('pvp-center')) {
             initializePvP();
         } else {
             stopPeriodicUpdate();
         }
     }
 
-    // Ajoutez un observateur de mutations pour détecter les changements de page
+    // Ajouter un observateur de mutations pour détecter les changements de page
     const observer = new MutationObserver(checkAndInitializePvP);
     observer.observe(document.getElementById('pvp-center'), { childList: true });
 	
@@ -101,8 +197,6 @@
 	document.removeEventListener('visibilitychange', handleVisibilityChange);
 	document.addEventListener('visibilitychange', handleVisibilityChange);
 
-
-
     async function fetchPvpData() {
         const requestData = {
             json: true,
@@ -113,25 +207,19 @@
             limit: 1,
         };
     
-        let lastError = null; // Stocker la dernière erreur pour le débogage
-    
-        for (let endpoint of apiEndpointsLive) {
-            try {
-                const data = await apiRequestWithRetryh(endpoint, requestData, 1, 5000);
-    
-                if (data.rows && data.rows.length > 0) {
-                    window.pvpGlobalData = data.rows[0]; // Rendre les données accessibles globalement
-                    return data.rows[0];
-                }
-            } catch (error) {
-                lastError = error;
-                console.error(`Error fetching PVP data from ${endpoint}:`, error);
+        try {
+            const data = await parallelApiRequest(requestData, 3000);
+            
+            if (data.rows && data.rows.length > 0) {
+                window.pvpGlobalData = data.rows[0];
+                return data.rows[0];
             }
+        } catch (error) {
+            console.error('Error fetching PVP data:', error);
         }
     
         // Si tous les endpoints échouent
-        showToast('Failed to fetch PVP data after multiple attempts.', 'error');
-        if (lastError) console.error('Last error:', lastError);
+        showToast('Échec de récupération des données PvP', 'error');
     
         // Retourner les données par défaut
         const defaultData = getDefaultPvpData();
@@ -156,7 +244,12 @@
     }
 
 async function fetchPlayerAvatar(selectedPlayer) {
-    const defaultAvatarUrl = "../images/20241021_214433_0000.png"; // Remplacez par l'URL de votre avatar par défaut
+    const defaultAvatarUrl = "../images/20241021_214433_0000.png";
+    
+    // Vérifier le cache d'abord
+    if (cache.avatarData[selectedPlayer]) {
+        return cache.avatarData[selectedPlayer];
+    }
 
     const requestPlayerData = {
         code: "federation",
@@ -169,78 +262,54 @@ async function fetchPlayerAvatar(selectedPlayer) {
     };
 
     try {
-        let allEndpointsFailed = true; // Indicateur pour vérifier si tous les endpoints échouent
+        const playerResponse = await parallelApiRequest(requestPlayerData, 2000);
+        
+        if (playerResponse && playerResponse.rows.length > 0) {
+            const avatarId = playerResponse.rows[0]?.avatar;
 
-        // Boucle sur les endpoints pour la requête principale
-        for (const endpoint of apiEndpointsLive) {
-            try {
-                const playerResponse = await apiRequestWithRetryh(endpoint, requestPlayerData, 1);
-                if (playerResponse && playerResponse.rows.length > 0) {
-                    allEndpointsFailed = false; // Un endpoint a réussi
-                    const avatarId = playerResponse.rows[0]?.avatar;
+            if (avatarId) {
+                // Récupérer les données de l'avatar avec timeout court
+                const assetUrl = `https://wax.api.atomicassets.io/atomicassets/v1/assets/${avatarId}`;
+                const assetResponse = await fetch(assetUrl, { 
+                    signal: AbortSignal.timeout(2000) 
+                });
 
-                    if (avatarId) {
-                        // Récupérer les données de l'avatar
-                        const assetUrl = `https://wax.api.atomicassets.io/atomicassets/v1/assets/${avatarId}`;
-                        const assetResponse = await fetch(assetUrl);
+                if (assetResponse.ok) {
+                    const assetData = await assetResponse.json();
+                    const templateId = assetData.data?.template?.template_id;
 
-                        if (assetResponse.ok) {
-                            const assetData = await assetResponse.json();
-                            const templateId = assetData.data?.template?.template_id;
+                    if (templateId) {
+                        const requestMcData = {
+                            code: "members.mc",
+                            table: "avatars",
+                            scope: "members.mc",
+                            json: true,
+                            limit: 100,
+                            lower_bound: templateId,
+                            upper_bound: templateId,
+                        };
 
-                            if (templateId) {
-                                const requestMcData = {
-                                    code: "members.mc",
-                                    table: "avatars",
-                                    scope: "members.mc",
-                                    json: true,
-                                    limit: 100,
-                                    lower_bound: templateId,
-                                    upper_bound: templateId,
-                                };
-
-                                // Boucle sur les endpoints pour les données MC
-                                for (const mcEndpoint of apiEndpointsLive) {
-                                    try {
-                                        const mcResponse = await apiRequestWithRetryh(mcEndpoint, requestMcData, 1);
-                                        if (mcResponse && mcResponse.rows.length > 0) {
-                                            return generateImgUrl(mcResponse.rows[0]?.image || defaultAvatarUrl);
-                                        }
-                                    } catch (mcError) {
-                                        console.error(`MC Data API Error on ${mcEndpoint}:`, mcError);
-                                    }
-                                }
-
-                                console.error("MC data not found for the avatar.");
-                            } else {
-                                console.error("Template ID not found for the avatar.");
-                            }
-                        } else {
-                            console.error("Failed to retrieve avatar information.");
+                        const mcResponse = await parallelApiRequest(requestMcData, 2000);
+                        
+                        if (mcResponse && mcResponse.rows.length > 0) {
+                            const avatarUrl = generateImgUrl(mcResponse.rows[0]?.image || defaultAvatarUrl);
+                            cache.avatarData[selectedPlayer] = avatarUrl;
+                            return avatarUrl;
                         }
                     }
                 }
-            } catch (playerError) {
-                console.error(`Player API Error on ${endpoint}:`, playerError);
-                return defaultAvatarUrl;
             }
-        }
-
-        if (allEndpointsFailed) {
-            showToast("All endpoints failed to fetch player data. Please try again later.", "error");
         }
     } catch (error) {
         console.error('Error fetching avatar:', error);
-        showToast("An unexpected error occurred while fetching the avatar.", "error");
     }
 
+    cache.avatarData[selectedPlayer] = defaultAvatarUrl;
     return defaultAvatarUrl;
 }
 
-
-
 function generateImgUrl(imagePath) {
-    const defaultAvatarUrl = "../images/20241021_214433_0000.png"; // URL de l'avatar par défaut
+    const defaultAvatarUrl = "../images/20241021_214433_0000.png";
     try {
         if (!imagePath) throw new Error("Invalid image path");
         return `https://beastgarden.mypinata.cloud/ipfs/${imagePath}`;
@@ -256,8 +325,10 @@ async function fetchDataChestDetail() {
         let allChests = [];
         let lower_bound = "";
         let more = true;
+        let attempts = 0;
+        const maxAttempts = 3; // Limiter le nombre de tentatives
 
-        while (more) {
+        while (more && attempts < maxAttempts) {
             const requestData = {
                 json: true,
                 code: window.planetData.WalletMission,
@@ -267,42 +338,33 @@ async function fetchDataChestDetail() {
                 lower_bound: lower_bound,
             };
 
-            let fetched = false;
-
-            for (const endpoint of apiEndpointsLive) {
-                try {
-                    const response = await apiRequestWithRetryh(endpoint, requestData, 1);
-                    if (response && response.rows) {
-                        allChests = allChests.concat(response.rows);
-                        fetched = true;
-
-                        more = response.more;
-                        if (more) {
-                            lower_bound = response.next_key;
-                        }
-
-                        break;
+            try {
+                const response = await parallelApiRequest(requestData, 4000);
+                
+                if (response && response.rows) {
+                    allChests = allChests.concat(response.rows);
+                    more = response.more;
+                    if (more) {
+                        lower_bound = response.next_key;
                     }
-                } catch (error) {
-                    console.error(`Error fetching chest details from ${endpoint}:`, error);
+                } else {
+                    more = false;
                 }
+            } catch (error) {
+                console.error('Error fetching chest details:', error);
+                more = false;
             }
-
-            if (!fetched) {
-                showToast("All endpoints failed to fetch chest details. Please try again later.", "error");
-                return null;
-            }
+            
+            attempts++;
         }
 
         console.log(`Successfully fetched ${allChests.length} chests.`);
-
-        // Exemple de transformation de données (à adapter si nécessaire)
-        return allChests
+        return allChests;
 
     } catch (error) {
         console.error('Unexpected error:', error);
-        showToast("An unexpected error occurred. Check console for details.", "error");
-        return null;
+        showToast("Erreur lors de la récupération des coffres", "error");
+        return [];
     }
 }
 
@@ -342,7 +404,7 @@ async function fetchDataChestDetail() {
         // Filter chest data for the selected player
         const playerChests = chestData.filter(chest => chest.land_id === pvpData.land_id);
         const totalChest = playerChests.reduce((sum, chest) => sum + chest.TLM, 0);
-        const chestRewards = await calculateChestRewards(playerChests);
+        const chestRewards = calculateChestRewards(playerChests);
         const unprotectedChest = calculateUnprotectedChest(totalChest, chestRewards);
 
         // Display top 10 chests
@@ -483,21 +545,27 @@ function startResultCountdown(endTime, containerId) {
 }
 
 
-    async function calculateChestRewards(chests) {
+    function calculateChestRewards(chests) {
         let rewards = 0;
+        // Cache pour les pourcentages de protection
+        const protectionCache = {};
+        
         for (const chest of chests) {
-            const protectionPercentage = await calculateProtectionPercentage(chest.chest_level);
-            //const votePower = await getVotepower(chest.owner);
-            //const decay = await getDecay(chest.owner);
-            //const voteAfterDecay = calculateVoteAfterDecay(votePower, decay);
-            //const rewardPercentage = calculateRewardPercentage(voteAfterDecay);
+            let protectionPercentage;
+            if (protectionCache[chest.chest_level]) {
+                protectionPercentage = protectionCache[chest.chest_level];
+            } else {
+                protectionPercentage = calculateProtectionPercentage(chest.chest_level);
+                protectionCache[chest.chest_level] = protectionPercentage;
+            }
+            
             const rewardAmount = chest.TLM * protectionPercentage / 100;
             rewards += rewardAmount;
         }
         return rewards;
     }
 
-    async function calculateProtectionPercentage(chestLevel) {
+    function calculateProtectionPercentage(chestLevel) {
         const bonusMapDetail = {
             1: 2.5, 2: 5, 3: 7.5, 4: 10, 5: 12.5,
             6: 15, 7: 17.5, 8: 20, 9: 22.5, 10: 25,
@@ -520,19 +588,16 @@ function startResultCountdown(endTime, containerId) {
             upper_bound: owner,
         };
 
-        for (const endpoint of apiEndpointsLive) {
-            try {
-                const response = await apiRequestWithRetryh(endpoint, requestData, 1);
-                if (response && response.rows.length > 0) {
-                    votepowerData = response.rows[0].weight / 10000;
-                    return votepowerData;
-                }
-            } catch (error) {
-                console.error(`Error fetching vote power from ${endpoint}:`, error);
+        try {
+            const response = await parallelApiRequest(requestData, 2000);
+            if (response && response.rows.length > 0) {
+                votepowerData = response.rows[0].weight / 10000;
+                return votepowerData;
             }
+        } catch (error) {
+            console.error('Error fetching vote power:', error);
         }
 
-        showToast("All endpoints failed to fetch vote power. Please try again later.", "error");
         return 0;
     }
 
@@ -549,19 +614,16 @@ function startResultCountdown(endTime, containerId) {
             upper_bound: owner,
         };
 
-        for (const endpoint of apiEndpointsLive) {
-            try {
-                const response = await apiRequestWithRetryh(endpoint, requestData, 1);
-                if (response && response.rows.length > 0) {
-                    decayData = new Date(response.rows[0].vote_time_stamp);
-                    return decayData;
-                }
-            } catch (error) {
-                console.error(`Error fetching decay data from ${endpoint}:`, error);
+        try {
+            const response = await parallelApiRequest(requestData, 2000);
+            if (response && response.rows.length > 0) {
+                decayData = new Date(response.rows[0].vote_time_stamp);
+                return decayData;
             }
+        } catch (error) {
+            console.error('Error fetching decay data:', error);
         }
 
-        showToast("All endpoints failed to fetch decay data. Please try again later.", "error");
         return new Date();
     }
 
@@ -975,18 +1037,15 @@ async function fetchPvp3Data() {
         limit: 16,
     };
 
-    for (let endpoint of apiEndpointsLive) {
-        try {
-            const data = await apiRequestWithRetryh(endpoint, requestData, 1, 5000);
-            if (data.rows && data.rows.length > 0) {
-                return data.rows;
-            }
-        } catch (error) {
-            console.error(`Error fetching PVP3 data from ${endpoint}:`, error);
+    try {
+        const data = await parallelApiRequest(requestData, 3000);
+        if (data.rows && data.rows.length > 0) {
+            return data.rows;
         }
+    } catch (error) {
+        console.error('Error fetching PVP3 data:', error);
     }
 
-    showToast('Failed to fetch PVP3 data after multiple attempts.', 'error');
     return [];
 }
 
@@ -1002,7 +1061,9 @@ async function processPvp3Data() {
     return validPlayers;
 }
 async function displayTopChests(chests) {
-    const validPlayers = await processPvp3Data();
+    // Charger les données PvP3 en arrière-plan pour ne pas bloquer l'affichage
+    const validPlayersPromise = processPvp3Data();
+    
     const topChestsContainer = document.getElementById('top-chests-container');
     const column1 = document.getElementById('top-chests-list-column-1');
     const column2 = document.getElementById('top-chests-list-column-2');
@@ -1016,25 +1077,14 @@ async function displayTopChests(chests) {
         description.innerHTML = ''; 
 
         const sortedChests = chests.sort((a, b) => b.TLM - a.TLM).slice(0, 10);
-        const seenPlayers = new Set();
         
+        // Afficher d'abord les coffres sans les données PvP3
         sortedChests.forEach((chest, index) => {
             let colorClass = '';
             if (index === 0) colorClass = 'red-text';
             else if (index >= 1 && index <= 4) colorClass = 'orange-text';
         
-            let chestOwner = chest.owner.toLowerCase();
-            let playerLandKey = `${chestOwner}-${chest.land_id}`;
-        
-            let displayIndex;
-            if (validPlayers.includes(chestOwner) && !seenPlayers.has(playerLandKey)) {
-                displayIndex = '#P';
-                seenPlayers.add(playerLandKey);
-            } else {
-                displayIndex = `#${index + 1}`;
-            }
-        
-            const chestHTML = `<p class="${colorClass}">${displayIndex}. ${chest.owner}, Level: ${chest.chest_level}, PDT: ${chest.TLM}, Land ID: ${chest.land_id}</p>`;
+            const chestHTML = `<p class="${colorClass}">#${index + 1}. ${chest.owner}, Level: ${chest.chest_level}, PDT: ${chest.TLM}, Land ID: ${chest.land_id}</p>`;
         
             if (index < 5) column1.innerHTML += chestHTML;
             else column2.innerHTML += chestHTML;
@@ -1044,10 +1094,43 @@ async function displayTopChests(chests) {
             <p class="lato pvp-chest-description planet-color-dynamique">
                 In PvP, the player with the most PDT in their chest becomes the primary target! This puts their chest in the spotlight, making it an attractive target for attacks from other players.<br><br>
                 To avoid being targeted, they should upgrade their chest to speed up TLM extraction and gain a protection percentage (keeping part of their TLM safe from being stolen).<br><br>
-                If they’re still in the spotlight, they must strengthen their defenses and rally allies to help secure their chest.<br><br>
+                If they're still in the spotlight, they must strengthen their defenses and rally allies to help secure their chest.<br><br>
                 Once the 72-hour defense phase ends, attackers will have a 48-hour window to attempt breaking through and looting any unprotected PDT.
             </p>
         `;
+        
+        // Mettre à jour avec les données PvP3 une fois disponibles
+        try {
+            const validPlayers = await validPlayersPromise;
+            const seenPlayers = new Set();
+            
+            column1.innerHTML = '';
+            column2.innerHTML = '';
+            
+            sortedChests.forEach((chest, index) => {
+                let colorClass = '';
+                if (index === 0) colorClass = 'red-text';
+                else if (index >= 1 && index <= 4) colorClass = 'orange-text';
+            
+                let chestOwner = chest.owner.toLowerCase();
+                let playerLandKey = `${chestOwner}-${chest.land_id}`;
+            
+                let displayIndex;
+                if (validPlayers.includes(chestOwner) && !seenPlayers.has(playerLandKey)) {
+                    displayIndex = '#P';
+                    seenPlayers.add(playerLandKey);
+                } else {
+                    displayIndex = `#${index + 1}`;
+                }
+            
+                const chestHTML = `<p class="${colorClass}">${displayIndex}. ${chest.owner}, Level: ${chest.chest_level}, PDT: ${chest.TLM}, Land ID: ${chest.land_id}</p>`;
+            
+                if (index < 5) column1.innerHTML += chestHTML;
+                else column2.innerHTML += chestHTML;
+            });
+        } catch (error) {
+            console.error('Error updating top chests with PvP data:', error);
+        }
     }
 }
     // Show loading overlay
@@ -1065,10 +1148,27 @@ async function displayTopChests(chests) {
             loadingOverlay.style.display = 'none';
         }
     }
+    // Fonction pour nettoyer le cache périodiquement
+    function clearCache() {
+        const now = Date.now();
+        if (cache.lastUpdate && (now - cache.lastUpdate) > 5 * 60 * 1000) { // 5 minutes
+            cache.pvpData = null;
+            cache.chestData = null;
+            cache.votepowerData = null;
+            cache.decayData = null;
+            cache.lastUpdate = 0;
+            console.log('Cache PvP nettoyé');
+        }
+    }
+    
+    // Nettoyer le cache toutes les 5 minutes
+    setInterval(clearCache, 5 * 60 * 1000);
+    
     window.startPvpIntervals = async function(){
+        // Réduire le délai de démarrage
         setTimeout(() => {
             window.initializePvP();
-        }, 1000); // 1000 millisecondes = 1 seconde
+        }, 500); // Réduit de 1000ms à 500ms
     };
 	
 	checkAndInitializePvP();
