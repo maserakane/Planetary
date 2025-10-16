@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planetary Defense</title>
+    <link rel="shortcut icon" type="image/png" href="../images/favicon_P.ico" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/theme.bootstrap_4.min.css" rel="stylesheet">
+    <link href="css/mission.css?v=2.23" rel="stylesheet">
+</head>
+<body>
+    <header class="container-fluid text-center d-flex align-items-center position-relative mb-1 background-section">
+        <div class="header-left m-auto" id="planet-mission">
+            <a class="hover-image" href="#"><img src="../images/Neri.png"  class="img-fluid"   onclick="loadContent('mission-live-neri.html?v=1.1', ['js/donnationnaron.js', 'js/donations.js?v=1.7'], 'url(\'../images/Neri-bkg.png\')', '#A5C5B2', '#DDBB86', 'Neri')" alt="Neri" title="Neri"></a>
+            <a class="hover-image" href="#"><img src="../images/Naron.png" class="img-fluid"   onclick="loadContent('mission-live-naron.html?v=1.1', ['js/donnationnaron.js', 'js/donations.js?v=1.7'], 'url(\'../images/Naron-bkg.png\')', '#B98CC9', '#8FB4DF', 'Naron')"  alt="Naron" title="Naron"></a>
+            <a class="hover-image" href="#"><img src="../images/Magor.png" class="img-fluid"   onclick="loadContent('mission-live.html?v=1.4', ['js/mission-live.js?v=3.992', 'js/mission.js?v=1.6'], 'url(\'../images/background_crimson2.png\')', '#DDBB86', '#F85A29', 'Magor')" alt="Magor" title="Magor"></a>
+            <a class="hover-image" href="#"><img src="../images/Veles.png" class="img-fluid"   onclick="loadContent('mission-live-veles.html?v=1.1', ['js/donnationnaron.js', 'js/donations.js?v=1.7'], 'url(\'../images/Veles-bkg.png\')', '#99DF9C', '#73CFBB', 'Veles')" alt="Veles" title="Veles"></a>
+            <a class="hover-image" href="#"><img src="../images/Eyeke.png" class="img-fluid"   onclick="loadContent('mission-live-eyeke.html?v=1.1', ['js/donnationnaron.js', 'js/donations.js?v=1.7'], 'url(\'../images/Eyeke-bkg.jpg\')', '#55A6E8', '#80DF6D', 'Eyeke')" alt="Eyeke" title="Eyeke"></a>
+            <a class="hover-image" href="#"><img src="../images/Kavian.png" class="img-fluid"  onclick="loadContent('mission-live-kavian.html?v=1.1', ['js/donnationnaron.js', 'js/donations.js?v=1.7'], 'url(\'../images/Kavian-bkg.jpg\')', '#FFBA53', '#EF966C', 'Kavian')" alt="Kavian" title="Kavian"></a>
+        </div>
+        <div class="header-center d-flex flex-row flex-wrap m-auto">
+            <img src="../images/banniere_no_contour.png" class="img-fluid banniere-img m-auto" alt="Bannière">
+        </div>
+        <div class="header-right d-flex align-items-center flex-column justify-content-center position-relative">
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="hover-image" href="#" id="logout" onclick="logout()"><img src="../images/logout.png" class="img-fluid m-auto" alt="Logout"></a>
+        </div>
+    </header>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title planet-color-dynamique" id="offcanvasNavbarLabel">Menu</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><img src="../images/missions_button.png" onclick="loadContent('mission-live.html?v=1.4', ['js/mission-live.js?v=3.992', 'js/mission.js?v=1.6'])" alt="Missions"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><img src="../images/pvp.png" onclick="loadContent('pvp.html?v=1', ['js/pvp.js?v=1.99', 'js/pvp_smart.js?v=1'])" alt="Player Guide"></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button">
+                        <img src="../images/outpost.png" alt="Outpost">
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#"><img  src="../images/chest_button.png" onclick="loadContent('chest.html?v=1.4', ['js/chest.js?v=1.6', 'js/chest-live.js?v=1.97'])" alt="Chest"></a></li>
+                        <li><a class="dropdown-item" href="#"><img  src="../images/forge_button.png" onclick="loadContent('forge.html', ['js/forge.js?v=1.0', 'js/forge-live.js?v=1.2'])" alt="Forge"></a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><img src="../images/planetarybazaar.png" onclick="loadContent('csearch.html', ['js/csearch.js?v=1.1'])" alt="Search NFT"></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button">
+                        <img src="../images/library_button.png" alt="Library"></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#"><img  src="../images/story_button.png" onclick="loadContent('lore.html', ['js/lore.js?v=1.4'])" alt="Lore"></a></li>
+                        <li><a class="dropdown-item" href="#"><img  src="../images/creatures_button.png" onclick="loadContent('monster.html', ['js/monster.js?v=1.5'])" alt="Monster"></a></li>
+                        <li><a class="dropdown-item" href="#"><img  src="../images/supply_ads_button.png" onclick="loadContent('supply-ads.html', ['js/supply-ads.js?v=1.0'])" alt="Supply Ads"></a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><img src="../images/leaderboard.png" onclick="loadContent('leaderboard.html', ['js/leaderboard.js?v=1.93'])" alt="Leaderboard"></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button">
+                        <img src="../images/battle_history_button.png" alt="History"></a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#"><img  src="../images/history_attack.png" onclick="loadContent('hattack.html?v=1.6', ['js/hattack.js?v=2.21'])" alt="Attack"></a></li>
+                        <li><a class="dropdown-item" href="#"><img  src="../images/history_defense.png" onclick="loadContent('hdefense.html?v=1.4', ['js/hdefense.js?v=2.41'])" alt="Defense"></a></li>
+                        <li><a class="dropdown-item" href="#"><img  src="../images/history_pvp.png" onclick="loadContent('hpvp.html?v=1.3', ['js/hpvp.js?v=2.43'])" alt="PvP"></a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent d-none d-lg-flex">
+        <div class="container-fluid justify-content-center">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><img src="../images/missions_button.png" onclick="loadContent('mission-live.html?v=1.4', ['js/mission-live.js?v=3.992', 'js/mission.js?v=1.6'])" alt="Missions"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><img src="../images/pvp.png" onclick="loadContent('pvp.html?v=1', ['js/pvp.js?v=1.99', 'js/pvp_smart.js?v=1'])" alt="PvP"></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDesktop" role="button">
+                            <img src="../images/outpost.png" alt="Outpost">
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDesktop">
+                            <li><a class="dropdown-item" href="#"><img  src="../images/chest_button.png" onclick="loadContent('chest.html?v=1.4', ['js/chest.js?v=1.6', 'js/chest-live.js?v=1.97'])" alt="Chest"></a></li>
+                            <li><a class="dropdown-item" href="#"><img src="../images/forge_button.png" onclick="loadContent('forge.html', ['js/forge.js?v=1.0', 'js/forge-live.js?v=1.2'])" alt="Forge"></a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><img src="../images/planetarybazaar.png" onclick="loadContent('csearch.html', ['js/csearch.js?v=1.1'])" alt="Search NFT"></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDesktop" role="button">
+                            <img src="../images/library_button.png" alt="Library"></a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownDesktop">
+                            <li><a class="dropdown-item" href="#"><img  src="../images/story_button.png" onclick="loadContent('lore.html', ['js/lore.js?v=1.4'])" alt="Lore"></a></li>
+                            <li><a class="dropdown-item" href="#"><img  src="../images/creatures_button.png" onclick="loadContent('monster.html', ['js/monster.js?v=1.5'])" alt="Monster"></a></li>
+                            <li><a class="dropdown-item" href="#"><img  src="../images/supply_ads_button.png" onclick="loadContent('supply-ads.html', ['js/supply-ads.js?v=1.0'])" alt="Supply Ads"></a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><img src="../images/leaderboard.png" onclick="loadContent('leaderboard.html', ['js/leaderboard.js?v=1.93'])" alt="Leaderboard"></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button">
+                            <img src="../images/battle_history_button.png" alt="History"></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><img  src="../images/history_attack.png" onclick="loadContent('hattack.html?v=1.6', ['js/hattack.js?v=2.21'])" alt="Attack"></a></li>
+                            <li><a class="dropdown-item" href="#"><img  src="../images/history_defense.png" onclick="loadContent('hdefense.html?v=1.4', ['js/hdefense.js?v=2.41'])" alt="Defense"></a></li>
+                            <li><a class="dropdown-item" href="#"><img  src="../images/history_pvp.png" onclick="loadContent('hpvp.html?v=1.3', ['js/hpvp.js?v=2.43'])" alt="PvP"></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid main flex-grow-1">
+        <div class="row flex-grow-1 mx-auto">
+            <div class="column-left col-12 col-md-4 col-lg-2 custom-col" id="left-column">
+                <div id="data-players" class="background-section">
+                    <div id="data-players-img" class="d-flex justify-content-around align-items-center">
+                        <img id="avatarImage" class="img-fluid" src="" alt="Avatar">
+                        <img id="pla-Image" class="img-fluid" src="../images/Magor.png" alt="planet image">
+                    </div>
+                    <div id="data-players-inf" class="planet-color-dynamique d-flex flex-row align-items-stretch justify-content-around mt-3 text-center">
+                        <p id="name-info"></p>
+                        <p id="name-info-planet">Magor</p>
+                    </div>
+                    <div class="d-flex flex-row align-items-baseline justify-content-around mb-2 text-center">
+                        <p id="wam">ipddfdf.wam</p>
+                        <p id="update-time" class=""></p>
+                    </div>
+                    <div class="row text-break">
+                        <div class="col-6 col-md-3 col-lg-6">
+                            <div class="active-stat">
+                                <img class="image-stat" id="" src="../images/Defense.png" alt="logo defense">
+                                <div class="stat-text">
+                                    <p class="point-stat" id="name">Defense Score</p>
+                                    <p class="total-point" id="defenseScore"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 col-lg-6">
+                            <div class="active-stat">
+                                <img class="image-stat" id="" src="../images/Attack.png" alt="logo attaque">
+                                <div class="stat-text">
+                                    <p class="point-stat" id="name">Attack Score</p>
+                                    <p class="total-point" id="attackScore"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 col-lg-6">
+                            <div class="active-stat">
+                                <img class="image-stat" id="" src="../images/crew.png" alt="logo crew">
+                                <div class="stat-text">
+                                    <p class="point-stat" id="name">Available Slot</p>
+                                    <p class="total-point" id="crewSlotsAvailable"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 col-lg-6">
+                            <div class="active-stat">
+                                <img class="image-stat" id="" src="../images/crew_number.png" alt="logocew">
+                                <div class="stat-text">
+                                    <p class="point-stat" id="name">Crew Number</p>
+                                    <p class="total-point" id="crewNumber"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 col-lg-6">
+                            <div class="active-stat">
+                                <img class="image-stat" id="" src="../images/defense-arm.png" alt="logo crew">
+                                <div class="stat-text">
+                                    <p class="point-stat" id="name">Defense With Forge</p>
+                                    <p class="total-point" id="defenseArmScore"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 col-lg-6">
+                            <div class="active-stat">
+                                <img class="image-stat" id="" src="../images/attack-arm.png" alt="logo craw">
+                                <div class="stat-text">
+                                    <p class="point-stat" id="name">Attack With Forge</p>
+                                    <p class="total-point" id="attackArmScore"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 col-lg-6">
+                            <div class="active-stat">
+                                <img class="image-stat" id="" src="../images/Move.png" alt="logo move">
+                                <div class="stat-text">
+                                    <p class="point-stat" id="name">Move Cost</p>
+                                    <p class="total-point" id="moveCost"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 col-lg-6">
+                            <div class="active-stat">
+                                <img class="image-stat" id="" src="../images/weapons_number.png" alt="logologo crew">
+                                <div class="stat-text">
+                                    <p class="point-stat" id="name">Weapon Number</p>
+                                    <p class="total-point" id="weaponsCount"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button class="details-button" onclick="loadContent('detail.html', ['js/detail.js?v=1.5'])">
+                                <div class="icon">i</div>
+                                Details
+                        </button>
+                    </div>
+                </div>
+              	<div id="asksupport" class="mt-3 text-center background-section">
+                  <div id="asksupport-title" class="mb-2 text-center planet-color-dynamique"></div>
+                  <div id="asksupport-text-div" class="lato"></div>
+                </div>
+            </div>
+            <div class="column-center col-12 col-md-8 col-lg-8 custom-col" id="center-bloc"></div>
+            <div class="column-right col-12 col-md-4 col-lg-2 custom-col" id="right-column">
+                <div id="player-guide-right" class="mb-3 lato text-center background-section">
+                    <div id="player-guide-title" class="mb-2 planet-color-dynamique ethno">Player Guide</div>
+                    <a href="https://medium.com/@planetarydefense.io/planetary-defense-263bcac13b97" class="btn" target="_blank">Medium</a>
+                </div>
+                <div id="news" class="mb-3 background-section">
+                    <div id="news-title" class="mb-2 text-center planet-color-dynamique">News Feed</div>
+                    <div id="news-feed-text-div">
+                        <p id="news-feed-text" class="mb-2 text-align-center"></p>
+                    </div>
+                </div>
+                <div id="ads" class="mb-3 text-white text-center background-section">
+                    <div id="ads-title" class="mb-2 planet-color-dynamique">Ads</div>
+                    <img id="img-ads" src="../images/lavalux.png" alt="image monstre">
+                </div>
+                <div id="payout" class="mb-3 text-white text-center background-section">
+                    <div id="payout-title" class="mb-2 planet-color-dynamique">Next Payout</div>
+                    <span id="payout-time-countdown">00:00:00</span>
+                  	<div id="latest-payouts" class="mb-2 planet-color-dynamique"></div>
+                </div>
+            </div>
+            <div class="container-fluid wide-container d-flex flex-wrap justify-content-evenly align-items-stretch background-section" id="down-block">
+                <div id="live-stats" class="col-12 col-md-6 col-lg-3 mb-3 mx-auto">
+                    <div id="live-stats-title" class="mb-2 text-center planet-color-dynamique">Live Stats</div>
+                    <div id="live-stats-text-div">
+                        <p id="live-stats-text"></p>
+                    </div>
+                </div>
+                <div id="action-news-1" class="col-12 col-md-6 col-lg-3 mb-3 mx-auto">
+                    <div id="action-news-title" class="mb-2 text-center planet-color-dynamique">Project</div>
+                    <div id="live-stats-text-div">
+                       <p id="live-stats-text" class="text-center">
+                         <a href="https://larucheaw.online/" class="ethno" target="_blank">The Hive</a><br>
+                      </p>
+                    </div>
+                </div>
+                <div id="action-news-s" class="col-12 col-md-6 col-lg-3 mb-3 mx-auto">
+                    <div id="action-news-s-title" class="mb-2 text-center planet-color-dynamique">Live Support</div>
+                    <div id="action-news-s-text-div">
+                        <p id="action-news-s-text"></p>
+                    </div>
+                </div>
+                <div id="action-news-a" class="col-12 col-md-6 col-lg-3 mb-3 mx-auto">
+                    <div id="action-news-a-title" class="mb-2 text-center planet-color-dynamique">Live Attack</div>
+                    <div id="action-news-a-text-div">
+                        <p id="action-news-a-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer background-section">
+      <div id="social-icons">
+        <a target="_blank" href="https://play.alienworlds.io/">
+          <img class="social-iconaw" src="../images/community.png" alt="Alienworlds">
+        </a>
+        <a target="_blank" href="https://discord.gg/rhHWe6hDNP">
+          <img class="social-icon" src="../images/didi-bouton.png" alt="Discord">
+        </a>
+        <a target="_blank" href="https://www.youtube.com/@Planetary_Def">
+          <img class="social-icon" src="../images/youtube-icon.png" alt="YouTube">
+        </a>
+        <a target="_blank" href="https://t.me/Planetary_Def">
+          <img class="social-icon" src="../images/telegram-icon.png" alt="Telegram">
+        </a>
+        <a target="_blank" href="https://x.com/Planetary_Def">
+          <img class="social-icon" src="../images/logo-white.png" alt="X">
+        </a>
+        <p class="footer-text mt-3">Created & Designed by <a href="https://discord.gg/XK5VTzwy" target="_blank">Planetary Team</a></p>
+      </div>
+    </footer>
+    <!-- Modal -->
+    <div class="modal fade" id="supportModal" tabindex="-1" aria-labelledby="supportModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="supportModalLabel">Supporters List</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="supportList">
+            <!-- La liste des supporters sera ajoutée ici -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal modal-fullscreen fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 p-3" data-bs-dismiss="modal" aria-label="Close"></button>
+            <img id="modalImage" src="" alt="Agrandissement de l'image">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="userTypeChangeModal" class="user-type-change-modal" style="display:none;">
+        <div class="user-type-change-modal-content">
+            <p id="userTypeChangeMessage" class="mb-3 lato"></p>
+            <img src="../images/logout.png" alt="Logout" id="logout" onclick="logout()" class="img-fluid hover-image" style="width: 200px;">
+        </div>
+    </div>
+    <div id="toast-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000;"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.widgets.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+  	<script src="js/commun.js?v=0.09"></script>
+    <script src="js/main.js?v=7.96"></script>
+    <script src="js/proposal.js?v=1.9"></script>
+    <script src="js/proposalrequest.js?v=1.4"></script>
+    <script src="js/news-feed.js?v=1.0"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8LPVFBW55"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-X8LPVFBW55');
+  </script>
+</body>
+</html>

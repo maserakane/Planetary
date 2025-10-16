@@ -1,0 +1,467 @@
+[2025-09-25T03:55:15.715Z] [INFO] 🚀 [mainFunction] Début du pipeline principal
+[2025-09-25T03:55:15.718Z] [INFO] ============================================================
+[2025-09-25T03:55:15.719Z] [INFO] 📋 [mainFunction] Étape 1 : compareData()
+[2025-09-25T03:55:16.144Z] [PERFORMANCE] ⏱️  [compareData] Temps d'exécution : 0.42 secondes
+[2025-09-25T03:55:16.145Z] [INFO] 🎮 [mainFunction] Étape 2 : Calcul des scores sérialisé
+[2025-09-25T03:55:16.146Z] [INFO] 🎮 [mainFunction] Étape 2a : Playerscore()
+[2025-09-25T03:55:16.146Z] [INFO] 🎮 [Playerscore] Début du calcul des scores joueurs
+[2025-09-25T03:55:16.200Z] [INFO] 📊 453 joueurs récupérés
+[2025-09-25T03:55:18.782Z] [INFO] 🚀 [mainFunction] Début du pipeline principal
+[2025-09-25T03:55:18.838Z] [INFO] ============================================================
+[2025-09-25T03:55:18.840Z] [INFO] 📋 [mainFunction] Étape 1 : compareData()
+[2025-09-25T03:55:19.151Z] [PERFORMANCE] ⏱️  [compareData] Temps d'exécution : 0.31 secondes
+[2025-09-25T03:55:19.153Z] [INFO] 🎮 [mainFunction] Étape 2 : Calcul des scores sérialisé
+[2025-09-25T03:55:19.154Z] [INFO] 🎮 [mainFunction] Étape 2a : Playerscore()
+[2025-09-25T03:55:19.155Z] [INFO] 🎮 [Playerscore] Début du calcul des scores joueurs
+[2025-09-25T03:55:19.210Z] [INFO] 📊 453 joueurs récupérés
+[2025-09-25T03:56:49.312Z] [INFO] 📊 453 joueurs traités
+[2025-09-25T03:56:59.454Z] [INFO] 📊 453 scores calculés
+[2025-09-25T03:56:59.465Z] [INFO] ✅ [Playerscore] Terminé en 100.31s
+[2025-09-25T03:56:59.467Z] [PERFORMANCE] ⏱️  [Playerscore] Temps d'exécution : 100.31 secondes
+[2025-09-25T03:56:59.468Z] [INFO] 🎮 [mainFunction] Étape 2b : Ownerscore()
+[2025-09-25T03:56:59.471Z] [INFO] 🏠 [Ownerscore] Début du calcul des scores propriétaires
+[2025-09-25T04:03:00.855Z] [INFO] ✅ [Ownerscore] 589 propriétaires traités en 361.38s
+[2025-09-25T04:03:00.865Z] [PERFORMANCE] ⏱️  [Ownerscore] Temps d'exécution : 361.39 secondes
+[2025-09-25T04:03:00.889Z] [INFO] ✅ Connexion à la base de données établie avec succès
+[2025-09-25T04:03:00.890Z] [INFO] 🔍 [mainFunction] Création des index optimisés
+[2025-09-25T04:03:00.894Z] [INFO] 📝 [mainFunction] Étape 7 : insertTemplateDetailsIntoDatabase()
+[2025-09-25T04:03:01.313Z] [PERFORMANCE] ⏱️  [insertTemplateDetailsIntoDatabase] Temps d'exécution : 0.42 secondes
+[2025-09-25T04:03:01.315Z] [INFO] 🗄️ [mainFunction] Étape 8 : Insertions en base optimisées
+[2025-09-25T04:03:01.741Z] [PERFORMANCE] ⏱️  [insertLandowners] Temps d'exécution : 0.42 secondes
+[2025-09-25T04:03:01.783Z] [PERFORMANCE] ⏱️  [insertPlayers] Temps d'exécution : 0.47 secondes
+[2025-09-25T04:03:02.111Z] [PERFORMANCE] ⏱️  [insertTemplates] Temps d'exécution : 0.33 secondes
+[2025-09-25T04:03:02.121Z] [PERFORMANCE] ⏱️  [Insertions optimisées (batch + parallèle)] Temps d'exécution : 0.81 secondes
+[2025-09-25T04:03:02.122Z] [INFO] ✅ Insertions terminées en 0.81s
+[2025-09-25T04:03:02.123Z] [INFO] 🌐 [mainFunction] Étape 11 : sendOwnersInBatches()
+[2025-09-25T04:03:08.011Z] [PERFORMANCE] ⏱️  [sendOwnersInBatches] Temps d'exécution : 5.89 secondes
+[2025-09-25T04:03:08.013Z] [INFO] 🌐 [mainFunction] Étape 11 : sendPlayersInBatches()
+[2025-09-25T04:03:13.010Z] [PERFORMANCE] ⏱️  [sendPlayersInBatches] Temps d'exécution : 5.00 secondes
+[2025-09-25T04:03:13.012Z] [INFO] 🔍 [mainFunction] Étape 12 : ismemberandowner()
+[2025-09-25T04:03:13.501Z] [PERFORMANCE] ⏱️  [ismemberandowner] Temps d'exécution : 0.49 secondes
+[2025-09-25T04:03:13.503Z] [INFO] 🔄 [mainFunction] Étape 13 : processLandData() - OPTIMISÉ
+[2025-09-25T04:03:17.005Z] [PERFORMANCE] ⏱️  [processLandData] Temps d'exécution : 3.50 secondes
+[2025-09-25T04:03:17.007Z] [INFO] ⏰ [mainFunction] Étape 14 : Mise à jour du timestamp
+[2025-09-25T04:03:17.009Z] [PERFORMANCE] ⏱️  [Mise à jour timestamp] Temps d'exécution : 0.00 secondes
+[2025-09-25T04:03:17.010Z] [INFO] 🔒 [mainFunction] Fermeture de la base de données
+[2025-09-25T04:03:17.012Z] [PERFORMANCE] ⏱️  [Fermeture DB] Temps d'exécution : 0.00 secondes
+[2025-09-25T04:03:17.013Z] [INFO] 🚀 [mainFunction] OPTIMISATIONS APPLIQUÉES :
+[2025-09-25T04:03:17.014Z] [INFO]    ✅ Parallélisation Playerscore() + Ownerscore() (gain: 50-70%)
+[2025-09-25T04:03:17.015Z] [INFO]    ✅ Transactions batch pour insertions (gain: 30-50%)
+[2025-09-25T04:03:17.016Z] [INFO]    ✅ Index optimisés sur colonnes fréquentes (gain: 20-40%)
+[2025-09-25T04:03:17.017Z] [INFO]    ✅ Lecture JSON parallèle (gain: 40-60%)
+[2025-09-25T04:03:17.018Z] [INFO]    ✅ Configuration SQLite optimisée (gain: 15-30%)
+[2025-09-25T04:03:17.019Z] [INFO]    📊 Temps estimé optimisé: 143.5s (réduction de 70%)
+[2025-09-25T04:03:17.021Z] [SUMMARY] ============================================================
+[2025-09-25T04:03:17.022Z] [SUMMARY] 📊 RÉSUMÉ DES TEMPS D'EXÉCUTION
+[2025-09-25T04:03:17.023Z] [SUMMARY] ============================================================
+[2025-09-25T04:03:17.024Z] [SUMMARY] ⏱️  Temps d'exécution total : 478.23 secondes
+[2025-09-25T04:03:17.025Z] [SUMMARY] 📈 Performance moyenne : 34.16 secondes par étape
+[2025-09-25T04:03:17.026Z] [SUMMARY] ⚠️  ATTENTION : Temps d'exécution élevé (>5 min)
+[2025-09-25T04:03:17.027Z] [SUMMARY] 💡 Suggestions d'optimisation :
+[2025-09-25T04:03:17.028Z] [SUMMARY]    - Paralléliser les requêtes blockchain
+[2025-09-25T04:03:17.029Z] [SUMMARY]    - Optimiser les requêtes de base de données
+[2025-09-25T04:03:17.030Z] [SUMMARY]    - Mettre en cache les données fréquemment utilisées
+[2025-09-25T04:03:17.031Z] [SUMMARY] ============================================================
+[2025-09-25T04:03:17.032Z] [INFO] 🔍 [mainFunction] Début de l'analyse des différences de propriétaires...
+[2025-09-25T04:03:18.989Z] [INFO] ✅ [mainFunction] Analyse des différences de propriétaires terminée
+[2025-09-25T04:03:18.991Z] [INFO] 🔧 [mainFunction] Début de la correction des propriétaires de chests...
+[2025-09-25T04:03:18.999Z] [INFO] ✅ [mainFunction] Correction des propriétaires de chests terminée
+[2025-09-25T04:25:37.637Z] [INFO] 🚀 [mainFunction] Début du pipeline principal
+[2025-09-25T04:25:37.640Z] [INFO] ============================================================
+[2025-09-25T04:25:37.719Z] [INFO] 📋 [mainFunction] Étape 1 : compareData()
+[2025-09-25T04:25:38.042Z] [PERFORMANCE] ⏱️  [compareData] Temps d'exécution : 0.32 secondes
+[2025-09-25T04:25:38.044Z] [INFO] 🎮 [mainFunction] Étape 2 : Calcul des scores sérialisé
+[2025-09-25T04:25:38.045Z] [INFO] 🎮 [mainFunction] Étape 2a : Playerscore()
+[2025-09-25T04:25:38.046Z] [INFO] 🎮 [Playerscore] Début du calcul des scores joueurs
+[2025-09-25T04:25:38.100Z] [INFO] 📊 453 joueurs récupérés
+[2025-09-25T04:25:40.974Z] [INFO] 🚀 [mainFunction] Début du pipeline principal
+[2025-09-25T04:25:40.976Z] [INFO] ============================================================
+[2025-09-25T04:25:41.041Z] [INFO] 📋 [mainFunction] Étape 1 : compareData()
+[2025-09-25T04:25:41.342Z] [PERFORMANCE] ⏱️  [compareData] Temps d'exécution : 0.30 secondes
+[2025-09-25T04:25:41.344Z] [INFO] 🎮 [mainFunction] Étape 2 : Calcul des scores sérialisé
+[2025-09-25T04:25:41.345Z] [INFO] 🎮 [mainFunction] Étape 2a : Playerscore()
+[2025-09-25T04:25:41.347Z] [INFO] 🎮 [Playerscore] Début du calcul des scores joueurs
+[2025-09-25T04:25:41.400Z] [INFO] 📊 453 joueurs récupérés
+[2025-09-25T04:26:50.387Z] [INFO] 📊 453 joueurs traités
+[2025-09-25T04:27:00.204Z] [INFO] 📊 453 scores calculés
+[2025-09-25T04:27:00.212Z] [INFO] ✅ [Playerscore] Terminé en 78.86s
+[2025-09-25T04:27:00.213Z] [PERFORMANCE] ⏱️  [Playerscore] Temps d'exécution : 78.87 secondes
+[2025-09-25T04:27:00.214Z] [INFO] 🎮 [mainFunction] Étape 2b : Ownerscore()
+[2025-09-25T04:27:00.215Z] [INFO] 🏠 [Ownerscore] Début du calcul des scores propriétaires
+[2025-09-25T04:32:57.488Z] [INFO] ✅ [Ownerscore] 589 propriétaires traités en 357.27s
+[2025-09-25T04:32:57.489Z] [PERFORMANCE] ⏱️  [Ownerscore] Temps d'exécution : 357.27 secondes
+[2025-09-25T04:32:57.507Z] [INFO] ✅ Connexion à la base de données établie avec succès
+[2025-09-25T04:32:57.508Z] [INFO] 🔍 [mainFunction] Création des index optimisés
+[2025-09-25T04:32:57.512Z] [INFO] 📝 [mainFunction] Étape 7 : insertTemplateDetailsIntoDatabase()
+[2025-09-25T04:32:57.666Z] [PERFORMANCE] ⏱️  [insertTemplateDetailsIntoDatabase] Temps d'exécution : 0.15 secondes
+[2025-09-25T04:32:57.667Z] [INFO] 🗄️ [mainFunction] Étape 8 : Insertions en base optimisées
+[2025-09-25T04:32:57.855Z] [PERFORMANCE] ⏱️  [insertLandowners] Temps d'exécution : 0.19 secondes
+[2025-09-25T04:32:57.875Z] [PERFORMANCE] ⏱️  [insertPlayers] Temps d'exécution : 0.21 secondes
+[2025-09-25T04:32:58.025Z] [PERFORMANCE] ⏱️  [insertTemplates] Temps d'exécution : 0.15 secondes
+[2025-09-25T04:32:58.028Z] [PERFORMANCE] ⏱️  [Insertions optimisées (batch + parallèle)] Temps d'exécution : 0.36 secondes
+[2025-09-25T04:32:58.029Z] [INFO] ✅ Insertions terminées en 0.36s
+[2025-09-25T04:32:58.029Z] [INFO] 🌐 [mainFunction] Étape 11 : sendOwnersInBatches()
+[2025-09-25T04:33:03.621Z] [PERFORMANCE] ⏱️  [sendOwnersInBatches] Temps d'exécution : 5.59 secondes
+[2025-09-25T04:33:03.622Z] [INFO] 🌐 [mainFunction] Étape 11 : sendPlayersInBatches()
+[2025-09-25T04:33:08.625Z] [PERFORMANCE] ⏱️  [sendPlayersInBatches] Temps d'exécution : 5.00 secondes
+[2025-09-25T04:33:08.627Z] [INFO] 🔍 [mainFunction] Étape 12 : ismemberandowner()
+[2025-09-25T04:33:09.157Z] [PERFORMANCE] ⏱️  [ismemberandowner] Temps d'exécution : 0.53 secondes
+[2025-09-25T04:33:09.159Z] [INFO] 🔄 [mainFunction] Étape 13 : processLandData() - OPTIMISÉ
+[2025-09-25T04:33:12.616Z] [PERFORMANCE] ⏱️  [processLandData] Temps d'exécution : 3.46 secondes
+[2025-09-25T04:33:12.618Z] [INFO] ⏰ [mainFunction] Étape 14 : Mise à jour du timestamp
+[2025-09-25T04:33:12.619Z] [PERFORMANCE] ⏱️  [Mise à jour timestamp] Temps d'exécution : 0.00 secondes
+[2025-09-25T04:33:12.620Z] [INFO] 🔒 [mainFunction] Fermeture de la base de données
+[2025-09-25T04:33:12.622Z] [PERFORMANCE] ⏱️  [Fermeture DB] Temps d'exécution : 0.00 secondes
+[2025-09-25T04:33:12.623Z] [INFO] 🚀 [mainFunction] OPTIMISATIONS APPLIQUÉES :
+[2025-09-25T04:33:12.624Z] [INFO]    ✅ Parallélisation Playerscore() + Ownerscore() (gain: 50-70%)
+[2025-09-25T04:33:12.626Z] [INFO]    ✅ Transactions batch pour insertions (gain: 30-50%)
+[2025-09-25T04:33:12.627Z] [INFO]    ✅ Index optimisés sur colonnes fréquentes (gain: 20-40%)
+[2025-09-25T04:33:12.627Z] [INFO]    ✅ Lecture JSON parallèle (gain: 40-60%)
+[2025-09-25T04:33:12.628Z] [INFO]    ✅ Configuration SQLite optimisée (gain: 15-30%)
+[2025-09-25T04:33:12.628Z] [INFO]    📊 Temps estimé optimisé: 135.5s (réduction de 70%)
+[2025-09-25T04:33:12.629Z] [SUMMARY] ============================================================
+[2025-09-25T04:33:12.630Z] [SUMMARY] 📊 RÉSUMÉ DES TEMPS D'EXÉCUTION
+[2025-09-25T04:33:12.630Z] [SUMMARY] ============================================================
+[2025-09-25T04:33:12.631Z] [SUMMARY] ⏱️  Temps d'exécution total : 451.65 secondes
+[2025-09-25T04:33:12.631Z] [SUMMARY] 📈 Performance moyenne : 32.26 secondes par étape
+[2025-09-25T04:33:12.632Z] [SUMMARY] ⚠️  ATTENTION : Temps d'exécution élevé (>5 min)
+[2025-09-25T04:33:12.632Z] [SUMMARY] 💡 Suggestions d'optimisation :
+[2025-09-25T04:33:12.633Z] [SUMMARY]    - Paralléliser les requêtes blockchain
+[2025-09-25T04:33:12.634Z] [SUMMARY]    - Optimiser les requêtes de base de données
+[2025-09-25T04:33:12.634Z] [SUMMARY]    - Mettre en cache les données fréquemment utilisées
+[2025-09-25T04:33:12.635Z] [SUMMARY] ============================================================
+[2025-09-25T04:33:12.636Z] [INFO] 🔍 [mainFunction] Début de l'analyse des différences de propriétaires...
+[2025-09-25T04:33:14.699Z] [INFO] ✅ [mainFunction] Analyse des différences de propriétaires terminée
+[2025-09-25T04:33:14.701Z] [INFO] 🔧 [mainFunction] Début de la correction des propriétaires de chests...
+[2025-09-25T04:33:14.708Z] [INFO] ✅ [mainFunction] Correction des propriétaires de chests terminée
+[2025-09-25T04:35:30.302Z] [INFO] 🚀 [mainFunction] Début du pipeline principal
+[2025-09-25T04:35:30.304Z] [INFO] ============================================================
+[2025-09-25T04:35:30.368Z] [INFO] 📋 [mainFunction] Étape 1 : compareData()
+[2025-09-25T04:35:30.689Z] [PERFORMANCE] ⏱️  [compareData] Temps d'exécution : 0.32 secondes
+[2025-09-25T04:35:30.691Z] [INFO] 🎮 [mainFunction] Étape 2 : Calcul des scores sérialisé
+[2025-09-25T04:35:30.692Z] [INFO] 🎮 [mainFunction] Étape 2a : Playerscore()
+[2025-09-25T04:35:30.693Z] [INFO] 🎮 [Playerscore] Début du calcul des scores joueurs
+[2025-09-25T04:35:30.745Z] [INFO] 📊 453 joueurs récupérés
+[2025-09-25T04:42:05.199Z] [INFO] 📊 453 joueurs traités
+[2025-09-25T04:42:15.236Z] [INFO] 📊 453 scores calculés
+[2025-09-25T04:42:15.249Z] [INFO] ✅ [Playerscore] Terminé en 404.56s
+[2025-09-25T04:42:15.250Z] [PERFORMANCE] ⏱️  [Playerscore] Temps d'exécution : 404.56 secondes
+[2025-09-25T04:42:15.251Z] [INFO] 🎮 [mainFunction] Étape 2b : Ownerscore()
+[2025-09-25T04:42:15.253Z] [INFO] 🏠 [Ownerscore] Début du calcul des scores propriétaires
+[2025-09-25T04:59:21.216Z] [INFO] ✅ [Ownerscore] 589 propriétaires traités en 1025.96s
+[2025-09-25T04:59:21.218Z] [PERFORMANCE] ⏱️  [Ownerscore] Temps d'exécution : 1025.96 secondes
+[2025-09-25T04:59:21.270Z] [INFO] ✅ Connexion à la base de données établie avec succès
+[2025-09-25T04:59:21.272Z] [INFO] 🔍 [mainFunction] Création des index optimisés
+[2025-09-25T04:59:21.277Z] [INFO] 📝 [mainFunction] Étape 7 : insertTemplateDetailsIntoDatabase()
+[2025-09-25T04:59:21.820Z] [PERFORMANCE] ⏱️  [insertTemplateDetailsIntoDatabase] Temps d'exécution : 0.54 secondes
+[2025-09-25T04:59:21.821Z] [INFO] 🗄️ [mainFunction] Étape 8 : Insertions en base optimisées
+[2025-09-25T04:59:22.284Z] [PERFORMANCE] ⏱️  [insertLandowners] Temps d'exécution : 0.46 secondes
+[2025-09-25T04:59:22.332Z] [PERFORMANCE] ⏱️  [insertPlayers] Temps d'exécution : 0.51 secondes
+[2025-09-25T04:59:22.727Z] [PERFORMANCE] ⏱️  [insertTemplates] Temps d'exécution : 0.39 secondes
+[2025-09-25T04:59:22.734Z] [PERFORMANCE] ⏱️  [Insertions optimisées (batch + parallèle)] Temps d'exécution : 0.91 secondes
+[2025-09-25T04:59:22.737Z] [INFO] ✅ Insertions terminées en 0.91s
+[2025-09-25T04:59:22.739Z] [INFO] 🌐 [mainFunction] Étape 11 : sendOwnersInBatches()
+[2025-09-25T04:59:28.664Z] [PERFORMANCE] ⏱️  [sendOwnersInBatches] Temps d'exécution : 5.92 secondes
+[2025-09-25T04:59:28.665Z] [INFO] 🌐 [mainFunction] Étape 11 : sendPlayersInBatches()
+[2025-09-25T04:59:33.663Z] [PERFORMANCE] ⏱️  [sendPlayersInBatches] Temps d'exécution : 5.00 secondes
+[2025-09-25T04:59:33.666Z] [INFO] 🔍 [mainFunction] Étape 12 : ismemberandowner()
+[2025-09-25T04:59:34.184Z] [PERFORMANCE] ⏱️  [ismemberandowner] Temps d'exécution : 0.52 secondes
+[2025-09-25T04:59:34.186Z] [INFO] 🔄 [mainFunction] Étape 13 : processLandData() - OPTIMISÉ
+[2025-09-25T04:59:37.669Z] [PERFORMANCE] ⏱️  [processLandData] Temps d'exécution : 3.48 secondes
+[2025-09-25T04:59:37.670Z] [INFO] ⏰ [mainFunction] Étape 14 : Mise à jour du timestamp
+[2025-09-25T04:59:37.671Z] [PERFORMANCE] ⏱️  [Mise à jour timestamp] Temps d'exécution : 0.00 secondes
+[2025-09-25T04:59:37.672Z] [INFO] 🔒 [mainFunction] Fermeture de la base de données
+[2025-09-25T04:59:37.674Z] [PERFORMANCE] ⏱️  [Fermeture DB] Temps d'exécution : 0.00 secondes
+[2025-09-25T04:59:37.675Z] [INFO] 🚀 [mainFunction] OPTIMISATIONS APPLIQUÉES :
+[2025-09-25T04:59:37.676Z] [INFO]    ✅ Parallélisation Playerscore() + Ownerscore() (gain: 50-70%)
+[2025-09-25T04:59:37.678Z] [INFO]    ✅ Transactions batch pour insertions (gain: 30-50%)
+[2025-09-25T04:59:37.679Z] [INFO]    ✅ Index optimisés sur colonnes fréquentes (gain: 20-40%)
+[2025-09-25T04:59:37.681Z] [INFO]    ✅ Lecture JSON parallèle (gain: 40-60%)
+[2025-09-25T04:59:37.682Z] [INFO]    ✅ Configuration SQLite optimisée (gain: 15-30%)
+[2025-09-25T04:59:37.683Z] [INFO]    📊 Temps estimé optimisé: 434.2s (réduction de 70%)
+[2025-09-25T04:59:37.685Z] [SUMMARY] ============================================================
+[2025-09-25T04:59:37.686Z] [SUMMARY] 📊 RÉSUMÉ DES TEMPS D'EXÉCUTION
+[2025-09-25T04:59:37.687Z] [SUMMARY] ============================================================
+[2025-09-25T04:59:37.688Z] [SUMMARY] ⏱️  Temps d'exécution total : 1447.37 secondes
+[2025-09-25T04:59:37.689Z] [SUMMARY] 📈 Performance moyenne : 103.38 secondes par étape
+[2025-09-25T04:59:37.690Z] [SUMMARY] ⚠️  ATTENTION : Temps d'exécution élevé (>5 min)
+[2025-09-25T04:59:37.690Z] [SUMMARY] 💡 Suggestions d'optimisation :
+[2025-09-25T04:59:37.691Z] [SUMMARY]    - Paralléliser les requêtes blockchain
+[2025-09-25T04:59:37.692Z] [SUMMARY]    - Optimiser les requêtes de base de données
+[2025-09-25T04:59:37.693Z] [SUMMARY]    - Mettre en cache les données fréquemment utilisées
+[2025-09-25T04:59:37.694Z] [SUMMARY] ============================================================
+[2025-09-25T04:59:37.695Z] [INFO] 🔍 [mainFunction] Début de l'analyse des différences de propriétaires...
+[2025-09-25T04:59:39.739Z] [INFO] ✅ [mainFunction] Analyse des différences de propriétaires terminée
+[2025-09-25T04:59:39.740Z] [INFO] 🔧 [mainFunction] Début de la correction des propriétaires de chests...
+[2025-09-25T04:59:39.745Z] [INFO] ✅ [mainFunction] Correction des propriétaires de chests terminée
+[2025-09-25T04:59:51.413Z] [INFO] 🚀 [mainFunction] Début du pipeline principal
+[2025-09-25T04:59:51.416Z] [INFO] ============================================================
+[2025-09-25T04:59:51.476Z] [INFO] 🎮 [mainFunction] Étape 2 : Calcul des scores sérialisé
+[2025-09-25T04:59:51.477Z] [INFO] 🎮 [mainFunction] Étape 2a : Playerscore()
+[2025-09-25T04:59:51.479Z] [INFO] 🎮 [Playerscore] Début du calcul des scores joueurs
+[2025-09-25T04:59:51.693Z] [INFO] 📊 453 joueurs récupérés
+[2025-09-25T05:00:13.216Z] [INFO] 🚀 [mainFunction] Début du pipeline principal
+[2025-09-25T05:00:13.219Z] [INFO] ============================================================
+[2025-09-25T05:00:13.298Z] [INFO] 🎮 [mainFunction] Étape 2 : Calcul des scores sérialisé
+[2025-09-25T05:00:13.301Z] [INFO] 🎮 [mainFunction] Étape 2a : Playerscore()
+[2025-09-25T05:00:13.302Z] [INFO] 🎮 [Playerscore] Début du calcul des scores joueurs
+[2025-09-25T05:00:13.505Z] [INFO] 📊 453 joueurs récupérés
+[2025-09-25T05:01:32.489Z] [INFO] 📊 453 joueurs traités
+[2025-09-25T05:01:43.526Z] [INFO] 📊 453 scores calculés
+[2025-09-25T05:01:43.539Z] [INFO] ✅ [Playerscore] Terminé en 90.24s
+[2025-09-25T05:01:43.541Z] [PERFORMANCE] ⏱️  [Playerscore] Temps d'exécution : 90.24 secondes
+[2025-09-25T05:01:43.564Z] [INFO] ✅ Connexion à la base de données établie avec succès
+[2025-09-25T05:01:43.565Z] [INFO] 🔍 [mainFunction] Création des index optimisés
+[2025-09-25T05:01:43.569Z] [INFO] 🗄️ [mainFunction] Étape 8 : Insertions en base optimisées
+[2025-09-25T05:01:43.922Z] [PERFORMANCE] ⏱️  [insertLandowners] Temps d'exécution : 0.35 secondes
+[2025-09-25T05:01:43.970Z] [PERFORMANCE] ⏱️  [insertPlayers] Temps d'exécution : 0.40 secondes
+[2025-09-25T05:01:44.247Z] [PERFORMANCE] ⏱️  [insertTemplates] Temps d'exécution : 0.28 secondes
+[2025-09-25T05:01:44.251Z] [PERFORMANCE] ⏱️  [Insertions optimisées (batch + parallèle)] Temps d'exécution : 0.68 secondes
+[2025-09-25T05:01:44.252Z] [INFO] ✅ Insertions terminées en 0.68s
+[2025-09-25T05:01:44.253Z] [INFO] ⏰ [mainFunction] Étape 14 : Mise à jour du timestamp
+[2025-09-25T05:01:44.254Z] [PERFORMANCE] ⏱️  [Mise à jour timestamp] Temps d'exécution : 0.00 secondes
+[2025-09-25T05:01:44.254Z] [INFO] 🔒 [mainFunction] Fermeture de la base de données
+[2025-09-25T05:01:44.256Z] [PERFORMANCE] ⏱️  [Fermeture DB] Temps d'exécution : 0.00 secondes
+[2025-09-25T05:01:44.257Z] [INFO] 🚀 [mainFunction] OPTIMISATIONS APPLIQUÉES :
+[2025-09-25T05:01:44.258Z] [INFO]    ✅ Parallélisation Playerscore() + Ownerscore() (gain: 50-70%)
+[2025-09-25T05:01:44.259Z] [INFO]    ✅ Transactions batch pour insertions (gain: 30-50%)
+[2025-09-25T05:01:44.260Z] [INFO]    ✅ Index optimisés sur colonnes fréquentes (gain: 20-40%)
+[2025-09-25T05:01:44.260Z] [INFO]    ✅ Lecture JSON parallèle (gain: 40-60%)
+[2025-09-25T05:01:44.261Z] [INFO]    ✅ Configuration SQLite optimisée (gain: 15-30%)
+[2025-09-25T05:01:44.262Z] [INFO]    📊 Temps estimé optimisé: 27.3s (réduction de 70%)
+[2025-09-25T05:01:44.263Z] [SUMMARY] ============================================================
+[2025-09-25T05:01:44.265Z] [SUMMARY] 📊 RÉSUMÉ DES TEMPS D'EXÉCUTION
+[2025-09-25T05:01:44.266Z] [SUMMARY] ============================================================
+[2025-09-25T05:01:44.267Z] [SUMMARY] ⏱️  Temps d'exécution total : 91.04 secondes
+[2025-09-25T05:01:44.268Z] [SUMMARY] 📈 Performance moyenne : 6.50 secondes par étape
+[2025-09-25T05:01:44.269Z] [SUMMARY] ============================================================
+[2025-09-25T05:01:44.270Z] [INFO] 🔍 [mainFunction] Début de l'analyse des différences de propriétaires...
+[2025-09-25T05:01:46.382Z] [INFO] ✅ [mainFunction] Analyse des différences de propriétaires terminée
+[2025-09-25T05:01:46.383Z] [INFO] 🔧 [mainFunction] Début de la correction des propriétaires de chests...
+[2025-09-25T05:01:46.392Z] [INFO] ✅ [mainFunction] Correction des propriétaires de chests terminée
+[2025-09-25T15:58:11.346Z] [INFO] 🚀 [mainFunction] Début du pipeline principal
+[2025-09-25T15:58:11.348Z] [INFO] ============================================================
+[2025-09-25T15:58:11.404Z] [INFO] 🎮 [mainFunction] Étape 2 : Calcul des scores sérialisé
+[2025-09-25T15:58:11.406Z] [INFO] 🎮 [mainFunction] Étape 2a : Playerscore()
+[2025-09-25T15:58:11.407Z] [INFO] 🎮 [Playerscore] Début du calcul des scores joueurs
+[2025-09-25T15:58:11.617Z] [INFO] 📊 453 joueurs récupérés
+[2025-09-25T15:58:16.838Z] [INFO] 🚀 [mainFunction] Début du pipeline principal
+[2025-09-25T15:58:16.840Z] [INFO] ============================================================
+[2025-09-25T15:58:16.895Z] [INFO] 🎮 [mainFunction] Étape 2 : Calcul des scores sérialisé
+[2025-09-25T15:58:16.897Z] [INFO] 🎮 [mainFunction] Étape 2a : Playerscore()
+[2025-09-25T15:58:16.898Z] [INFO] 🎮 [Playerscore] Début du calcul des scores joueurs
+[2025-09-25T15:58:17.100Z] [INFO] 📊 453 joueurs récupérés
+[2025-09-25T16:00:31.580Z] [INFO] 📊 453 joueurs traités
+[2025-09-25T16:01:53.453Z] [INFO] 📊 453 scores calculés
+[2025-09-25T16:01:53.462Z] [INFO] ✅ [Playerscore] Terminé en 216.56s
+[2025-09-25T16:01:53.464Z] [PERFORMANCE] ⏱️  [Playerscore] Temps d'exécution : 216.57 secondes
+[2025-09-25T16:01:53.479Z] [INFO] ✅ Connexion à la base de données établie avec succès
+[2025-09-25T16:01:53.480Z] [INFO] 🔍 [mainFunction] Création des index optimisés
+[2025-09-25T16:01:53.482Z] [INFO] 🗄️ [mainFunction] Étape 8 : Insertions en base optimisées
+[2025-09-25T16:01:53.650Z] [PERFORMANCE] ⏱️  [insertLandowners] Temps d'exécution : 0.17 secondes
+[2025-09-25T16:01:53.667Z] [PERFORMANCE] ⏱️  [insertPlayers] Temps d'exécution : 0.18 secondes
+[2025-09-25T16:01:53.780Z] [PERFORMANCE] ⏱️  [insertTemplates] Temps d'exécution : 0.11 secondes
+[2025-09-25T16:01:53.784Z] [PERFORMANCE] ⏱️  [Insertions optimisées (batch + parallèle)] Temps d'exécution : 0.30 secondes
+[2025-09-25T16:01:53.785Z] [INFO] ✅ Insertions terminées en 0.30s
+[2025-09-25T16:01:53.786Z] [INFO] ⏰ [mainFunction] Étape 14 : Mise à jour du timestamp
+[2025-09-25T16:01:53.786Z] [PERFORMANCE] ⏱️  [Mise à jour timestamp] Temps d'exécution : 0.00 secondes
+[2025-09-25T16:01:53.787Z] [INFO] 🔒 [mainFunction] Fermeture de la base de données
+[2025-09-25T16:01:53.788Z] [PERFORMANCE] ⏱️  [Fermeture DB] Temps d'exécution : 0.00 secondes
+[2025-09-25T16:01:53.789Z] [INFO] 🚀 [mainFunction] OPTIMISATIONS APPLIQUÉES :
+[2025-09-25T16:01:53.789Z] [INFO]    ✅ Parallélisation Playerscore() + Ownerscore() (gain: 50-70%)
+[2025-09-25T16:01:53.791Z] [INFO]    ✅ Transactions batch pour insertions (gain: 30-50%)
+[2025-09-25T16:01:53.792Z] [INFO]    ✅ Index optimisés sur colonnes fréquentes (gain: 20-40%)
+[2025-09-25T16:01:53.793Z] [INFO]    ✅ Lecture JSON parallèle (gain: 40-60%)
+[2025-09-25T16:01:53.793Z] [INFO]    ✅ Configuration SQLite optimisée (gain: 15-30%)
+[2025-09-25T16:01:53.794Z] [INFO]    📊 Temps estimé optimisé: 65.1s (réduction de 70%)
+[2025-09-25T16:01:53.796Z] [SUMMARY] ============================================================
+[2025-09-25T16:01:53.796Z] [SUMMARY] 📊 RÉSUMÉ DES TEMPS D'EXÉCUTION
+[2025-09-25T16:01:53.797Z] [SUMMARY] ============================================================
+[2025-09-25T16:01:53.797Z] [SUMMARY] ⏱️  Temps d'exécution total : 216.95 secondes
+[2025-09-25T16:01:53.798Z] [SUMMARY] 📈 Performance moyenne : 15.50 secondes par étape
+[2025-09-25T16:01:53.799Z] [SUMMARY] ============================================================
+[2025-09-25T16:01:53.799Z] [INFO] 🔍 [mainFunction] Début de l'analyse des différences de propriétaires...
+[2025-09-25T16:01:55.891Z] [INFO] ✅ [mainFunction] Analyse des différences de propriétaires terminée
+[2025-09-25T16:01:55.892Z] [INFO] 🔧 [mainFunction] Début de la correction des propriétaires de chests...
+[2025-09-25T16:01:57.098Z] [INFO] ✅ [mainFunction] Correction des propriétaires de chests terminée
+[2025-09-25T16:02:35.252Z] [INFO] 🚀 [mainFunction] Début du pipeline principal
+[2025-09-25T16:02:35.254Z] [INFO] ============================================================
+[2025-09-25T16:02:35.308Z] [INFO] 📋 [mainFunction] Étape 1 : compareData()
+[2025-09-25T16:02:35.621Z] [PERFORMANCE] ⏱️  [compareData] Temps d'exécution : 0.31 secondes
+[2025-09-25T16:02:35.623Z] [INFO] 🎮 [mainFunction] Étape 2 : Calcul des scores sérialisé
+[2025-09-25T16:02:35.624Z] [INFO] 🎮 [mainFunction] Étape 2a : Playerscore()
+[2025-09-25T16:02:35.625Z] [INFO] 🎮 [Playerscore] Début du calcul des scores joueurs
+[2025-09-25T16:02:35.679Z] [INFO] 📊 453 joueurs récupérés
+[2025-09-25T16:05:17.890Z] [INFO] 📊 453 joueurs traités
+[2025-09-25T16:05:27.759Z] [INFO] 📊 453 scores calculés
+[2025-09-25T16:05:27.766Z] [INFO] ✅ [Playerscore] Terminé en 172.14s
+[2025-09-25T16:05:27.767Z] [PERFORMANCE] ⏱️  [Playerscore] Temps d'exécution : 172.14 secondes
+[2025-09-25T16:05:27.768Z] [INFO] 🎮 [mainFunction] Étape 2b : Ownerscore()
+[2025-09-25T16:05:27.769Z] [INFO] 🏠 [Ownerscore] Début du calcul des scores propriétaires
+[2025-09-25T16:07:10.446Z] [INFO] 🚀 [mainFunction] Début du pipeline principal
+[2025-09-25T16:07:10.448Z] [INFO] ============================================================
+[2025-09-25T16:07:10.512Z] [INFO] 📋 [mainFunction] Étape 1 : compareData()
+[2025-09-25T16:07:10.822Z] [PERFORMANCE] ⏱️  [compareData] Temps d'exécution : 0.31 secondes
+[2025-09-25T16:07:10.823Z] [INFO] 🎮 [mainFunction] Étape 2 : Calcul des scores sérialisé
+[2025-09-25T16:07:10.825Z] [INFO] 🎮 [mainFunction] Étape 2a : Playerscore()
+[2025-09-25T16:07:10.826Z] [INFO] 🎮 [Playerscore] Début du calcul des scores joueurs
+[2025-09-25T16:07:10.879Z] [INFO] 📊 453 joueurs récupérés
+[2025-09-25T16:19:16.745Z] [INFO] 📊 453 joueurs traités
+[2025-09-25T16:19:26.563Z] [INFO] 📊 453 scores calculés
+[2025-09-25T16:19:26.573Z] [INFO] ✅ [Playerscore] Terminé en 735.75s
+[2025-09-25T16:19:26.575Z] [PERFORMANCE] ⏱️  [Playerscore] Temps d'exécution : 735.75 secondes
+[2025-09-25T16:19:26.576Z] [INFO] 🎮 [mainFunction] Étape 2b : Ownerscore()
+[2025-09-25T16:19:26.577Z] [INFO] 🏠 [Ownerscore] Début du calcul des scores propriétaires
+[2025-09-25T16:29:17.676Z] [INFO] ✅ [Ownerscore] 589 propriétaires traités en 591.10s
+[2025-09-25T16:29:17.678Z] [PERFORMANCE] ⏱️  [Ownerscore] Temps d'exécution : 591.10 secondes
+[2025-09-25T16:29:17.708Z] [INFO] ✅ Connexion à la base de données établie avec succès
+[2025-09-25T16:29:17.710Z] [INFO] 🔍 [mainFunction] Création des index optimisés
+[2025-09-25T16:29:17.714Z] [INFO] 🗄️ [mainFunction] Étape 8 : Insertions en base optimisées
+[2025-09-25T16:29:17.986Z] [PERFORMANCE] ⏱️  [insertLandowners] Temps d'exécution : 0.27 secondes
+[2025-09-25T16:29:18.019Z] [PERFORMANCE] ⏱️  [insertPlayers] Temps d'exécution : 0.30 secondes
+[2025-09-25T16:29:18.330Z] [PERFORMANCE] ⏱️  [insertTemplates] Temps d'exécution : 0.31 secondes
+[2025-09-25T16:29:18.335Z] [PERFORMANCE] ⏱️  [Insertions optimisées (batch + parallèle)] Temps d'exécution : 0.62 secondes
+[2025-09-25T16:29:18.336Z] [INFO] ✅ Insertions terminées en 0.62s
+[2025-09-25T16:29:18.337Z] [INFO] 🔄 [mainFunction] Étape 13 : processLandData() - OPTIMISÉ
+[2025-09-25T16:29:18.659Z] [PERFORMANCE] ⏱️  [processLandData] Temps d'exécution : 0.32 secondes
+[2025-09-25T16:29:18.660Z] [INFO] ⏰ [mainFunction] Étape 14 : Mise à jour du timestamp
+[2025-09-25T16:29:18.661Z] [PERFORMANCE] ⏱️  [Mise à jour timestamp] Temps d'exécution : 0.00 secondes
+[2025-09-25T16:29:18.662Z] [INFO] 🔒 [mainFunction] Fermeture de la base de données
+[2025-09-25T16:29:18.664Z] [PERFORMANCE] ⏱️  [Fermeture DB] Temps d'exécution : 0.00 secondes
+[2025-09-25T16:29:18.665Z] [INFO] 🚀 [mainFunction] OPTIMISATIONS APPLIQUÉES :
+[2025-09-25T16:29:18.666Z] [INFO]    ✅ Parallélisation Playerscore() + Ownerscore() (gain: 50-70%)
+[2025-09-25T16:29:18.667Z] [INFO]    ✅ Transactions batch pour insertions (gain: 30-50%)
+[2025-09-25T16:29:18.668Z] [INFO]    ✅ Index optimisés sur colonnes fréquentes (gain: 20-40%)
+[2025-09-25T16:29:18.669Z] [INFO]    ✅ Lecture JSON parallèle (gain: 40-60%)
+[2025-09-25T16:29:18.670Z] [INFO]    ✅ Configuration SQLite optimisée (gain: 15-30%)
+[2025-09-25T16:29:18.671Z] [INFO]    📊 Temps estimé optimisé: 398.5s (réduction de 70%)
+[2025-09-25T16:29:18.672Z] [SUMMARY] ============================================================
+[2025-09-25T16:29:18.674Z] [SUMMARY] 📊 RÉSUMÉ DES TEMPS D'EXÉCUTION
+[2025-09-25T16:29:18.675Z] [SUMMARY] ============================================================
+[2025-09-25T16:29:18.676Z] [SUMMARY] ⏱️  Temps d'exécution total : 1328.22 secondes
+[2025-09-25T16:29:18.677Z] [SUMMARY] 📈 Performance moyenne : 94.87 secondes par étape
+[2025-09-25T16:29:18.678Z] [SUMMARY] ⚠️  ATTENTION : Temps d'exécution élevé (>5 min)
+[2025-09-25T16:29:18.679Z] [SUMMARY] 💡 Suggestions d'optimisation :
+[2025-09-25T16:29:18.680Z] [SUMMARY]    - Paralléliser les requêtes blockchain
+[2025-09-25T16:29:18.681Z] [SUMMARY]    - Optimiser les requêtes de base de données
+[2025-09-25T16:29:18.682Z] [SUMMARY]    - Mettre en cache les données fréquemment utilisées
+[2025-09-25T16:29:18.683Z] [SUMMARY] ============================================================
+[2025-09-25T16:29:18.683Z] [INFO] 🔍 [mainFunction] Début de l'analyse des différences de propriétaires...
+[2025-09-25T16:29:20.480Z] [INFO] ✅ [mainFunction] Analyse des différences de propriétaires terminée
+[2025-09-25T16:29:20.481Z] [INFO] 🔧 [mainFunction] Début de la correction des propriétaires de chests...
+[2025-09-25T16:29:20.489Z] [INFO] ✅ [mainFunction] Correction des propriétaires de chests terminée
+[2025-09-25T17:35:39.832Z] [INFO] 🚀 [mainFunction] Début du pipeline principal
+[2025-09-25T17:35:39.834Z] [INFO] ============================================================
+[2025-09-25T17:35:39.912Z] [INFO] 📋 [mainFunction] Étape 1 : compareData()
+[2025-09-25T17:35:40.202Z] [PERFORMANCE] ⏱️  [compareData] Temps d'exécution : 0.29 secondes
+[2025-09-25T17:35:40.204Z] [INFO] 🎮 [mainFunction] Étape 2 : Calcul des scores sérialisé
+[2025-09-25T17:35:40.209Z] [INFO] 🎮 [mainFunction] Étape 2a : Playerscore()
+[2025-09-25T17:35:40.211Z] [INFO] 🎮 [Playerscore] Début du calcul des scores joueurs
+[2025-09-25T17:35:40.282Z] [INFO] 📊 453 joueurs récupérés
+[2025-09-25T17:35:43.687Z] [INFO] 🚀 [mainFunction] Début du pipeline principal
+[2025-09-25T17:35:43.691Z] [INFO] ============================================================
+[2025-09-25T17:35:43.764Z] [INFO] 📋 [mainFunction] Étape 1 : compareData()
+[2025-09-25T17:35:44.043Z] [PERFORMANCE] ⏱️  [compareData] Temps d'exécution : 0.28 secondes
+[2025-09-25T17:35:44.045Z] [INFO] 🎮 [mainFunction] Étape 2 : Calcul des scores sérialisé
+[2025-09-25T17:35:44.047Z] [INFO] 🎮 [mainFunction] Étape 2a : Playerscore()
+[2025-09-25T17:35:44.048Z] [INFO] 🎮 [Playerscore] Début du calcul des scores joueurs
+[2025-09-25T17:35:44.123Z] [INFO] 📊 453 joueurs récupérés
+[2025-09-25T17:37:23.938Z] [INFO] 📊 453 joueurs traités
+[2025-09-25T17:38:16.712Z] [INFO] 📊 453 scores calculés
+[2025-09-25T17:38:16.736Z] [INFO] ✅ [Playerscore] Terminé en 152.69s
+[2025-09-25T17:38:16.739Z] [PERFORMANCE] ⏱️  [Playerscore] Temps d'exécution : 152.69 secondes
+[2025-09-25T17:38:16.742Z] [INFO] 🎮 [mainFunction] Étape 2b : Ownerscore()
+[2025-09-25T17:38:16.745Z] [INFO] 🏠 [Ownerscore] Début du calcul des scores propriétaires
+[2025-09-25T17:45:56.687Z] [INFO] ✅ [Ownerscore] 589 propriétaires traités en 459.94s
+[2025-09-25T17:45:56.689Z] [PERFORMANCE] ⏱️  [Ownerscore] Temps d'exécution : 459.94 secondes
+[2025-09-25T17:45:56.720Z] [INFO] ✅ Connexion à la base de données établie avec succès
+[2025-09-25T17:45:56.722Z] [INFO] 🔍 [mainFunction] Création des index optimisés
+[2025-09-25T17:45:56.729Z] [INFO] 🗄️ [mainFunction] Étape 8 : Insertions en base optimisées
+[2025-09-25T17:45:57.494Z] [PERFORMANCE] ⏱️  [insertLandowners] Temps d'exécution : 0.76 secondes
+[2025-09-25T17:45:57.572Z] [PERFORMANCE] ⏱️  [insertPlayers] Temps d'exécution : 0.84 secondes
+[2025-09-25T17:45:58.178Z] [PERFORMANCE] ⏱️  [insertTemplates] Temps d'exécution : 0.60 secondes
+[2025-09-25T17:45:58.195Z] [PERFORMANCE] ⏱️  [Insertions optimisées (batch + parallèle)] Temps d'exécution : 1.46 secondes
+[2025-09-25T17:45:58.197Z] [INFO] ✅ Insertions terminées en 1.46s
+[2025-09-25T17:45:58.200Z] [INFO] 🔄 [mainFunction] Étape 13 : processLandData() - OPTIMISÉ
+[2025-09-25T17:45:58.474Z] [PERFORMANCE] ⏱️  [processLandData] Temps d'exécution : 0.27 secondes
+[2025-09-25T17:45:58.476Z] [INFO] ⏰ [mainFunction] Étape 14 : Mise à jour du timestamp
+[2025-09-25T17:45:58.479Z] [PERFORMANCE] ⏱️  [Mise à jour timestamp] Temps d'exécution : 0.00 secondes
+[2025-09-25T17:45:58.481Z] [INFO] 🔒 [mainFunction] Fermeture de la base de données
+[2025-09-25T17:45:58.486Z] [PERFORMANCE] ⏱️  [Fermeture DB] Temps d'exécution : 0.00 secondes
+[2025-09-25T17:45:58.490Z] [INFO] 🚀 [mainFunction] OPTIMISATIONS APPLIQUÉES :
+[2025-09-25T17:45:58.494Z] [INFO]    ✅ Parallélisation Playerscore() + Ownerscore() (gain: 50-70%)
+[2025-09-25T17:45:58.497Z] [INFO]    ✅ Transactions batch pour insertions (gain: 30-50%)
+[2025-09-25T17:45:58.500Z] [INFO]    ✅ Index optimisés sur colonnes fréquentes (gain: 20-40%)
+[2025-09-25T17:45:58.503Z] [INFO]    ✅ Lecture JSON parallèle (gain: 40-60%)
+[2025-09-25T17:45:58.506Z] [INFO]    ✅ Configuration SQLite optimisée (gain: 15-30%)
+[2025-09-25T17:45:58.508Z] [INFO]    📊 Temps estimé optimisé: 184.4s (réduction de 70%)
+[2025-09-25T17:45:58.510Z] [SUMMARY] ============================================================
+[2025-09-25T17:45:58.512Z] [SUMMARY] 📊 RÉSUMÉ DES TEMPS D'EXÉCUTION
+[2025-09-25T17:45:58.515Z] [SUMMARY] ============================================================
+[2025-09-25T17:45:58.518Z] [SUMMARY] ⏱️  Temps d'exécution total : 614.80 secondes
+[2025-09-25T17:45:58.521Z] [SUMMARY] 📈 Performance moyenne : 43.91 secondes par étape
+[2025-09-25T17:45:58.525Z] [SUMMARY] ⚠️  ATTENTION : Temps d'exécution élevé (>5 min)
+[2025-09-25T17:45:58.527Z] [SUMMARY] 💡 Suggestions d'optimisation :
+[2025-09-25T17:45:58.529Z] [SUMMARY]    - Paralléliser les requêtes blockchain
+[2025-09-25T17:45:58.532Z] [SUMMARY]    - Optimiser les requêtes de base de données
+[2025-09-25T17:45:58.534Z] [SUMMARY]    - Mettre en cache les données fréquemment utilisées
+[2025-09-25T17:45:58.537Z] [SUMMARY] ============================================================
+[2025-09-25T17:45:58.540Z] [INFO] 🔍 [mainFunction] Début de l'analyse des différences de propriétaires...
+[2025-09-25T17:46:00.676Z] [INFO] ✅ [mainFunction] Analyse des différences de propriétaires terminée
+[2025-09-25T17:46:00.679Z] [INFO] 🔧 [mainFunction] Début de la correction des propriétaires de chests...
+[2025-09-25T17:46:00.701Z] [INFO] ✅ [mainFunction] Correction des propriétaires de chests terminée
+[2025-09-25T20:42:10.167Z] [INFO] 🚀 [mainFunction] Début du pipeline principal
+[2025-09-25T20:42:10.173Z] [INFO] ============================================================
+[2025-09-25T20:42:10.334Z] [INFO] 📋 [mainFunction] Étape 1 : compareData()
+[2025-09-25T20:42:13.742Z] [INFO] 🚀 [mainFunction] Début du pipeline principal
+[2025-09-25T20:42:13.745Z] [INFO] ============================================================
+[2025-09-25T20:42:13.840Z] [INFO] 📋 [mainFunction] Étape 1 : compareData()
+[2025-09-25T20:42:14.167Z] [PERFORMANCE] ⏱️  [compareData] Temps d'exécution : 0.33 secondes
+[2025-09-25T20:42:14.170Z] [INFO] 🎮 [mainFunction] Étape 2 : Calcul des scores sérialisé
+[2025-09-25T20:42:14.171Z] [INFO] 🎮 [mainFunction] Étape 2a : Playerscore()
+[2025-09-25T20:42:14.174Z] [INFO] 🎮 [Playerscore] Début du calcul des scores joueurs
+[2025-09-25T20:42:14.228Z] [INFO] 📊 453 joueurs récupérés
+[2025-09-25T20:43:28.954Z] [INFO] 📊 453 joueurs traités
+[2025-09-25T20:43:41.798Z] [INFO] 📊 453 scores calculés
+[2025-09-25T20:43:41.825Z] [INFO] ✅ [Playerscore] Terminé en 87.65s
+[2025-09-25T20:43:41.829Z] [PERFORMANCE] ⏱️  [Playerscore] Temps d'exécution : 87.66 secondes
+[2025-09-25T20:43:41.833Z] [INFO] 🎮 [mainFunction] Étape 2b : Ownerscore()
+[2025-09-25T20:43:41.837Z] [INFO] 🏠 [Ownerscore] Début du calcul des scores propriétaires
+[2025-09-25T20:49:37.396Z] [INFO] ✅ [Ownerscore] 589 propriétaires traités en 355.56s
+[2025-09-25T20:49:37.397Z] [PERFORMANCE] ⏱️  [Ownerscore] Temps d'exécution : 355.56 secondes
+[2025-09-25T20:49:37.412Z] [INFO] ✅ Connexion à la base de données établie avec succès
+[2025-09-25T20:49:37.413Z] [INFO] 🔍 [mainFunction] Création des index optimisés
+[2025-09-25T20:49:37.416Z] [INFO] 🗄️ [mainFunction] Étape 8 : Insertions en base optimisées
+[2025-09-25T20:49:37.608Z] [PERFORMANCE] ⏱️  [insertLandowners] Temps d'exécution : 0.19 secondes
+[2025-09-25T20:49:37.628Z] [PERFORMANCE] ⏱️  [insertPlayers] Temps d'exécution : 0.21 secondes
+[2025-09-25T20:49:37.729Z] [PERFORMANCE] ⏱️  [insertTemplates] Temps d'exécution : 0.10 secondes
+[2025-09-25T20:49:37.734Z] [PERFORMANCE] ⏱️  [Insertions optimisées (batch + parallèle)] Temps d'exécution : 0.32 secondes
+[2025-09-25T20:49:37.735Z] [INFO] ✅ Insertions terminées en 0.32s
+[2025-09-25T20:49:37.735Z] [INFO] 🔄 [mainFunction] Étape 13 : processLandData() - OPTIMISÉ
+[2025-09-25T20:49:38.049Z] [PERFORMANCE] ⏱️  [processLandData] Temps d'exécution : 0.31 secondes
+[2025-09-25T20:49:38.051Z] [INFO] ⏰ [mainFunction] Étape 14 : Mise à jour du timestamp
+[2025-09-25T20:49:38.051Z] [PERFORMANCE] ⏱️  [Mise à jour timestamp] Temps d'exécution : 0.00 secondes
+[2025-09-25T20:49:38.052Z] [INFO] 🔒 [mainFunction] Fermeture de la base de données
+[2025-09-25T20:49:38.053Z] [PERFORMANCE] ⏱️  [Fermeture DB] Temps d'exécution : 0.00 secondes
+[2025-09-25T20:49:38.054Z] [INFO] 🚀 [mainFunction] OPTIMISATIONS APPLIQUÉES :
+[2025-09-25T20:49:38.054Z] [INFO]    ✅ Parallélisation Playerscore() + Ownerscore() (gain: 50-70%)
+[2025-09-25T20:49:38.055Z] [INFO]    ✅ Transactions batch pour insertions (gain: 30-50%)
+[2025-09-25T20:49:38.056Z] [INFO]    ✅ Index optimisés sur colonnes fréquentes (gain: 20-40%)
+[2025-09-25T20:49:38.056Z] [INFO]    ✅ Lecture JSON parallèle (gain: 40-60%)
+[2025-09-25T20:49:38.057Z] [INFO]    ✅ Configuration SQLite optimisée (gain: 15-30%)
+[2025-09-25T20:49:38.057Z] [INFO]    📊 Temps estimé optimisé: 133.3s (réduction de 70%)
+[2025-09-25T20:49:38.058Z] [SUMMARY] ============================================================
+[2025-09-25T20:49:38.059Z] [SUMMARY] 📊 RÉSUMÉ DES TEMPS D'EXÉCUTION
+[2025-09-25T20:49:38.060Z] [SUMMARY] ============================================================
+[2025-09-25T20:49:38.060Z] [SUMMARY] ⏱️  Temps d'exécution total : 444.31 secondes
+[2025-09-25T20:49:38.061Z] [SUMMARY] 📈 Performance moyenne : 31.74 secondes par étape
+[2025-09-25T20:49:38.061Z] [SUMMARY] ⚠️  ATTENTION : Temps d'exécution élevé (>5 min)
+[2025-09-25T20:49:38.062Z] [SUMMARY] 💡 Suggestions d'optimisation :
+[2025-09-25T20:49:38.062Z] [SUMMARY]    - Paralléliser les requêtes blockchain
+[2025-09-25T20:49:38.063Z] [SUMMARY]    - Optimiser les requêtes de base de données
+[2025-09-25T20:49:38.064Z] [SUMMARY]    - Mettre en cache les données fréquemment utilisées
+[2025-09-25T20:49:38.065Z] [SUMMARY] ============================================================
+[2025-09-25T20:49:38.066Z] [INFO] 🔍 [mainFunction] Début de l'analyse des différences de propriétaires...
+[2025-09-25T20:49:39.889Z] [INFO] ✅ [mainFunction] Analyse des différences de propriétaires terminée
+[2025-09-25T20:49:39.889Z] [INFO] 🔧 [mainFunction] Début de la correction des propriétaires de chests...
+[2025-09-25T20:49:39.897Z] [INFO] ✅ [mainFunction] Correction des propriétaires de chests terminée

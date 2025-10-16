@@ -1,0 +1,59 @@
+<div id="mission-main" class="d-flex flex-column flex-lg-row align-items-normal justify-content-around text-center">
+    <div class="attack-m col-12 col-lg-5 d-flex flex-column align-items-center mb-3 mb-lg-0" id="attackdiv">
+        <div class="attack-title">
+            <p class="title-attack">Attack mission</p>
+            <p class="time-atk" id="time_end_att"></p>
+        </div>
+        <div class="img-attack-m">
+            <img class="img-atk img-fluid" id="img-att" src="" alt="Attack Images" />
+        </div>
+        <div class="description-crea">
+            <p class="mt-3 mb-3 planet-color-dynamique" id="missiontitle_att"></p>
+            <p class="txt-crea mb-3" id="missiontext_att"></p>
+        </div>
+            <div class="block-progress">
+                <span class="reward-mission" id="reward_att"></span>
+                <div class="progress w-100">
+                    <div id="progress__fill_att" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="0"></div>
+                    <span id="progress__text_att" class="progress-text" data-target="0"></span>
+                </div>
+            </div>
+        <p class="time-atk2" id="nextattack"></p>
+        <div id="attack-btn-img" class="mx-auto w-100">
+			<button id="attack" class="btn custom-btn-bg-pvp-attack">
+          		<span class="button-transform">Attack</span>
+          	</button>
+        </div>
+    </div>
+
+    <div class="defence-m col-12 col-lg-5 d-flex flex-column align-items-center" id="defensediv">
+        <div class="defense-title">
+            <p class="title-defense">Land defense</p>
+            <p class="time-defense" id="time_end_def"></p>
+        </div>
+        <div class="img-defense-m">
+            <img class="img-def img-fluid" id="img-def" src="" alt="Defense Images" />
+        </div>
+        <div class="description-crea">
+            <p class="mt-3 mb-3 planet-color-dynamique" id="missiontitle__def"></p>
+            <p class="txt-crea mb-3" id="missiontext_def"></p>
+        </div>
+            <div class="block-progress">
+                <span class="reward-mission" id="reward_def"></span>
+                <div class="progress w-100">
+                    <div id="progress__fill_def" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="0"></div>
+                    <span id="progress__text_def" class="progress-text" data-target="0"></span>
+                </div>
+                <span class="progress-atk" id="progress-def"></span>
+            </div>
+            <div class="mx-auto max-w50 mb-2 mt-2">
+            <input class="form-control form-control-sm" type="text" id="filter-input" placeholder="Choose your Landowner wam">
+            <p id="landowner-status"></p>
+        </div>
+        <div id="support-btn-img" class="mx-auto w-100">
+            <button data-action="sendreq" id="support" class="btn custom-btn-bg-pvp-defense">
+              <span class="button-transform">Defense</span>
+          	</button>
+        </div>
+    </div>
+</div>

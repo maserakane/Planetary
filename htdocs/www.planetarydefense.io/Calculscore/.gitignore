@@ -1,0 +1,4 @@
+# Logs
+*.log
+logs/
+!logs/README.md

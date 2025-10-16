@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Planetary Defense</title>
+    <link rel="shortcut icon" type="image/png" href="../images/favicon_P.ico" />
+    <link rel="stylesheet" href="../css/login-wax.css?v=1.00" />
+
+    <style>
+      /* Styles généraux pour centrer le contenu */
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background-color: #f5f5f5;
+      }
+
+      /* Conteneur pour la vidéo pour la rendre réactive */
+      .video-container {
+        position: relative;
+        width: 100%;
+        max-width: 560px; /* Ajustement de la largeur maximale de la vidéo pour les grands écrans */
+        /*padding-bottom: 56.25%; Ratio 16:9 */
+        margin: 10px auto; /* Centrer et ajouter un espacement autour de la vidéo */
+        height: 315px;
+      }
+
+      .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Styles pour les icônes sociales */
+      #social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 10px; /* Espacement entre les icônes */
+        margin-top: 20px;
+      }
+
+      .social-icon {
+        width: 40px;
+        height: 40px;
+      }
+
+      /* Styles réactifs pour les petits écrans */
+      @media (max-width: 768px) {
+        .logo img {
+          max-width: 90%;
+        }
+
+        .login img {
+          max-width: 80%;
+        }
+
+        .video-container {
+          max-width: 100%;
+        }
+
+        span {
+          width: 90%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <section class="logo-login-wax">
+      <div class="logo">
+        <img class="img-logo" src="../images/banniere.png" alt="logo du site" />
+      </div>
+    </section>
+
+    <!-- Intégration de la vidéo YouTube -->
+    <div class="video-container">
+      <iframe
+        src="https://www.youtube.com/embed/Gx55-2upLOo"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    <div>
+      <a class="login" id="login">
+        <img class="img-log" src="../images/wax-login.png" alt="bouton login" />
+      </a>
+      <span style="display: block;padding: 6px;background-color: rgba(0, 0, 0, 0.8);color: #fff;text-align: center;border-radius: 15px;margin: 10px auto;">
+        <h2 style="color: #fff;">Important Information</h2>
+         <p>Please note that a <strong>"90 TLM" entry fee</strong> applies to players who do not own <strong>Lands on Magor</strong>.</p>
+         <p>This fee is charged <strong>only on the first login</strong>.</p>
+         <p>Before proceeding, we strongly recommend reading our detailed guide on Medium via this link: 
+          <a href="https://medium.com/@planetarydefense.io/planetary-defense-263bcac13b97" target="_blank" style="color: #1E90FF;">
+            Planetary Defense
+          </a>.
+        </p>
+      </span>
+
+      <!-- Icônes de Discord, YouTube et Telegram -->
+      <div id="social-icons">
+        <a target="_blank" href="https://play.alienworlds.io/">
+          <img class="social-iconaw" src="../images/community.png" alt="Alienworlds">
+        </a>
+        <a target="_blank" href="https://discord.gg/rhHWe6hDNP">
+          <img class="social-icon" src="../images/didi-bouton.png" alt="Discord" />
+        </a>
+        <a target="_blank" href="https://www.youtube.com/@Planetary_Def">
+          <img class="social-icon" src="../images/youtube-icon.png" alt="YouTube" />
+        </a>
+        <a target="_blank" href="https://t.me/Planetary_Def">
+          <img class="social-icon" src="../images/telegram-icon.png" alt="Telegram" />
+        </a>
+        <a target="_blank" href="https://x.com/Planetary_Def">
+          <img class="social-icon" src="../images/logo-white.png" alt="X" />
+        </a>
+      </div>
+    </div>
+
+    <div id="user-info"></div>
+    <script src="/js/connexion.js"></script>
+  </body>
+</html>

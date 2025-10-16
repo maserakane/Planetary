@@ -1,0 +1,46 @@
+<div id="loading-overlay-pvp" class="loading-overlay">
+    <div class="spinner-border text-primary" role="status"></div>
+    <span class="visually-hidden">Loading...</span>
+</div>
+
+<div id="mission-main" class="d-flex flex-column">
+    <div id="pvp-center"></div>
+    <!-- Phase Title and Cooldown -->
+    <div class="text-center mb-3">
+        <div id="phase-title" class="mb-3"></div>
+        <div id="cooldown" class="mb-3 lato fs-4"></div>
+    </div>
+
+
+    <!-- Main Content Layout -->
+    <div class="d-flex flex-wrap justify-content-evenly align-items-start text-center">
+        <!-- Left: Avatar -->
+        <div id="avatar-container" class="d-flex flex-column align-items-center" style="display: none;">
+            <img id="avatarImagepvp" class="avatar-img" src="" alt="Avatar" />
+            <p id="selected-player" class="mt-2 lato"></p>
+        </div>
+        <!-- Right: Phase Details -->
+        <div id="phase-details" class="my-auto lato"></div>
+    </div>
+
+    <!-- Defense and Attack Lists -->
+    <div class="d-flex flex-column align-items-center my-4">
+        <div id="defense-list" class="d-flex flex-wrap justify-content-center lato mb-3 ethno"></div>
+        <div id="attack-list" class="d-flex flex-wrap justify-content-center lato mb-3 ethno"></div>
+        <div class="d-flex justify-content-center">
+            <button id="pvp_defense" class="btn custom-btn-bg-pvp-defense me-2" style="display: none;"><span>Defense</span></button>
+            <button id="pvp_attack" class="btn custom-btn-bg-pvp-attack me-2" style="display: none;"><span>Attack</span></button>
+            <div id="countdown-timer" class="lato text-center fs-3"></div>
+        </div>
+    </div>
+    <!-- Bottom Layout: Top Chests and Description -->
+    <h3 class="planet-color-dynamique mb-4 m-auto">Top 10 Chests</h3>
+    <div class="d-flex flex-wrap justify-content-around align-items-start">
+        <div id="top-chests-container" class="lato d-flex flex-wrap justify-content-around gap-5 align-items-center text-align-center m-auto text-center" style="display: none;font-size: .9rem;">
+            <div id="top-chests-list-column-1"></div>
+            <div id="top-chests-list-column-2"></div>
+        </div>
+        <div id="description-container"></div>
+    </div>
+</div>
+

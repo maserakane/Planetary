@@ -1,0 +1,83 @@
+<div id="loading-overlay">
+    <div class="spinner-border text-primary" role="status"></div>
+    <span class="visually-hidden">Loading...</span>
+</div>
+<div id="mission-main" class="d-flex flex-column flex-lg-row align-items-normal justify-content-around text-center">
+    <div class="col-12 col-lg-12 d-flex flex-column mb-3 mb-lg-0" id="battlehistory-center">
+        <h2 id="h2-history" class="ethno">Defense History</h2>
+         <div id="under-construction"></div>
+        <div id="error-message" class="alert alert-danger" role="alert" style="display: none;"></div>
+        <div class="table-wrapper">
+            <table id="battle-table" class="table table-responsive no-footer">
+                <thead id="table-mission-history" class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Target per land</th>
+                        <th title="UTC">Start Date</th>
+                        <th title="UTC">End Date</th>
+                        <th>PDT</th>
+                        <th>Shards</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="battle-tbody">
+                    <!-- Les lignes des batailles seront chargées ici -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="supporterModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="supporterModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="supporterModalLabel">Supporters List</h5>
+                <button type="button" class="close btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table id="supporter-table" class="table text-white table-borderless table-centered">
+                        <thead>
+                            <tr>
+                                <th>Supporter</th>
+                                <th>Shards</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Les lignes seront ajoutées ici par JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal for Land IDs -->
+<div id="landIdModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="landIdModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="landIdModalLabel">Land IDs List</h5>
+                <button type="button" class="close btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul id="landid-list" class="landid-list"></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

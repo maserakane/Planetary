@@ -1,0 +1,48 @@
+<div id="mission-main" class="d-flex flex-column flex-lg-row align-items-normal justify-content-around text-center">
+    <div class="col-12 col-lg-12 d-flex flex-column align-items-center mb-3 mb-lg-0" id="leaderboard-center">
+        <div class="mb-3">
+            <button id="btn-players-ld" class="btn btn-custom">Players</button>
+            <button id="btn-landowners-ld" class="btn btn-custom">Landowners</button>
+            <button id="btn-support-ld" class="btn btn-custom">Support</button>
+            <button id="download-csv-ld" class="btn btn-custom">Download CSV</button>
+        </div>
+        <div id="table-controls" class="d-flex mb-3 w-100 justify-content-around">
+            <div type="search" id="table-filter" class="m-0"></div>
+            <div id="table-length" class="m-0"></div>
+        </div>
+        <div id="table-container-ld">
+            <table id="leaderboard-table-ld" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <!-- Column headers will be dynamically generated -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        <div id="table-info" class="d-flex mt-3 w-100 justify-content-around">
+            <div id="table-info-text" class="m-0"></div>
+            <div id="table-pagination" class="m-0"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="landIdsModal" tabindex="-1" aria-labelledby="landIdsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div id="modal-content-lb" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="landIdsModalLabel">Land IDs</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="landIdsContent">
+                <!-- Land IDs will be displayed here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
